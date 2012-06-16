@@ -3,7 +3,7 @@
 # This is the master makefile for the Publib build framework.
 # See the README for # more information before trying to configure this file.
 #
-# "@(#)publib-framework:$Id: Makefile.in,v 1.8 1996/02/17 17:06:21 liw Exp $"
+# "@(#)publib-framework:$Id: Makefile.in,v 1.9 1996/12/27 22:48:08 liw Exp $"
 
 include Rules.mk
 
@@ -35,7 +35,7 @@ install:
 	target=pre-install; $(recurse)
 	$(recurse)
 	$(INSTALL_DATA) $(libnamebase) $(libdir)/$(libnamebase)
-	test -d $(incdir)/$(incnamebase) || mkdir $(incdir)/$(incnamebase)
+	test -d $(incdir)/$(incnamebase) || mkdir -m 775 $(incdir)/$(incnamebase)
 	$(INSTALL_DATA) include/$(headerbase) $(incdir)
 	for i in include/$(incnamebase)/*.h; do \
 		$(INSTALL_DATA) $$i $(incdir)/$(incnamebase); done

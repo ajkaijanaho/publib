@@ -2,7 +2,7 @@
  * sbuf.c -- simple text editor buffer routines
  *
  * Part of Publib.  See manpage for more information.
- * "@(#)publib-sbuf:$Id: sbuf.c,v 1.9 1996/07/16 12:31:03 liw Exp $"
+ * "@(#)publib-sbuf:$Id: sbuf.c,v 1.15 1996/12/27 22:48:33 liw Exp $"
  */
 
 
@@ -22,11 +22,12 @@
 /*
  * Prototypes for local functions.
  */
-static long string_width(const char *);
 static int replace_mark_part(Sbuf *, long, long, const char *, long, long);
 static void adjust_marks(Sbuf *, long, long, long);
 static int remove_columnar_mark(Sbufmark *);
 static long count_chars(const char *, int, long);
+static int insert_columnar_text(Sbuf *, Sbufmark *, const char *, long, long);
+static int strchange(Sbuf *, long, long, const char *, long);
 
 
 
@@ -41,16 +42,14 @@ Sbuf *sbuf_create(void) {
 	}
 
 	buf->block = NULL;
-	buf->locked = 0;
-	buf->dirty = 0;
+	buf->name = NULL;
+	buf->flags = 0;
 	buf->gappos = 0;
 	buf->alloc = 0;
 	buf->len = 0;
 	buf->marks = NULL;
 	buf->markalloc = 0;
-#if 0
-	buf->poscount = 0;
-#else
+
 	dynarr_init(&buf->pc, sizeof(struct __sbuf_pos_cache));
 	if (dynarr_resize(&buf->pc, SBUF_POS_CACHE_MIN) == -1) {
 		dynarr_free(&buf->pc);
@@ -60,9 +59,17 @@ Sbuf *sbuf_create(void) {
 	buf->poshits = 0;
 	buf->posmisses = 0;
 	buf->posmissavg = 0;
-#endif
+	
+	buf->log_head = NULL;
+	buf->log_tail = NULL;
 
 	sbuf_validate(buf);
+	
+	buf->aux = sbuf_mark(buf, 0, 0);
+	if (buf == NULL) {
+		sbuf_destroy(buf);
+		return NULL;
+	}
 
 	return buf;
 }
@@ -142,13 +149,52 @@ int sbuf_movegap(Sbuf *buf, size_t pos, size_t len) {
 }
 
 
+char *sbuf_get_name(Sbuf *buf) {
+	return buf->name;
+}
+
+
+int sbuf_set_name(Sbuf *buf, const char *newname) {
+	newname = strdup(newname);
+	if (newname == NULL)
+		return -1;
+	free(buf->name);
+	buf->name = (char *) newname;
+	return 0;
+}
+
+
+unsigned long sbuf_get_flags(Sbuf *buf) {
+	return buf->flags;
+}
+
+
+int sbuf_has_flags(Sbuf *buf, unsigned long mask) {
+	return (buf->flags & mask) == mask;
+}
+
+
+void sbuf_set_all_flags(Sbuf *buf, unsigned long flags) {
+	buf->flags = flags;
+}
+
+
+void sbuf_set_flags(Sbuf *buf, unsigned long mask) {
+	buf->flags |= mask;
+}
+
+
+void sbuf_clear_flags(Sbuf *buf, unsigned long mask) {
+	buf->flags &= ~mask;
+}
+
 
 /*
  * Function:	sbuf_is_dirty
  * Purpose:	Return dirty bit for buffer.
  */
 int sbuf_is_dirty(Sbuf *buf) {
-	return buf->dirty;
+	return sbuf_has_flags(buf, SBUF_DIRTY_FLAG);
 }
 
 
@@ -158,7 +204,10 @@ int sbuf_is_dirty(Sbuf *buf) {
  * Purpose:	Set dirty bit for buffer.
  */
 void sbuf_set_dirty(Sbuf *buf, int dirty) {
-	buf->dirty = !!dirty;
+	if (dirty)
+		sbuf_set_flags(buf, SBUF_DIRTY_FLAG);
+	else
+		sbuf_clear_flags(buf, SBUF_DIRTY_FLAG);
 }
 
 
@@ -168,13 +217,13 @@ void sbuf_set_dirty(Sbuf *buf, int dirty) {
    its length may not be modified).  */
 char *sbuf_lock(Sbuf *buf) {
 	sbuf_validate(buf);
-	assert(!buf->locked);
+	assert(!sbuf_has_flags(buf, SBUF_LOCKED_FLAG));
 
 	if (sbuf_movegap(buf, buf->len, 0) == -1) {
 		__publib_error("sbuf_movegap failed");
 		return NULL;
 	}
-	buf->locked = 1;
+	sbuf_set_flags(buf, SBUF_LOCKED_FLAG);
 	return buf->block;
 }
 
@@ -184,9 +233,9 @@ char *sbuf_lock(Sbuf *buf) {
    returned by sbuf_lock is usable any longer.  */
 void sbuf_unlock(Sbuf *buf) {
 	sbuf_validate(buf);
-	assert(buf->locked);
+	assert(sbuf_has_flags(buf, SBUF_LOCKED_FLAG));
 
-	buf->locked = 0;
+	sbuf_clear_flags(buf, SBUF_LOCKED_FLAG);
 }
 
 
@@ -261,6 +310,8 @@ Sbufmark *sbuf_mark(Sbuf *buf, long pos, long len) {
 	p->len = len;
 	p->dirty = 0;
 	p->columnar = 0;
+	p->code = 0;
+	p->handle = q;
 
 	q->buf = buf;
 	q->mark = p - buf->marks;
@@ -325,8 +376,39 @@ long (sbuf_mark_end)(Sbufmark *mark) {
 
 /* Return length of mark.  */
 long (sbuf_mark_length)(Sbufmark *mark) {
+	struct __sbufmark *m;
+	long len, tabsize, startcol, endcol, col, pos;
+	int c;
+
 	sbuf_validate_mark(mark);
-	return mark->buf->marks[mark->mark].len;
+
+	m = mark->buf->marks + mark->mark;
+
+	if (!m->columnar)
+		return m->len;
+
+	len = 0;
+	tabsize = 8;
+	startcol = sbuf_colno(mark->buf, m->begin, tabsize);
+	endcol = sbuf_colno(mark->buf, m->begin + m->len, tabsize);
+	col = startcol;
+	c = EOF;
+	for (pos = 0; pos < m->len; ++pos) {
+		c = sbuf_charat(mark->buf, m->begin + pos);
+		if (c == '\n') {
+			++len;
+			col = 0;
+		} else {
+			if (col >= startcol && col < endcol)
+				++len;
+			if (c == '\t')
+				col += tabsize - (col % tabsize);
+			else
+				++col;
+		}
+	}
+
+	return len;
 }
 
 
@@ -358,7 +440,30 @@ int (sbuf_mark_is_columnar)(Sbufmark *mark) {
 /* Set columnar mode.  */
 void (sbuf_mark_set_columnar)(Sbufmark *mark, int mode) {
 	sbuf_validate_mark(mark);
-	mark->buf->marks[mark->mark].columnar = mode;
+	mark->buf->marks[mark->mark].columnar = !!mode;
+}
+
+
+void sbuf_set_mark_code(Sbufmark *mark, int code) {
+	mark->buf->marks[mark->mark].code = code;
+}
+
+int sbuf_get_mark_code(Sbufmark *mark) {
+	return mark->buf->marks[mark->mark].code;
+}
+
+Sbufmark *sbuf_find_mark_by_code(Sbuf *buf, int code) {
+	int i;
+	struct __sbufmark *m;
+
+	if (code == 0)
+		return NULL;
+	for (i = 0; i < buf->markalloc; ++i) {
+		m = buf->marks + i;
+		if (m->inuse && m->code == code)
+			return m->handle;
+	}
+	return NULL;
 }
 
 
@@ -384,12 +489,13 @@ void sbuf_strat(char *str, Sbufmark *mark) {
 			if (*p == '\n') {
 				*str++ = *p;
 				col = 0;
-			} else if (col < endcol) {
+			} else {
+				if (col >= startcol && col < endcol)
+					*str++ = *p;
 				if (*p == '\t')
 					col += tabsize - (col % tabsize);
 				else
 					++col;
-				*str++ = *p;
 			}
 		}
 		*str = '\0';
@@ -407,34 +513,20 @@ void sbuf_strat(char *str, Sbufmark *mark) {
 /* Replace the contents of a mark with a string.  */
 int sbuf_strchange(Sbufmark *mark, const char *str, size_t len) {
 	struct __sbufmark *m;
-	long old_lines, new_lines;
 
 	sbuf_validate_mark(mark);
 	assert(str != NULL);
-	assert(strlen(str) >= len);	/* bug if buffer may hold '\0'! */
 	assert(!mark->buf->locked);
 
 	m = mark->buf->marks + mark->mark;
 	if (m->columnar) {
-		/* this version assumes len == 0... */
 		if (remove_columnar_mark(mark) == -1)
 			return -1;
+		if (insert_columnar_text(mark->buf, mark, str, len, 8) == -1)
+			return -1;
 	} else {
-		if (sbuf_movegap(mark->buf, m->begin + m->len, 0) == -1)
+		if (strchange(mark->buf, m->begin, m->len, str, len) == -1)
 			return -1;
-		old_lines = count_chars(mark->buf->block + m->begin, '\n', 
-			m->len);
-		new_lines = count_chars(str, '\n', len);
-		if (replace_mark_part(mark->buf, m->begin, m->len, 
-		    str, len, len)== -1)
-			return -1;
-#if 0
-		sbuf_clear_pos_cache(mark->buf, m->begin);
-#else
-		sbuf_adjust_pos_cache(mark->buf, m->begin, m->len, len,
-			new_lines - old_lines);
-#endif
-		adjust_marks(mark->buf, m->begin, m->len, len);
 		sbuf_validate_mark(mark);
 	}
 
@@ -474,71 +566,90 @@ int sbuf_change(Sbufmark *mark, Sbufmark *repl) {
 }
 
 
-
-/* Replace contents of mark m with the contents of file f */
-int sbuf_insert_file(Sbufmark *m, FILE *f) {
-	size_t i, n, inc;
-	char *p, *q;
-
-	n = 0;
-	inc = 128*1024;	/* a nice small number */
-	p = NULL;
-	do {
-		q = realloc(p, n + inc);
-		if (q == NULL) {
-			__publib_error("realloc failed");
-			return -1;
-		}
-		p = q;
-
-		i = fread(p+n, 1, inc, f);
-		if (i != inc && ferror(f)) {
-			__publib_error("fread failed");
-			free(p);
-			return -1;
-		}
-
-		n += i;
-	} while (!feof(f));
-
-	if (sbuf_strchange(m, p, n) == -1) {
-		__publib_error("sbuf_strchange failed");
-		free(p);
+/*
+ * Function:	sbuf_undo_atomic
+ * Purpose:	Undo one entry from the change log.
+ */
+int sbuf_undo_atomic(Sbuf *buf) {
+	struct __sbuf_change *p;
+	
+	if (buf->log_tail == NULL)
 		return -1;
-	}
-
-	free(p);
+	p = buf->log_tail;
+	if (strchange(buf, p->pos, p->newlen, p->oldtext, p->oldlen) == -1)
+		return -1;
 	return 0;
 }
 
 
+/*
+ * Function:	sbuf_dump
+ * Purpose:	Dump contents of buffer for debugging purposes.
+ */
+void sbuf_dump(const char *msg, Sbuf *buf) {
+	long i, len;
+	int c;
 
-/* Write contents of mark m to file f.  */
-int sbuf_write_to_file(Sbufmark *m, FILE *f) {
-	size_t i;
-	long n;
-	char *p;
-
-	n = sbuf_mark_length(m);
-	p = malloc(n);
-	if (p == NULL) {
-		__publib_error("malloc failed");
-		return -1;
+	if (msg != NULL && *msg != '\0')
+		printf("%s: ", msg);
+	printf("<<");
+	len = sbuf_length(buf);
+	for (i = 0; i < len; ++i) {
+		c = sbuf_charat(buf, i);
+		switch (c) {
+		case '\n':
+			printf("\\n"); break;
+		case '\t':
+			printf("\\t"); break;
+		case '\0':
+			printf("\\0"); break;
+		case '\\':
+			printf("\\\\"); break;
+		default:
+			printf("%c", c); break;
+		}
 	}
-
-	sbuf_strat(p, m);
-
-	i = fwrite(p, 1, n, f);
-	if (i != n) {
-		__publib_error("fwrite failed");
-		free(p);
-		return -1;
-	}
-
-	free(p);
-	return 0;
+	printf(">>\n");
 }
 
+
+
+/*
+ * Function:	sbuf_mark_dump
+ * Purpose:	Dump contents of mark for debugging purposes.
+ */
+void sbuf_mark_dump(const char *msg, Sbufmark *mark) {
+	char buf[1000];
+	long i, len;
+
+	if (msg != NULL && *msg != '\0')
+		printf("%s: ", msg);
+	printf("%ld-%ld (%ld) col=%d", sbuf_mark_begin(mark), 
+		sbuf_mark_end(mark), sbuf_mark_length(mark), 
+		sbuf_mark_is_columnar(mark));
+	len = sbuf_mark_length(mark);
+	if (len >= sizeof(buf))
+		printf(" (mark too long for output)\n");
+	else {
+		sbuf_strat(buf, mark);
+		printf(" <<");
+		for (i = 0; i < len; ++i) {
+			switch (buf[i]) {
+			case '\n':
+				printf("\\n"); break;
+			case '\t':
+				printf("\\t"); break;
+			case '\0':
+				printf("\\0"); break;
+			case '\\':
+				printf("\\\\"); break;
+			default:
+				printf("%c", buf[i]); break;
+			}
+		}
+		printf(">>\n");
+	}
+}
 
 
 
@@ -546,19 +657,105 @@ int sbuf_write_to_file(Sbufmark *m, FILE *f) {
  * Local functions follow.
  */
  
- 
+
 /*
- * Function:	string_width
- * Purpose:	Return length of longest line in string
+ * Function:	string_dim
+ * Purpose:	Return string dimensions as a column.
  */
-static long string_width(const char *s) {
-	long w, maxw;
+static void string_dim(const char *s, long len, long *w, long *h) {
+	long i, n;
+	int prev;
 	
-	for (maxw = 0; (w = strcspn(s, "\n")) > 0; s += w)
-		if (w > maxw)
-			maxw = w;
-	return maxw;
+	prev = '\n';
+	*h = *w = n = 0;
+	for (i = 0; i < len; ++i) {
+		if (prev == '\n')
+			++(*h);
+		if (s[i] == '\n') {
+			if (n > *w)
+				*w = n;
+			n = 0;
+		} else
+			++n;
+		prev = s[i];
+	}
 }
+
+
+
+#if UNDO
+/*
+ * Function:	changelog_entry
+ * Purpose:	Create a new changelog entry.
+ */
+static struct __sbuf_change *changelog_entry(long pos, long newlen,
+const char *oldtext, long oldlen, int dirty) {
+	struct __sbuf_change *log;
+
+	log = malloc(sizeof(struct __sbuf_change));
+	if (log == NULL) {
+		__publib_error("out of memory");
+		return NULL;
+	}
+
+	if (oldlen == 0)
+		log->oldtext = NULL;
+	else {
+		log->oldtext = malloc(oldlen);
+		if (log->oldtext == NULL) {
+			__publib_error("out of memory");
+			free(log);
+	 		return NULL;
+		}
+	}
+
+	log->pos = pos;
+	log->newlen = newlen;
+	memcpy(log->oldtext, oldtext, oldlen);
+	log->oldlen = oldlen;
+	log->buffer_was_dirty = dirty;
+	log->last_composite = 0;
+	log->next = NULL;
+	log->prev = NULL;
+	
+	return log;
+}
+
+
+
+/*
+ * Function:	changelog_add
+ * Purpose:	Add new entry to change log. Forget old ones, if log is big.
+ */
+static void changelog_add(Sbuf *buf, struct __sbuf_change *log) {
+	long n, nn;
+	struct __sbuf_change *p;
+
+	if (buf->log_tail == NULL) {
+		buf->log_head = log;
+		buf->log_tail = log;
+	} else {
+		log->prev = buf->log_tail;
+		buf->log_tail->next = log;
+		buf->log_tail = log;
+	}
+	for (n = 0; log != NULL; log = log->prev) {
+		nn = n + sizeof(*log) + log->oldlen;
+		if (nn > buf->log_max)
+			break;
+		n = nn;
+	}
+	if (log != NULL) {
+		while (buf->log_head != log) {
+			p = buf->log_head;
+			buf->log_head = p->next;
+			buf->log_head->prev = NULL;
+			free(p->oldtext);
+			free(p);
+		}
+	}
+}
+#endif
 
 
 
@@ -573,8 +770,21 @@ static long string_width(const char *s) {
  */
 static int replace_mark_part(Sbuf *buf, long pos, long len, 
 const char *s, long n, long w) {
+#if UNDO
+	struct __sbuf_change *log;
+#endif
+	assert(n <= w);
+	
 	if (sbuf_movegap(buf, pos, w) == -1)
 		return -1;
+
+#if UNDO
+	log = changelog_entry(pos, w, buf->block + buf->gappos + gaplen(buf),
+		len, buf->flags & SBUF_DIRTY_FLAG);
+	if (log == NULL)
+		return -1;
+#endif
+
 	buf->len -= len;
 
 	memcpy(buf->block + buf->gappos, s, n);
@@ -582,7 +792,12 @@ const char *s, long n, long w) {
 		memset(buf->block + buf->gappos + n, ' ', w - n);
 	buf->len += w;
 	buf->gappos += w;
-	buf->dirty = 1;
+	sbuf_set_dirty(buf, 1);
+
+#if UNDO
+	changelog_add(buf, log);
+#endif
+	
 	return 0;
 }
 
@@ -682,4 +897,61 @@ static long count_chars(const char *s, int c, long len) {
 		++n;
 	}
 	return n;
+}
+
+
+
+/*
+ * Function:	insert_columnar_text
+ * Purpose:	Insert a column of text into buffer.
+ */
+static int insert_columnar_text(Sbuf *buf, Sbufmark *mark, const char *s,
+long len, long tab) {
+	long i, n, w, h, col, end, pos, begin;
+
+	string_dim(s, len, &w, &h);
+	pos = sbuf_mark_begin(mark);
+	begin = end = pos;
+	col = sbuf_colno(buf, pos, tab);
+
+	for (i = 0; i < len; i += n) {
+		for (n = 0; i+n < len && s[i+n] != '\n'; ++n)
+			continue;
+		if (replace_mark_part(buf, pos, 0, s+i, n, w) == -1)
+			return -1;
+		adjust_marks(buf, pos, 0, w);
+/* fixme to use sbuf_adjust_pos_cache */
+		sbuf_clear_pos_cache(buf, pos);
+		end = pos + w;
+		pos = sbuf_eoln(buf, pos);
+		pos = sbuf_colpos(buf, pos, col, tab);
+		if (i+n < len && s[i+n] == '\n')
+			++n;
+	}
+	sbuf_remark(mark, begin, end-begin);
+	return 0;
+}
+
+
+/*
+ * Function:	strchange
+ * Purpose:	Replace part of buffer with new text.
+ */
+static int strchange(Sbuf *buf, long pos, long len, const char *text,
+long textlen) {
+	long old_lines, new_lines;
+
+	if (sbuf_movegap(buf, pos + len, 0) == -1)
+		return -1;
+
+	old_lines = count_chars(buf->block + pos, '\n', len);
+	new_lines = count_chars(text, '\n', textlen);
+
+	if (replace_mark_part(buf, pos, len, text, textlen, textlen) == -1)
+		return -1;
+
+	sbuf_adjust_pos_cache(buf, pos, len, textlen, new_lines - old_lines);
+	adjust_marks(buf, pos, len, textlen);
+
+	return 0;
 }

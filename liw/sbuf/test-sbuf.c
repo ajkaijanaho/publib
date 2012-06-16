@@ -147,6 +147,12 @@ int main(void) {
 	dump();
 	}
 
+	printf("undo:\n");	
+	setup();
+	dump();
+	printf("ret=%d\n", sbuf_undo_atomic(buf));
+	dump();
+
 	sbuf_destroy(buf);
 
 	printf("test-sbuf done\n");

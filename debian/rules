@@ -1,0 +1,44 @@
+#!/usr/bin/make -f
+
+package=publib-dev
+
+build: debian/objs debian/objs/Makefile
+	cd debian/objs && $(MAKE) --no-print-dir
+
+binary: binary-arch binary-indep
+
+binary-arch: checkroot debian/objs
+	rm -rf debian/tmp
+	install -d debian/tmp debian/tmp/DEBIAN
+	install -d debian/tmp/usr/doc/$(package)
+	install -d debian/tmp/usr/include
+	install -d debian/tmp/usr/lib
+	install -d debian/tmp/usr/man 
+	install -d debian/tmp/usr/man/man3
+	cd debian/objs && $(MAKE) --no-print-dir man3ext=3pub install
+	cp debian/copyright debian/tmp/usr/doc/$(package)/.
+	cp debian/changelog debian/tmp/usr/doc/$(package)/changelog.Debian
+	cp framework/README debian/tmp/usr/doc/$(package)/README
+	cp framework/Blurb debian/tmp/usr/doc/$(package)/Blurb
+	gzip -9 debian/tmp/usr/doc/$(package)/*
+	dpkg-gencontrol
+	chown -R root.root debian/tmp
+	chmod -R o-s,go=u,go-ws debian/tmp
+	dpkg --build debian/tmp ..
+
+binary-indep:
+
+clean:
+	rm -rf debian/objs
+	rm -rf debian/tmp
+
+checkroot:
+	test root = "`whoami`"
+
+debian/objs:
+	mkdir debian/objs
+
+debian/objs/Makefile:
+	cd debian/objs && \
+		cp ../Default.config . && \
+		../../framework/configure

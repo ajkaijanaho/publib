@@ -2,7 +2,7 @@
  * sbuf_aux.c -- auxiliary routines for text editors
  *
  * Part of Publib.  See manpage for more information.
- * "@(#)publib-sbuf:$Id: sbuf_aux.c,v 1.11 1996/07/16 12:31:04 liw Exp $"
+ * "@(#)publib-sbuf:$Id: sbuf_aux.c,v 1.14 1996/12/18 15:52:26 liw Exp $"
  */
 
 
@@ -238,14 +238,9 @@ void sbuf_clear_pos_cache(Sbuf *buf, long pos) {
 	struct __sbuf_pos_cache *cache;
 	
 	check_pos_cache(buf);
-#if 0
-	while (buf->poscount > 0 && buf->poscache[buf->poscount-1].pos >= pos)
-		--buf->poscount;
-#else
 	cache = buf->pc.data;
 	while (buf->pc.used > 0 && cache[buf->pc.used-1].pos >= pos)
 		--buf->pc.used;
-#endif
 	check_pos_cache(buf);
 }
 
@@ -264,32 +259,6 @@ void sbuf_clear_pos_cache(Sbuf *buf, long pos) {
  */
 void sbuf_adjust_pos_cache(Sbuf *buf, long pos, long oldlen, long newlen,
 long n) {
-#if 0
-	int i, j;
-
-	check_pos_cache(buf);
-
-	/* fixme: bsearch should be used */
-	for (i = 0; i < buf->poscount && buf->poscache[i].pos < pos; ++i)
-		continue;
-
-	j = i;
-	for (; i < buf->poscount && buf->poscache[i].pos < pos + oldlen; ++i)
-		continue;
-
-	memmove(buf->poscache + j, buf->poscache + i, 
-		(buf->poscount - i) * sizeof(buf->poscache[0]));
-	buf->poscount -= i - j;
-
-	for (; j < buf->poscount; ++j) {
-		buf->poscache[j].pos += newlen - oldlen;
-		buf->poscache[j].lineno += n;
-		assert(buf->poscache[j].pos >= 0);
-		assert(buf->poscache[j].lineno >= 0);
-	}
-
-	check_pos_cache(buf);
-#else
 	int i, j;
 	struct __sbuf_pos_cache *cache;
 
@@ -314,7 +283,6 @@ long n) {
 	}
 
 	check_pos_cache(buf);
-#endif
 }
 
 
@@ -347,6 +315,29 @@ void sbuf_cache_stats(Sbuf *buf, FILE *f) {
 }
 
 
+/*
+ * Is a position inside a mark?
+ */
+int sbuf_pos_inside_mark(Sbufmark *mark, long pos) {
+	long begin, end, tabsize, poscol;
+	
+	begin = sbuf_mark_begin(mark);
+	if (pos < begin)
+		return 0;
+	end = sbuf_mark_end(mark);
+	if (pos >= end)
+		return 0;
+	if (!sbuf_mark_is_columnar(mark))
+		return 1;
+
+	tabsize = 8;	
+	poscol = sbuf_colno(mark->buf, pos, tabsize);
+	if (poscol < sbuf_colno(mark->buf, begin, tabsize))
+		return 0;
+	return poscol < sbuf_colno(mark->buf, end, tabsize);
+}
+
+
 
 /**************************************************************************
  * Local functions follow.
@@ -354,37 +345,6 @@ void sbuf_cache_stats(Sbuf *buf, FILE *f) {
 
 
 static int find_nearest(Sbuf *buf, long pos) {
-#if 0
-	int i;
-
-	check_pos_cache(buf);
-
-	if (buf->poscount == 0)
-		return -1;
-	if (buf->poscount == 1 || pos <= buf->poscache[0].pos)
-		return 0;
-	if (pos >= buf->poscache[buf->poscount-1].pos)
-		return buf->poscount-1;
-
-	for (i = 1; i < buf->poscount; ++i) {
-		assert(buf->poscache[i-1].pos < buf->poscache[i].pos);
-		assert(buf->poscache[i-1].lineno <= buf->poscache[i].lineno);
-	}
-	for (i = 0; pos > buf->poscache[i+1].pos; ++i)
-		assert(i < buf->poscount-1);
-	assert(i < buf->poscount-1);
-	assert(pos >= buf->poscache[i].pos);
-	assert(pos <= buf->poscache[i+1].pos);
-
-	check_pos_cache(buf);
-
-	if (i == buf->poscount-1)
-		return i;
-	else if (pos - buf->poscache[i].pos < buf->poscache[i+1].pos - pos)
-		return i;
-	else
-		return i+1;
-#else
 	struct __sbuf_pos_cache *cache;
 	int i;
 
@@ -402,13 +362,14 @@ static int find_nearest(Sbuf *buf, long pos) {
 	for (i = 0; pos > cache[i+1].pos; ++i)
 		continue;
 
+	check_pos_cache(buf);
+
 	if (i == buf->pc.used-1)
 		return i;
 	else if (pos - cache[i].pos < cache[i+1].pos - pos)
 		return i;
 	else
 		return i+1;
-#endif
 }
 
 
@@ -444,39 +405,6 @@ static long compute_lineno(Sbuf *buf, long pos, long known_pos, long lineno) {
 
 
 static void put_into_cache(Sbuf *buf, long pos, long lineno) {
-#if 0
-	long dist, mindist;
-	int i, min;
-	
-	assert(SBUF_POS_CACHE_MAX > 3);
-	check_pos_cache(buf);
-	
-	if (buf->poscount >= SBUF_POS_CACHE_MAX - 1) {
-		min = 2;
-		mindist = buf->poscache[min].pos - buf->poscache[min - 2].pos;
-		for (i = 3; i < buf->poscount; ++i) {
-			dist = buf->poscache[i].pos - buf->poscache[i-2].pos;
-			if (dist < mindist) {
-				min = i;
-				mindist = dist;
-			}
-		}
-		for (i = min; i < buf->poscount; ++i)
-			buf->poscache[i-1] = buf->poscache[i];
-		--buf->poscount;
-	}
-
-	for (i = buf->poscount; i > 0; --i) {
-		if (pos > buf->poscache[i-1].pos)
-			break;
-		buf->poscache[i] = buf->poscache[i-1];
-	}
-	buf->poscache[i].pos = pos;
-	buf->poscache[i].lineno = lineno;
-	++buf->poscount;
-
-	check_pos_cache(buf);
-#else
 	struct __sbuf_pos_cache *cache;
 	long dist, mindist;
 	int i, min;
@@ -514,7 +442,6 @@ static void put_into_cache(Sbuf *buf, long pos, long lineno) {
 	++buf->pc.used;
 
 	check_pos_cache(buf);
-#endif
 }
 
 
@@ -590,7 +517,11 @@ static void check_pos_cache(Sbuf *buf) {
 	assert(buf->pc.alloc >= SBUF_POS_CACHE_MIN);
 	assert(buf->pc.alloc <= SBUF_POS_CACHE_MAX);
 	
+	if (buf->pc.used == 0)
+		return;
+	
 	cache = buf->pc.data;
+	assert(buf->pc.used > 0);
 	assert(cache[0].pos >= 0);
 	assert(cache[0].lineno >= 0);
 	for (i = 1; i < buf->pc.used; ++i) {

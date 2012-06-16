@@ -1,0 +1,36 @@
+Version 0.25 (released Sat Dec 28 00:49:12 EET 1996):
+
+	* Changed framework/Default.config to set modules to ../liw,
+	  since that is the suggested configuration.
+	* framework/Makefile.in sets permissions on directory it creates.
+	* Added note about VPATH/GNU Make to framework/README.
+	* Added some preliminary stuff for undo. (It doesn't work yet,
+	  but should be harmless.)
+	* Removed some old code that has been commented out for ages.
+
+Version 0.24 (released Thu Dec  5 11:28:02 EET 1996):
+
+	* liw/sbuf/sbuf_io.c: sbuf_load(): don't set dirty flag when
+	  loading file that doesn't exist or that can't be read
+	* liw/cfgtool: removed help file interface; fixed name comparison
+	  bug (foo matched foobar)
+	* liw/sbuf: Added columnar blocks.
+
+Version 0.23 (released Wed Nov  6 20:03:22 EET 1996):
+
+	* sbuf_write_to_file: fixed bug that prevented any output to 
+	  the file (byte count used as loop counter and zeroed by loop)
+
+Version 0.22 (released Tue Nov  5 23:48:12 EET 1996):
+
+	* Added module base64.
+	* Added module lockfile.
+	* Added module cfgtool.
+	* liw/files: Added file_read, file_read_open, file_write that
+	  read and write complete files.
+	* liw/sbuf/sbuf_io.c: Rewrote sbuf_write_to_file so it doesn't
+	  use O(n) bytes of memory.
+	* Added framework/Default.config.
+	* Added debian/*.
+
+This change history starts after version 0.21 was released.

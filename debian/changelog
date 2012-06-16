@@ -1,0 +1,38 @@
+publib (0.25-1) unstable; urgency=low
+
+  * New upstream release; mostly just bug fixes.
+
+ -- Lars Wirzenius <liw@iki.fi>  Sat, 28 Dec 1996 00:50:15 +0200
+
+publib (0.24-1) unstable; urgency=low
+
+  * New upstream release with important changes in sbuf and cfgtool.
+
+ -- Lars Wirzenius <liw@iki.fi>  Thu, 5 Dec 1996 11:27:41 +0200
+
+publib (0.23-1) unstable; urgency=low
+
+  * New upstream release (read Changes).
+  * Minor tweaking to debian/rules.
+
+ -- Lars Wirzenius <liw@iki.fi>  Wed, 6 Nov 1996 20:04:02 +0200
+
+publib (0.22-1) unstable; urgency=low
+
+  * New upstream release (read Changes).
+  * Added debian/* to upstream sources.
+
+ -- Lars Wirzenius <liw@iki.fi>  Tue, 5 Nov 1996 23:55:00 +0200
+
+publib (0.21-1) unstable; urgency=low
+
+  * New upstream release (mostly just changes in the sbuf module).
+
+ -- Lars Wirzenius <liw@iki.fi>  Mon, 4 Nov 1996 19:31:04 +0200
+
+publib (0.20-1) unstable; urgency=low
+
+  * First release.
+
+ -- Lars Wirzenius <liw@iki.fi>  Sun, 22 Sep 1996 02:47:04 +0300
+

@@ -2,13 +2,13 @@
  * files.h -- utility functions for files
  *
  * Part of publib.
- * "@(#)publib-files:$Id: files.h,v 1.1.1.1 1993/11/20 17:02:01 liw Exp $"
+ * "@(#)publib-files:$Id: files.h,v 1.2 1996/11/05 21:15:47 liw Exp $"
  */
 
 #ifndef __publib_files_h
 #define __publib_files_h
 
-#include <stdio.h>	/* need FILE */
+#include <stdio.h>	/* need FILE, size_t */
 
 FILE *xfopen(const char *__filename, const char *__mode);
 void xfclose(FILE *__fp);
@@ -18,6 +18,12 @@ char *getaline(FILE *__fp);
 char *xgetaline(FILE *__fp);
 
 void fassert(FILE *__fp);
+
+
+int file_read(const char *, void **, size_t *);
+int file_read_open(FILE *, void **, size_t *);
+int file_save(const char *, void *, size_t, int);
+int file_write(const char *, void *, size_t);
 
 #if 0
 

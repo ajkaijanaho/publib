@@ -1,0 +1,9 @@
+This is the top level README for Publib.
+
+Publib consists of a framework for building libraries, and my
+set of modules. You can add and remove modules, the framework is
+not tied to my modules. In fact, I hope you do -- the framework
+intends to make it _easy_ to create new C libraries.
+
+For more information, read framework/Blurb and framework/README.
+For my modules, see liw/*.

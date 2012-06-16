@@ -35,8 +35,10 @@
 
 /*
  * Buffer for the last error message.
+ * MAXERR is maximum number of chars from variable string arguments.
  */
-static char error[10240] = "";
+#define MAXERR 128
+static char error[80 + MAXERR] = "";
 
 
 
@@ -186,7 +188,8 @@ int cfg_read_file(struct cfg_variable *variables, const char *fn) {
 
 	f = fopen(fn, "r");
 	if (f == NULL) {
-		mkerror("couldn't open file for reading: %s", strerror(errno));
+		mkerror("couldn't open file for reading: %.*s", 
+			MAXERR, strerror(errno));
 		return -1;
 	}
 
@@ -210,7 +213,7 @@ int cfg_read_file(struct cfg_variable *variables, const char *fn) {
 
 		v = lookup_name(variables, varname);
 		if (v == NULL) {
-			mkerror("unknown variable %s", varname);
+			mkerror("unknown variable %.*s", MAXERR, varname);
 			ret = -1;
 		} else if (!(v->cfg_flags & cfg_set_from_array)) {
 			struct type *t = lookup_type(v->cfg_type);
@@ -250,7 +253,8 @@ int cfg_write_file(struct cfg_variable *variables, const char *fn) {
 
 	f = fopen(fn, "w");
 	if (f == NULL) {
-		mkerror("error opening file for writing: %s", strerror(errno));
+		mkerror("error opening file for writing: %.*s", 
+			MAXERR, strerror(errno));
 		return -1;
 	}
 
@@ -326,7 +330,7 @@ int cfg_rewrite_file(struct cfg_variable *variables, const char *fn) {
 		    (v = lookup_name(variables, varname)) == NULL) {
 			fprintf(new, "%s\n", orig);
 		} else if (write_variable(new, v) == -1) {
-			mkerror("error writing to %s", buf);
+			mkerror("error writing to %.*s", MAXERR, buf);
 			goto error;
 		} else
 			v->cfg_flags |= cfg_saved;
@@ -339,7 +343,7 @@ int cfg_rewrite_file(struct cfg_variable *variables, const char *fn) {
 	for (v = variables; v->cfg_name != NULL; ++v) {
 		if ((v->cfg_flags & cfg_saved) != cfg_saved) {
 			if (write_variable(new, v) == -1) {
-				mkerror("error writing to %s", buf);
+				mkerror("error writing to %.*s", MAXERR, buf);
 				goto error;
 			}
 			++lineno;
@@ -347,27 +351,31 @@ int cfg_rewrite_file(struct cfg_variable *variables, const char *fn) {
 	}
 			
 	if (ferror(new)) {
-		mkerror("error writing to %s", buf);
+		mkerror("error writing to %.*s", MAXERR, buf);
 		goto error;
 	}
 	
 	if (fclose(new) == EOF) {
-		mkerror("unknown error occured while closing %s", buf);
+		mkerror("unknown error occured while closing %.*s", 
+			MAXERR, buf);
 		return -1;
 	}
 	
 	if (fclose(old) == EOF) {
-		mkerror("unknown error occured while closing %s", fn);
+		mkerror("unknown error occured while closing %.*s", 
+			MAXERR, fn);
 		return -1;
 	}
 	
 	if (rename(fn, bak) == EOF) {
-		mkerror("error renaming %s to %s", fn, bak);
+		mkerror("error renaming %.*s to %.*s", 
+			MAXERR/2, fn, MAXERR/2, bak);
 		return -1;
 	}
 	
 	if (rename(buf, fn) == EOF) {
-		mkerror("error renaming %s to %s", buf, fn);
+		mkerror("error renaming %.*s to %.*s", 
+			MAXERR/2, buf, MAXERR/2, fn);
 		return -1;
 	}
 	
@@ -509,12 +517,12 @@ static int str_to_long(const char *str, long *value) {
 	*value = strtol(str, &e, 10);
 
 	if (*e != '\0' || e == str) {
-		mkerror("not an signed integer value: `%s'", str);
+		mkerror("not an signed integer value: `%.*s'", MAXERR, str);
 		return -1;
 	}
 
 	if ((*value == LONG_MIN || *value == LONG_MAX) && errno == ERANGE) {
-		mkerror("value too large or small: `%s'", str);
+		mkerror("value too large or small: `%.*s'", MAXERR, str);
 		return -1;
 	}
 
@@ -535,19 +543,19 @@ static int str_to_ulong(const char *str, unsigned long *value) {
 	while (isspace(*str))
 		++str;
 	if (*str == '-') {
-		mkerror("negative values not allowed: `%s'", str);
+		mkerror("negative values not allowed: `%.*s'", MAXERR, str);
 		return -1;
 	}
 
 	*value = strtoul(str, &e, 10);
 
 	if (*e != '\0' || e == str) {
-		mkerror("not an unsigned integer value: `%s'", str);
+		mkerror("not an unsigned integer value: `%.*s'", MAXERR, str);
 		return -1;
 	}
 
 	if (*value == ULONG_MAX && errno == ERANGE) {
-		mkerror("value too large: `%s'", str);
+		mkerror("value too large: `%.*s'", MAXERR, str);
 		return -1;
 	}
 
@@ -567,12 +575,12 @@ static int str_to_double(const char *str, double *value) {
 	*value = strtod(str, &e);
 
 	if (*e != '\0' || e == str) {
-		mkerror("not a floating point value: `%s'", str);
+		mkerror("not a floating point value: `%.*s'", MAXERR, str);
 		return -1;
 	}
 
 	if ((*value == -HUGE_VAL || *value == HUGE_VAL) && errno == ERANGE) {
-		mkerror("value too large or small: `%s'", str);
+		mkerror("value too large or small: `%.*s'", MAXERR, str);
 		return -1;
 	}
 
@@ -620,9 +628,10 @@ static FILE *open_file(const char *name, const char *mode) {
 	
 	f = fopen(name, mode);
 	if (f == NULL) {
-		mkerror("error opening %s for %s: %s", name,
-			(*mode == 'r') ? "reading" : "writing",
-			strerror(errno));
+		mkerror("error opening %.*s for %.*s: %.*s",
+			MAXERR/3, name,
+			MAXERR/3, (*mode == 'r') ? "reading" : "writing",
+			MAXERR/3, strerror(errno));
 		return NULL;
 	}
 	return f;
@@ -686,7 +695,7 @@ static int set_string(void *var, char **value) {
 		strrtrim(p);
 		q = strend(p);
 		if (q == p || q[-1] != '"') {
-			mkerror("invalid string syntax: `%s'", p);
+			mkerror("invalid string syntax: `%.*s'", MAXERR, p);
 			return -1;
 		}
 
@@ -740,7 +749,7 @@ static int set_boolean(void *var, char **value) {
 			return 0;
 		}
 	}
-	mkerror("invalid Boolean value: `%s'", *value);
+	mkerror("invalid Boolean value: `%.*s'", MAXERR, *value);
 	return -1;
 }
 
@@ -804,11 +813,11 @@ char **rest) {
 	else if (**rest == '\0') {
 		if (argv[(*i) + 1] == NULL) {
 			if (v->cfg_option != '\0')
-				mkerror("option %c (--%s) lacks argument",
-					v->cfg_option, v->cfg_name);
+				mkerror("option %c (--%.*s) lacks argument",
+					v->cfg_option, MAXERR, v->cfg_name);
 			else
-				mkerror("option --%s lacks argument",
-					v->cfg_name);
+				mkerror("option --%.*s lacks argument",
+					MAXERR, v->cfg_name);
 			return -1;
 		}
 		++(*i);
@@ -878,7 +887,7 @@ static int long_option(struct cfg_variable *vars, char **argv, int *i) {
 
 	v = lookup_prefix(vars, buf);
 	if (v == NULL) {
-		mkerror("unknown option %s", buf);
+		mkerror("unknown option %.*s", MAXERR, buf);
 		return -1;
 	}
 
