@@ -1,0 +1,7 @@
+dnl Process this file with autoconf to produce a configure script
+dnl This file is part of Publib
+dnl "@(#)publib-lsm:$Id: configure.in,v 1.2 1996/02/17 20:46:44 liw Exp $"
+AC_INIT(lsm.h)
+AC_CONFIG_HEADER(lsm-config.h)
+AC_CHECK_FUNCS(strncasecmp)
+AC_OUTPUT()

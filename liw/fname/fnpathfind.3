@@ -1,0 +1,37 @@
+.\" part of publib
+.\" "@(#)publib-fname:$Id: fnpathfind.3,v 1.2 1994/02/03 17:34:01 liw Exp $"
+.\"
+.TH FNPATHFIND 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+fnpathfind \- find a file in a list of directories
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+.sp 1
+int \fBfnpathfind\fR(const char *\fIpath\fR, const char *\fItgt\fR,
+                     char *\fIres\fR, size_t \fImax\fR);
+.SH "DESCRIPTION"
+\fIpathfind\fR looks for a file in a list of directories.  The
+argument `path' is a colon separated list of directories, typically
+the contents of an environment variable like PATH, MANPATH, or CDPATH.
+The function will go through the directories in the path and look in
+each directory for a file given in argument `target' until it finds
+it.  Only an exact match is reported, no wild cards or globbing.
+.PP
+The names that are matched are formed by taking an element from the
+path and prepending it to target.  An empty element means the current
+directory, as does the name ".".
+.PP
+The function returns -1 for failure (not found or error), or the total
+size for the full name (the full name may have been truncated when
+stored into result).
+.SH BUGS
+The function uses dynamic memory allocation and may
+therefore fail due to insufficient memory.
+.PP
+It is not trivial to know in which directory the search ended.  This
+makes is difficult to continue the search.
+.SH "SEE ALSO"
+publib(3), fname(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

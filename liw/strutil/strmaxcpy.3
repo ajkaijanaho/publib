@@ -1,0 +1,40 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: strmaxcpy.3,v 1.1.1.1 1994/02/03 17:25:29 liw Exp $"
+.\"
+.TH STRMAXCPY 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+strmaxcpy \- copy at most a given number of characters of string
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+char *\fBstrmaxcpy\fR(char *\fItgt\fR, const char *\fIsrc\fR, size_t \fIn\fR);
+.SH DESCRIPTION
+\fIstrmaxcpy\fR copies up to \fIn-1\fR characters from the beginning of
+\fIsrc\fR to \fItgt\fR, then adds a '\\0'.  \fIn\fR must be at least 1.
+The target string must be large enough to hold the result.
+.PP
+Note that unlike \fIstrncpy\fR(3), this function always terminates the
+result with '\\0'.  It also doesn't fill the result with extra '\\0'
+characters.
+.SH "RETURN VALUE"
+\fIstrmaxcpy\fR returns its first argument.
+.SH EXAMPLE
+To print out the first 69 characters of a string, you might do the
+following (although familiarity with printf's format string might
+be more useful in this case).
+.sp 1
+.nf
+.in +5
+#include <stdio.h>
+#include <publib.h>
+
+void print42(const char *string) {
+	char copy[43];	/* 42 + '\\0' */
+
+	puts(strmaxcpy(copy, string, sizeof(copy)));
+}
+.in -5
+.SH "SEE ALSO"
+publib(3), strncpy(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

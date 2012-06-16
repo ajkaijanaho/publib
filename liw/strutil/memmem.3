@@ -1,0 +1,21 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: memmem.3,v 1.1 1994/06/20 20:29:56 liw Exp $"
+.\"
+.TH MEMMEM 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+memmem \- search for memory block inside another memory block
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+void *\fBmemmem\fR(const void *\fIv\fR, size_t \fIsize\fR,
+               const void *\fIpat\fR, size_t \fIpatsize\fR);
+.SH DESCRIPTION
+\fImemmem\fR searches for the pattern \fIpat\fR (length \fIpatsize\fR bytes)
+in the memory block \fIv\fR (length \fIsize\fR bytes).
+.SH "RETURN VALUE"
+\fImemmem\fR returns a pointer to the first byte of the first
+occurence it finds, or NULL if it doesn't find any occurence.
+.SH "SEE ALSO"
+publib(3), memrmem(3), strstr(3), strrstr(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

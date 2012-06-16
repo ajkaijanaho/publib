@@ -1,0 +1,74 @@
+.\" part of publib
+.\" "@(#)publib-framework:$Id: cfg.3,v 1.3 1995/09/05 18:18:33 liw Exp $"
+.\"
+.TH CFG_READ_FILE 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+cfg_read_file, cfg_write_file, cfg_error \- routines for reading and
+writing configuration files
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+
+const char *\fBcfg_error\fR(void);
+int \fBcfg_read_file\fR(struct cfg_variable *\fIlist\fR, const char *\fIfilename\fR);
+int \fBcfg_write_file\fR(struct cfg_variable *\fIlist\fR, const char *\fIfilename\fR);
+.SH DESCRIPTION
+These routines read and write configuration files.
+\fIcfg_read_file\fR reads a configuration file into memory,
+\fIcfg_write_file\fR writes the in-memory representation to a file.
+\fIcfg_error\fR returns an error string that describes an error.
+.PP
+The in-memory representation of a configuration file is stored in
+an array of configuration file descriptors, stored in the following
+structure type:
+.sp 1
+.nf
+.in +5
+struct cfg_variable {
+	const char *cfg_name;
+	enum cfg_type cfg_type;
+	void *cfg_value;
+};
+.in -5
+.fi
+.sp 1
+The last element in the array should have \fIcfg_name\fR be NULL.
+.PP
+\fIcfg_name\fR gives the name of a configuration variable, as it is in the
+configuration file.
+\fIcfg_type\fR gives its type;
+it must one of the constants CFG_LONG, CFG_ULONG, CFG_DOUBLE, CFG_LONG_EXPR,
+CFG_ULONG_EXPR, CFG_DOUBLE_EXPR, CFG_BOOLEAN, and CFG_STRING.
+\fIcfg_value\fR is a pointer to the value;
+for CFG_LONG, CFG_ULONG, CFG_DOUBLE, and their _EXPR versions, it should be a
+pointer to a variable of type
+long, unsigned long, or double, respectively.
+That variable is set to the value read from the configuration file.
+Similarly, for CFG_BOOLEAN \fIcfg_value\fR should point at a variable of
+type int.
+For CFG_STRING it should be a pointer to a `char *',
+which is set to the string in the configuration file.
+Space for the new string is allocated automatically; the initial value must
+be NULL.
+.SH "RETURN VALUE"
+\fIcfg_read_file\fR and \fIcfg_write_file\fR return -1 for error, or
+0 for OK.
+If they return an error, \fIcfg_error\fR returns a pointer to the
+error message string.
+The string may change the next time \fIcfg_read_file\fR or \fIcfg_write_file\fR
+is called.
+.\" .SH EXAMPLE
+.\" To do xxx
+.\" .sp 1
+.\" .nf
+.\" .in +5
+.\" #include <publib.h>
+.\" 
+.\" int main(void) {
+.\" 	return 0;
+.\" }
+.\" .in -5
+.SH "SEE ALSO"
+publib(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

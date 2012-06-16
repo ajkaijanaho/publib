@@ -1,0 +1,86 @@
+# @configure_input@
+#
+# This is the master makefile for the Publib build framework.
+# See the README for # more information before trying to configure this file.
+#
+# "@(#)publib-framework:$Id: Makefile.in,v 1.8 1996/02/17 17:06:21 liw Exp $"
+
+include Rules.mk
+
+# Define the directories where the library modules are.
+modules = @modules@
+
+# Command to run make recursively in all the module subdirectories.
+recurse = \
+test "x$$target" = "x" && target="$@"; \
+for i in $(modules); \
+do \
+    if test -f "$$i/Makefile"; \
+    then \
+        if [ "@verbmake@" != "no" ]; then echo "doing $$target in $$i"; fi; \
+	$(MAKE) -f $$i/Makefile $$target fwdir="$(fwdir)" \
+	 srcdir="$$i" objdir="$(objdir)" VPATH="$$i" || exit 1; \
+    fi; \
+done
+
+all: headers
+	$(recurse)
+	$(ARADD) $(libname) `ls *.o | grep -v "^test"`
+	$(RANLIB) $(libname)
+
+tests:
+	$(recurse)
+
+install: 
+	target=pre-install; $(recurse)
+	$(recurse)
+	$(INSTALL_DATA) $(libnamebase) $(libdir)/$(libnamebase)
+	test -d $(incdir)/$(incnamebase) || mkdir $(incdir)/$(incnamebase)
+	$(INSTALL_DATA) include/$(headerbase) $(incdir)
+	for i in include/$(incnamebase)/*.h; do \
+		$(INSTALL_DATA) $$i $(incdir)/$(incnamebase); done
+	target=post-install; $(recurse)
+
+clean:
+	rm -rf core *.o include $(libnamebase) *.3 test*
+
+realclean: clean
+	rm -f Makefile Rules.mk configure config.status config.log config.cache
+	rm -rf config.modules
+
+# Headers are copied to ./include while the library is being built,
+# and are installed from there to their final location.  This allows
+# the modules to depend on each other, and also makes it easier to
+# create a header for the whole library, <$(headerbase)>.  The headers for
+# each module go into include/$(incnamebase)/.
+
+headers: 
+	test -d include || mkdir include
+	test -d include/$(incnamebase) || mkdir include/$(incnamebase)
+	chmod -R +w include
+	rm -f include/.need-update
+	test -f include/$(headerbase) && newer="-newer include/$(headerbase)"; \
+	find $(modules) config.modules \
+		-name '*.h' \
+		$$newer \
+		-exec cp '{}' include/$(incnamebase) ';' \
+		-exec touch include/.need-update ';' ;
+	cd include; if test -f .need-update; then \
+		rm .need-update; \
+		(echo "#ifndef __$(incnamebase)_h"; \
+		echo "#define __$(incnamebase)_h"; \
+		find $(incnamebase) -name '*.h' -print|sed 's/^/#include </;s/$$/>/'; \
+		echo "#endif") > $(headerbase); \
+	fi
+
+# The following rules update configure and Makefile
+
+config: Makefile
+	$(SHELL) $(fwdir)/configure -no-create
+
+Makefile: Makefile.in Rules.mk.in config.status
+	$(SHELL) config.status		# builds Rules.mk too!
+config.status: configure @SAVEDCONFIG@
+	$(SHELL) $(fwdir)/configure -no-create
+configure: configure.in
+	cd $(fwdir); @AUTOCONF@

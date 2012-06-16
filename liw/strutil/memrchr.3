@@ -1,0 +1,20 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: memrchr.3,v 1.1 1994/08/28 18:13:41 liw Exp $"
+.\"
+.TH MEMRCHR 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+memrchr \- find last occurence of a character within another memory block
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+void *\fBmemrchr\fR(const void *\fIv\fR, int \fIc\fR, size_t \fIsize\fR);
+.SH DESCRIPTION
+\fImemrchr\fR finds the last occurence of character \fIc\fR within memory
+block \fIv\fR, of length \fIsize\fR.
+.SH "RETURN VALUE"
+\fImemrchr\fR returns a pointer to the the match, if it finds any,
+or a null pointer if it doesn't.
+.SH "SEE ALSO"
+publib(3), memchr(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

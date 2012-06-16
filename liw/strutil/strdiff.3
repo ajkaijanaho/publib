@@ -1,0 +1,21 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: strdiff.3,v 1.1 1995/08/14 22:05:35 liw Exp $"
+.\"
+.TH STRDIFF 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+strdiff \- locate first difference between two strings
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+size_t \fBstrdiff\fR(const char *\fIstr1\fR, const char *\fIstr2\fR);
+.SH DESCRIPTION
+\fIstrdiff\fR finds the first character from the beginning that is
+different in the two strings \fIstr1\fR and \fIstr2\fR.
+The terminating zero characters are considered different.
+.SH "RETURN VALUE"
+\fIstrdiff\fR returns a the offset of the first pair of differring
+characters (or the offset of the first zero character it finds).
+.SH "SEE ALSO"
+publib(3), string(3), strcmp(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

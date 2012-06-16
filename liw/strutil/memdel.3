@@ -1,0 +1,22 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: memdel.3,v 1.1 1994/06/20 20:29:51 liw Exp $"
+.\"
+.TH MEMDEL 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+memdel \- remove bytes from beginning of memory block
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+void *\fBmemdel\fR(void *\fIp\fR, size_t \fIsize\fR, size_t \fIn\fR);
+.SH DESCRIPTION
+\fImemdel\fR moves the contents of the block pointed to by \fIp\fR
+towards the beginning, \fIn\fR steps.  The values of the last \fIn\fR
+bytes of the block are indeterminate.
+.PP
+\fIp\fR must not be a null pointer.  \fIsize\fR and \fIn\fR may be zero.
+.SH "RETURN VALUE"
+\fImemdel\fR returns its first argument.
+.SH "SEE ALSO"
+publib(3), strdel(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

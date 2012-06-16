@@ -1,0 +1,57 @@
+.\" Part of publib
+.\" "@(#)publib-errormsg:$Id: errormsg.3,v 1.1.1.1 1995/08/06 21:57:17 liw Exp $"
+.\"
+.TH ERRORMSG 3
+.SH NAME
+errormsg, set_progname, get_progname \- printing error messages
+.SH SYNOPSIS
+#include <errormsg.h>
+.sp 1
+.nf
+void \fIerrormsg\fR(int exitp, int eno, const char *fmt, ...);
+void \fIset_progname\fR(const char *argv0, const char *def);
+const char *\fIget_progname\fR(void);
+.SH "DESCRIPTION"
+The \fIerrormsg\fR function is used for printing error messages.  It
+is a like a combination of fprintf(3) and perror(3), in that it makes
+it easy to add arbitrary, printf-like formatted text to the output,
+and makes it easy to include the system's error message (the error
+string corresponding to the eno parameter).  Unlike perror, this
+function does not get the error code directly from errno, thus making
+it easier to do something else that might set it before printing out
+the error message.  \fIerrormsg\fR also adds the name of the program
+to the output, if known.
+.PP
+The first argument to \fIerrormsg\fR should be 0 (don't exit program),
+1 (exit program with \fIexit(EXIT_FAILURE)\fR) or 2 (with
+\fIabort()\fR).  The second one should be 0 (don't print system error
+message), positive (print error message corresponding to the error
+code), or -1 (print the error message corresponding to \fIerrno\fR).
+.PP
+The \fIset_progname\fR function sets the program name.  You need to
+call this function with at least one non-NULL parameter to get the
+program names included in the output.  If either argument is non-NULL,
+it should point at strings that have static duration, i.e. they exist
+until the program terminates (or at least until the last error message
+has been printed); this is so that it is not necessary to create a
+copy of the name.  (Either or both arguments can also be NULL.)
+.PP
+If the first argument is non-NULL, that is used as the name, otherwise
+the seconds argument is used.  If both are NULL, no program name is
+included in the output.  The reason for having two arguments is so
+that the caller doesn't have to do the test, and can just call
+.sp 1
+.ti +5
+     \fIset_progname(argv[0], "default_name");\fR
+.sp 1
+(it is valid for argv[0] to be NULL, under ISO C).
+.PP
+The \fIget_progname\fR function returns a pointer to the current name
+of the program, as set by \fIset_progname\fR.  If \fIget_progname\fR
+returns NULL, then no name has been set and none is included in the
+output.  This function is included for completeness, it is not really
+expected to be useful.
+.SH "SEE ALSO"
+publib(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

@@ -1,0 +1,67 @@
+.\" part of publib
+.\" "@(#)publib-framework:$Id: log.3,v 1.3 1994/12/27 13:31:39 wirzeniu Exp $"
+.\"
+.TH LOG 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+log \- simple log file output
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+.sp 1
+int \fBlog_open\fR(const char *\fIfilename\fR, int \fImin_level\fR);
+int \fBlog_add\fR(FILE *\fIf\fR, int \fImin_level\fR);
+void \fBlog_set_level\fR(int \fIlog_handle\fR, int \fImin_level\fR);
+int \fBlog_close\fR(void);
+void \fBlog_off\fR(void);
+void \fBlog_on\fR(void);
+void \fBlog_chat\fR(const char *\fIfmt\fR, ...);
+void \fBlog_note\fR(const char *\fIfmt\fR, ...);
+void \fBlog_warn\fR(const char *\fIfmt\fR, ...);
+void \fBlog_error\fR(const char *\fIfmt\fR, ...);
+void \fBlog_fatal\fR(const char *\fIfmt\fR, ...);
+void \fBlog_printf\fR(int \fIlevel\fR, const char *\fIfmt\fR, ...);
+.SH DESCRIPTION
+These routines implement a simple log file facility.
+There can be several log files open at the same time
+(up to 256, but limits on the
+number of concurrently open files may set a lower limit).
+Each log message is associated with a level of severity,
+which can be any integer, but the levels 
+\fIlog_level_chat\fR,
+\fIlog_level_note\fR,
+\fIlog_level_warn\fR,
+\fIlog_level_error\fR, and
+\fIlog_level_fatal\fR
+are predefined, and can easily be used by calling the respective
+print functions (\fIlog_chat\fR, etc.); for other log levels,
+\fIlog_printf\fR must be called.
+Each open log file is associated by a minimum level.
+Messages below the minimum level are not output to that log file.
+.PP
+The log printing functions attempt to force the messages to
+be written to the disk (or wherever they're going), using
+\fIfflush\fR(3).
+This will hopefully avoid problems due to delayed messages
+that buffering may cause.
+.PP
+Log files are opened with \fIlog_open\fR.  An already open file
+(such as \fIstderr\fR) can be added to the list of open log files
+with \fIlog_add\fR.  (Note that the file should be opened in append
+mode, "a" to \fIfopen\fR(3)).
+Both of these functions set the minimum level as well.
+They return a log file handle, which is used to identify
+the log file to the other functions.
+The minimum level can later be adjusted with \fIlog_set_level\fR.
+\fIlog_close\fR closes all log files.
+.PP
+Logging may temporarily be turned off for all log files at the
+same time with \fIlog_off\fR.
+It can be turned back on with \fIlog_on\fR.
+.SH "RETURN VALUE"
+\fIlog_open\fR and \fIlog_add\fR return a log file handle.
+\fIlog_close\fR returns -1 if the closing of any log file failed,
+0 if all went well.
+.SH "SEE ALSO"
+publib(3), syslog(2)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

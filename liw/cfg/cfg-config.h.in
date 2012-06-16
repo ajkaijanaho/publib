@@ -1,0 +1,13 @@
+/*
+ * File:	cfg-config.h (or cfg-config.h.in)
+ * Purpose:	Configuration file for Publib's cfg module
+ * Note:	This file is/has been processed by autoconf
+ */
+ 
+#ifndef __publib_cfg_config_h_included
+#define __publib_cfg_config_h_included
+
+#define HAVE_STRCASECMP 0
+#define HAVE_STRNCASECMP 0
+
+#endif

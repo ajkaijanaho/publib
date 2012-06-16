@@ -1,0 +1,39 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: strltrim.3,v 1.1.1.1 1994/02/03 17:25:29 liw Exp $"
+.\"
+.TH STRLTRIM 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+strltrim \- remove leading whitespace from string
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+char *\fBstrltrim\fR(char *\fIs\fR);
+.SH DESCRIPTION
+\fIstrltrim\fR removes all leading whitespace characters from the
+beginning of a string, by moving everything starting from the first
+non-whitespace character to the beginning of the string.  As whitespace
+is counted everything for which \fIisspace\fR(3) returns true.
+.SH "RETURN VALUE"
+\fIstrltrim\fR returns its argument.
+.SH EXAMPLE
+To remove all indentation from all lines in a program, you might do
+the following:
+.sp 1
+.nf
+.in +5
+#include <publib.h>
+
+int main(void) {
+	char line[512];
+
+	while (fgets(line, sizeof(line), stdio) != NULL) {
+		strltrim(line);
+		printf("%s", line);
+	}
+	return 0;
+}
+.in -5
+.SH "SEE ALSO"
+publib(3), strrtrim(3), strtrim(3), isspace(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

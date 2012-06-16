@@ -1,0 +1,30 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: strtrexpand.3,v 1.1 1994/06/20 20:30:41 liw Exp $"
+.\"
+.TH STRTREXPAND 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+strtrexpand \- expand tr-like notation in string
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+void \fBstrtrexpand\fR(char *\fItgt\fR, const char *\fIsrc\fR);
+.SH DESCRIPTION
+\fIstrtrexpand\fR will convert shorthand notation similar to that used
+by \fItr\fR(1) into the equivalent longhand notation.  The supported
+short forms are:
+.TP 8
+\fIa\fR-\fIb\fR
+All characters from \fIa\fR to \fIb\fR, inclusive, in the order given by
+their character codes.
+.TP
+\fI\\a\fR
+The character \fIa\fR.
+.TP
+\fI\\o \\oo \\ooo\fR
+Character with octal code \fIo\fR, \fIoo\fR, or \fIooo\fR, respectively.
+.SH "RETURN VALUE"
+\fIstrtrexpand\fR returns nothing.
+.SH "SEE ALSO"
+publib(3), tr(1)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

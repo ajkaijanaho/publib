@@ -1,0 +1,21 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: memrmem.3,v 1.1 1994/06/20 20:30:00 liw Exp $"
+.\"
+.TH MEMRMEM 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+memrmem \- find last occurence of memory block within another memory block
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+void *\fBmemrmem\fR(const void *\fIv\fR, size_t \fIsize\fR,
+                const void *\fIpat\fR, size_t \fIpatsize\fR);
+.SH DESCRIPTION
+\fImemrmem\fR finds the last occurence of memory block \fIpat\fR within memory
+block \fIv\fR.
+.SH "RETURN VALUE"
+\fImemrmem\fR returns a pointer to the first byte of the match, if it finds any,
+or a null pointer if there are no matches.
+.SH "SEE ALSO"
+publib(3), memmem(3), strstr(3), strrstr(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

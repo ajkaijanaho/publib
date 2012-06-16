@@ -1,0 +1,23 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: memoverlap.3,v 1.1 1994/02/05 17:09:24 liw Exp $"
+.\"
+.TH MEMOVERLAP 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+memoverlap \- check whether two memory blocks overlap
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+int \fBmemoverlap\fR(const void *\fIt\fR, size_t \fIts\fR, const void *\fIs\fR, size_t \fIss\fR);
+.SH DESCRIPTION
+\fImemoverlap\fR checks whether the memory blocks \fIt\fR--(\fIt+ts-1\fR)
+and \fIs\fR--(\fIs+ss-1\fR) overlap.  Neither pointer argument may be
+NULL, but the sizes may be 0.  The memory blocks can be arbitrary, they
+do not have to be part of the same array.  Therefore, this function hides
+the unportable pointer comparison that one would otherwise rely on.
+.SH "RETURN VALUE"
+\fImemoverlap\fR returns 0 if the blocks do not overlap, and nonzero
+if they do.
+.SH "SEE ALSO"
+publib(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

@@ -1,0 +1,21 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: strmtrim.3,v 1.1 1994/06/20 20:30:21 liw Exp $"
+.\"
+.TH STRMTRIM 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+strmtrim \- replace multiple white spaces with single blanks within string
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+char *\fBstrmtrim\fR(char *\fIstr\fR);
+.SH DESCRIPTION
+\fIstrmtrim\fR will replace every run of whitespace characters
+(as defined by \fIisspace\fR(3)) with a single blank.  It will not
+touch leading and trailing whitespace (use \fIstrltrim\fR(3) and
+\fIstrrtrim\fR(3) for those).
+.SH "RETURN VALUE"
+\fIstrmtrim\fR will return the value of its argument.
+.SH "SEE ALSO"
+publib(3), strtrim(3), strltrim(3), strrtrim(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

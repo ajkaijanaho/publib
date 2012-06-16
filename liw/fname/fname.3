@@ -1,0 +1,27 @@
+.\" part of publib
+.\" "@(#)publib:$Id: fname.3,v 1.1 1994/07/12 21:03:04 liw Exp $"
+.\"
+.TH FNAME 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+fnbase, fndelbeg, fndelend, fndelsuf, fndir, fnhome, 
+fnjoin, fnlastsuf, fnsetsuf \- filename manipulation
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+.sp 1
+char *\fBfnbase\fR(const char *\fIfname\fR);
+void \fBfndelbeg\fR(char *\fIfname\fR);
+void \fBfndelend\fR(char *\fIfname\fR);
+int \fBfndelsuf\fR(char *\fIfname\fR, const char *\fIsuffix\fR);
+void \fBfndir\fR(char *\fIdir\fR, const char *\fIfname\fR);
+int \fBfnhome\fR(char *\fIhomedir\fR, const char *\fIusername\fR);
+void \fBfnjoin\fR(char *\fIres\fR, const char *\fIf1\fR, const char *\fIf2\fR);
+char *\fBfnlastsuf\fR(const char *\fIfname\fR);
+size_t \fBfnsetsuf\fR(char *\fIfname\fR, const char *\fIsuf\fR, size_t \fImax\fR);
+.SH DESCRIPTION
+These routines manipulate POSIX-style filenames.
+This manual page is still under construction.
+.SH "SEE ALSO"
+publib(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

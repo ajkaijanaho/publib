@@ -1,0 +1,19 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: strzap.3,v 1.2 1994/07/22 12:22:53 liw Exp $"
+.\"
+.TH STRZAP 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+strzap \- remove pattern from beginning of string, if it is there
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+int \fBstrzap\fR(char *\fIstr\fR, const char *\fIpat\fR);
+.SH DESCRIPTION
+\fIstrzap\fR compares the beginning of \fIstr\fR with all of \fIpat\fR,
+and if they are the same, it removes the beginning from \fIstr\fR.
+.SH "RETURN VALUE"
+\fIstrzap\fR returns non-zero if it removed anything, 0 if not.
+.SH "SEE ALSO"
+publib(3), strendzap(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

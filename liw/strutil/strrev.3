@@ -1,0 +1,37 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: strrev.3,v 1.3 1994/06/20 20:30:30 liw Exp $"
+.\"
+.TH STRREV 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+strrev \- reverse a string in place
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+char *\fBstrrev\fR(char *\fIstr\fR);
+.SH DESCRIPTION
+\fIstrrev\fR reverses the argument string in place, i.e., it swaps
+the \fIi\fRth character from the beginning with the \fIi\fRth
+character from the end.
+.SH "RETURN VALUE"
+\fIstrrev\fR returns its argument.
+.SH EXAMPLE
+Reversing "dlrow, elloh" would be done like the following.
+.sp 1
+.nf
+.in +5
+char str[] = "dlrow, elloh";
+
+puts(strrev(str));
+.in -5
+.sp 1
+.fi
+This would output "hello, world".
+Note that using the string literal as the argument would be an error,
+since it is not allowable to modify string literals.
+.SH BUGS
+Does not automatically detect palindromes, nor automatically return
+without doing anything.
+.SH "SEE ALSO"
+publib(3), memrev(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

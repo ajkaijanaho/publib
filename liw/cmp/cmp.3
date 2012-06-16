@@ -1,0 +1,63 @@
+.\" part of publib
+.\" "@(#)publib-cmp:$Id: cmp.3,v 1.2 1994/02/03 17:33:52 liw Exp $"
+.\"
+.TH COMPARE 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+cmp_set_offset,
+cmp_struct,
+cmp_char,
+cmp_short,
+cmp_int,
+cmp_long,
+cmp_float,
+cmp_double,
+cmp_long_double,
+cmp_schar,
+cmp_uchar,
+cmp_ushort,
+cmp_uint,
+cmp_ulong,
+cmp_charptr,
+cmp_chararr \- comparison functions for qsort, bsearch, and others
+.SH SYNOPSIS
+.nf
+#include <cmp.h>
+void \fBcmp_set_offset\fR(size_t \fIoffset\fR, int (*)(const void *, const void *));
+int \fBcmp_struct\fR(const void *, const void *);
+.sp 1
+int \fBcmp_char\fR(const void *, const void *);
+int \fBcmp_short\fR(const void *, const void *);
+int \fBcmp_int\fR(const void *, const void *);
+int \fBcmp_long\fR(const void *, const void *);
+int \fBcmp_float\fR(const void *, const void *);
+int \fBcmp_double\fR(const void *, const void *);
+int \fBcmp_long_double\fR(const void *, const void *);
+.sp 1
+int \fBcmp_schar\fR(const void *, const void *);
+.sp 1
+int \fBcmp_uchar\fR(const void *, const void *);
+int \fBcmp_ushort\fR(const void *, const void *);
+int \fBcmp_uint\fR(const void *, const void *);
+int \fBcmp_ulong\fR(const void *, const void *);
+.sp 1
+int \fBcmp_charptr\fR(const void *, const void *);
+int \fBcmp_chararr\fR(const void *, const void *);
+.fi
+.SH "DESCRIPTION"
+The functions declared above, with the exception of
+\fIcmp_set_offset\fR, compare two array elements of the indicated type
+when given pointers to them.  The functions are designed to work with
+\fIqsort(3)\fR, \fIbsearch(3)\fR, and a number of other library
+functions which all need the same type of comparison function.  They
+all return negative if the value indicated by the first argument is
+less than the second, 0 if they are the same, and positive otherwise.
+.PP
+\fIcmp_struct\fR compares elements of a structure.  It needs to know
+the offset of the element, and a comparison function suitable for the
+type of the element.  These are set with \fIcmp_set_offset\fR, which
+should be called before \fIqsort(3)\fR.  The settings stay in effect
+until changed.
+.SH "SEE ALSO"
+publib(3), qsort(3), bsearch(3), isort(3), lsearch(3), lfind(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

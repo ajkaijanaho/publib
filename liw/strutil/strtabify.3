@@ -1,0 +1,20 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: strtabify.3,v 1.1 1994/06/20 20:30:39 liw Exp $"
+.\"
+.TH STRTABIFY 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+strtabify \- convert runs of spaces and tabs to tabs
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+char *\fBstrtabify\fR(char *\fIstr\fR, size_t \fItabsize\fR);
+.SH DESCRIPTION
+\fIstrtabify\fR will converts spaces and tabs to tabs and spaces (using
+the minimal amount of spaces required, possibly none), while preserving
+indentation.  Tab positions are set every \fItabsize\fR columns.
+.SH "RETURN VALUE"
+\fIstrtabify\fR will return its first argument.
+.SH "SEE ALSO"
+publib(3), struntabify(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

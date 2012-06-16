@@ -1,0 +1,21 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: strchange.3,v 1.1 1994/06/20 20:30:07 liw Exp $"
+.\"
+.TH STRCHANGE 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+strchange \- replace beginning of string with beginning of another string
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+char *\fBstrchange\fR(char *\fIstr\fR, size_t \fIchangelen\fR,
+                  const char *\fInew\fR, size_t \fInewlen\fR);
+.SH DESCRIPTION
+\fIstrchange\fR will replace \fIchangelen\fR characters from the beginning of
+\fIstr\fR with \fInewlen\fR characters from the beginning of \fInew\fR.  The
+rest of \fIstr\fR will moved appropriately.
+.SH "RETURN VALUE"
+\fIstrchange\fR will return its first argument.
+.SH "SEE ALSO"
+publib(3), strcpy(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

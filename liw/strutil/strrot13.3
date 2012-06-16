@@ -1,0 +1,25 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: strrot13.3,v 1.1 1994/02/05 17:09:25 liw Exp $"
+.\"
+.TH STRROT13 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+strrot13 \- encrypt or decrypt string using rot13
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+char *\fBstrrot13\fR(char *\fIstr\fR);
+.SH DESCRIPTION
+\fIstrrot13\fR converts the argument string using rot13, i.e., it
+replaces each letter a with n, n with a, b with o, o with b, and
+so on.  Converting twice results in the original string.  Non-letter
+characters are not converted.
+.PP
+The rot13 encryption method is used commonly on USENET to hide
+offensive text, or spoilers in discussions about movies or books,
+or in other similar occasions.
+.SH "RETURN VALUE"
+\fIstrrot13\fR returns its argument.
+.SH "SEE ALSO"
+publib(3), crypt(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

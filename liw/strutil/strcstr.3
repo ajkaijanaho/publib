@@ -1,0 +1,55 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: strcstr.3,v 1.3 1996/07/16 12:25:39 liw Exp $"
+.\"
+.TH STRCSTR 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+strcstr \- convert memory block to printable C string notation
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+void \fBstrcstr\fR(char *\fIstr\fR, size_t \fImax\fR, const void *\fIblock\fR, size_t \fIn\fR);
+.SH DESCRIPTION
+\fIstrcstr\fR converts the contents of an arbitrary memory block (which need
+not be a zero terminated string) into a printable notation using normal
+C string literal syntax.  This can be used for example to store potentially
+binary data in a file, or in debugging outputs.
+.PP
+All characters for which there is a simple shorthand escape sequence (',
+", ?, \\, \\a, \\b, \\f, \\n, \\r, \\t, \\v) are stored using that
+notation.  \\0 is stored as \\0.  All other non-printable characters are
+stored using a hexadecimal escape sequence.  All other printable
+characters are stored as is.
+.PP
+The \fIisprint\fR(3) macro is used to determine whether a character is
+printable (i.e., whether it is printed as is, or using special notation).
+Therefore, the output depends on the locale.
+.SH "RETURN VALUE"
+\fIstrcstr\fR returns nothing.
+.SH EXAMPLE
+The following code dumps input to the standard output in a 
+guaranteed (modulo locale bugs) printable format. 
+It might be used for debugging.
+.sp 1
+.nf
+.in +5
+#include <stdio.h>
+#include <publib.h>
+
+int main(void) {
+	char line[512];
+	char cstr[512*(CHAR_BIT/4+1+2)+1];  /* +2 for \\x, +1 for \\0,
+						the rest to be able to
+						store the hex code for
+						512 chars.  */
+
+	while (fgets(line, sizeof(line), stdin) != NULL) {
+		strcstr(cstr, sizeof(cstr), line, strlen(line));
+		printf("%s\n", cstr);
+	}
+	return 0;
+}
+.in -5
+.SH "SEE ALSO"
+publib(3), strins(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

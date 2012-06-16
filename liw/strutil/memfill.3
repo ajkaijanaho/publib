@@ -1,0 +1,32 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: memfill.3,v 1.1.1.1 1994/02/03 17:25:31 liw Exp $"
+.\"
+.TH MEMFILL 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+memfill \- fill memory area with pattern
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+void *\fBmemfill\fR(void *\fIbuf\fR, size_t \fIsize\fR, const void *\fIpat\fR, size_t \fIpatsize\fR);
+.SH DESCRIPTION
+\fImemfill\fR copies consecutive bytes from the pattern \fIpat\fR to
+consecutive bytes in the memory area \fIbuf\fR, wrapping around in
+\fIpat\fR when its end is reached.  \fIpatsize\fR is the size of
+the pattern, \fIsize\fR is the size of the memory area.  The pattern
+and the memory area must not be overlapping.
+.SH "RETURN VALUE"
+\fImemfill\fR returns its first argument.
+.SH EXAMPLE
+To initialize an integer array one might do the following.
+.sp 1
+.nf
+.in +5
+int temp, array[1024];
+
+temp = 1234;
+memfill(array, sizeof(array), &temp, sizeof(temp));
+.in -5
+.SH "SEE ALSO"
+publib(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

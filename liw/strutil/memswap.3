@@ -1,0 +1,37 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: memswap.3,v 1.1.1.1 1994/02/03 17:25:30 liw Exp $"
+.\"
+.TH MEMSWAP 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+memswap \- swap the contents of two memory blocks
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+void \fBmemswap\fR(void *\fIblock1\fR, void *\fIblock2\fR, size_t \fIn\fR);
+.SH DESCRIPTION
+\fImemswap\fR will swap the contents of the two blocks pointed by
+its first two arguments.  The last argument gives the size of the
+memory blocks.
+.SH EXAMPLE
+To swap two structs, one might do the following.
+.sp 1
+.nf
+.in +5
+struct tm tm1, tm2;
+
+memswap(&tm1, &tm2, sizeof(struct tm));
+.in -5
+.SH BUGS
+Using \fImemswap\fR to swap small portions of memory is inefficient.
+It is not worth it to use it to swap variables of any of the basic
+types, for instance.  Use inline code for such cases.  However, for
+large portions of memory, e.g., arrays, it is convenient.
+.PP
+\fImemswap\fR can't swap variables whose address can't be taken.  This
+excludes variables with the \fBregister\fR specifier and bitfields in
+structs.  But then, there is no way to write a function (or macro) that
+can handle any kind of arguments.  Life is hard.
+.SH "SEE ALSO"
+publib(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

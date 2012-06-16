@@ -1,0 +1,28 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: stranaxfrm.3,v 1.1 1994/06/20 20:30:05 liw Exp $"
+.\"
+.TH STRANAXFRM 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+stranaxfrm \- make a string into canonical form for anagram comparison
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+char *\fBstranaxfrm\fI(char *\fIstr\fR);
+.SH DESCRIPTION
+\fIstranaxfrm\fR transforms a string into a canonical form for anagram comparisons.
+To check whether two strings are anagrams of each other (i.e., they contain
+the same characters, but in different order), compare their canonical forms.
+The canonical form merely has all the characters in the string sorted into
+ascending order.
+.PP
+To write a program to find anagrams, first convert a word list
+into canonical order, then look up words in that version of the word list
+by transforming them also to canonical order.  
+.SH "RETURN VALUE"
+\fIstranaxfrm\fR returns its argument.
+.SH BUGS
+This function is of a whimsical nature.
+.SH "SEE ALSO"
+publib(3), strcmp(3), strcasecmp(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

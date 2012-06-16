@@ -1,0 +1,22 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: struncstr.3,v 1.1.1.1 1994/02/03 17:25:30 liw Exp $"
+.\"
+.TH STRUNCSTR 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+struncstr \- convert printable C string notation to a memory block
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+void \fBstruncstr\fR(void *\fIblock\fR, const char *\fIstr\fR, size_t \fImax\fR);
+.SH DESCRIPTION
+\fIstruncstr\fR converts a C string literal to the memory block it
+describes by converting all escape sequences to single characters.
+See a C reference manual or \fIstrcstr\fR(3) for a description of
+the C string literal notation.
+.PP
+\fImax\fR is the maximum number of characters to store into the
+memory block.
+.SH "SEE ALSO"
+publib(3), strcstr(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

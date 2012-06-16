@@ -1,0 +1,22 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: strins.3,v 1.2 1994/07/25 23:15:36 liw Exp $"
+.\"
+.TH STRINS 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+strins \- insert a string at the beginning of another string
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+char *\fBstrins\fR(char *\fItgt\fR, const char *\fIsrc\fR);
+.SH DESCRIPTION
+\fIstrins\fR inserts the \fIsrc\fR string at the beginning of the
+\fItgt\fR string.  The strings must not overlap.  The target string
+must contain enough memory to hold both strings.
+.SH "RETURN VALUE"
+\fIstrins\fR returns its first argument.
+.SH EXAMPLE
+See the manual page for \fIstrdel\fR(3) for an example.
+.SH "SEE ALSO"
+publib(3), strdel(3), strnins(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

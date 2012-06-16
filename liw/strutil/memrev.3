@@ -1,0 +1,30 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: memrev.3,v 1.1.1.1 1994/02/03 17:25:29 liw Exp $"
+.\"
+.TH MEMREV 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+memrev \- reverse an array in place
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+void *\fBmemrev\fR(void *\fIblock\fR, size_t \fIelsize\fR, size_t \fIelnum\fR);
+.SH DESCRIPTION
+\fImemrev\fR will reverse an array, by swapping the contents of
+its elements.
+.SH "RETURN VALUE"
+\fImemrev\fR returns its first argument.
+.SH EXAMPLE
+To reverse an integer array one might do the following.
+.sp 1
+.nf
+.in +5
+int array[4] = { 1, 2, 3, 4 };
+
+memrev(array, sizeof(array[0]), 4);
+.in -5
+.sp 1
+This will result in the array being { 4, 3, 2, 1 }.
+.SH "SEE ALSO"
+publib(3), strrev(3), memshuffle(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

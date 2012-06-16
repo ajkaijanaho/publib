@@ -1,0 +1,35 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: strgsub.3,v 1.1.1.1 1994/02/03 17:25:30 liw Exp $"
+.\"
+.TH STRGSUB 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+strgsub \- substitute all occurences of pattern with another string
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+int \fBstrgsub\fR(char *\fIstr\fR, const char *\fIpat\fR, const char *\fIsub\fR, size_t \fImax\fR);
+.SH DESCRIPTION
+\fIstrgsub\fR finds all occurences of the pattern \fIpat\fR in the
+string \fIstr\fR (using a method similar to \fIstrstr\fR(3) to find
+the occurrences, i.e., no regular expressions), and replaces each with
+\fIsub\fR. If \fIpat\fR does not occur in \fIstr\fR, no substitution is made.
+The size (including the terminating '\\0') of the string after
+the substitutions may be at most \fImax\fR chars.  If it would be larger,
+no substitutions are made.
+.PP
+Of course, if \fIsub\fR is an empty string, the occurences of the pattern 
+are deleted from the string.
+.SH "RETURN VALUE"
+\fIstrgsub\fR returns the number of substitutions made, or -1 if the
+result would not have fit into \fImax\fR chars.
+.SH EXAMPLE
+To substitute every "foo" with "bar" in a line, one might do the following.
+.sp 1
+.nf
+.in +5
+strgsub(line, "foo", "bar", strlen(line)+1);
+.in -5
+.SH "SEE ALSO"
+publib(3), strstr(3), strsub(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

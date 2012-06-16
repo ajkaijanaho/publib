@@ -1,0 +1,21 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: struntabify.3,v 1.1 1994/06/20 20:30:44 liw Exp $"
+.\"
+.TH STRUNTABIFY 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+struntabify \- convert tabs to spaces
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+char *\fBstruntabify\fR(char *\fIstr\fR, size_t \fItabsize\fR);
+.SH DESCRIPTION
+\fIstruntabify\fR will convert all tab characters ('\\t') in the string
+\fIstr\fR to spaces.  Tab positions are at every \fItabsize\fR columns.
+The string is supposed to be big enough to hold the conversion, which
+is done in place.
+.SH "RETURN VALUE"
+\fIstruntabify\fR will return its first argument.
+.SH "SEE ALSO"
+publib(3), strtabify(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

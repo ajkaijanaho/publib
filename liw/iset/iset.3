@@ -1,0 +1,37 @@
+.\" part of publib
+.\" "@(#)publib-iset:$Id: iset.3,v 1.2 1994/02/03 17:27:58 liw Exp $"
+.\"
+.TH ISET 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+iset_create, iset_destroy, iset_copy, iset_is_empty, iset_add,
+iset_add_range, iset_remove, iset_remove_range, iset_clear,
+iset_contains, iset_union, iset_diff, iset_isect, iset_range,
+iset_nth_range \- manipulate sets of integers
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+.sp 1
+Iset *\fBiset_create\fR(void);
+void \fBiset_destroy\fR(Iset *\fIis\fR);
+Iset *\fBiset_copy\fR(const Iset *\fIis\fR);
+.sp 1
+int \fBiset_is_empty\fR(const Iset *\fIis\fR);
+int \fBiset_add\fR(Iset *\fIis\fR, long \fInumber\fR);
+int \fBiset_add_range\fR(Iset *\fIis\fR, long \fInumber1\fR, long \fInumber2\fR);
+int \fBiset_remove\fR(Iset *\fIis\fR, long \fInumber\fR);
+int \fBiset_remove_range\fR(Iset *\fIis\fR, long \fInumber1\fR, long \fInumber2\fR);
+void \fBiset_clear\fR(Iset *\fIis\fR);
+int \fBiset_contains\fR(const Iset *\fIis\fR, long \fInumber\fR);
+int \fBiset_union\fR(Iset *\fIis1\fR, const Iset *\fIis2\fR);
+int \fBiset_diff\fR(Iset *\fIis1\fR, const Iset *\fIis2\fR);
+int \fBiset_isect\fR(Iset *\fIis1\fR, const Iset *\fIis2\fR);
+void \fBiset_range\fR(const Iset *\fIis\fR, long *\fIlowest\fR, long *\fIhighest\fR);
+int \fBiset_nth_range\fR(const Iset *\fIis\fR, long \fIn\fR, long *\fIlo\fR, long *\fIhi\fR);
+.SH "DESCRIPTION"
+These functions operate on sets of integers (of type long).  You
+clever people will know how to use them without my help, which saves
+me from writing a manual page.
+.SH "SEE ALSO"
+publib(3), bitarr(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

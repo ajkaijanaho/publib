@@ -1,0 +1,19 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: strright.3,v 1.1 1994/06/20 20:30:31 liw Exp $"
+.\"
+.TH STRRIGHT 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+strright \- return a pointer to the beginning of the rightmost n chars in a string
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+char *\fBstrright\fR(const char *\fIs\fR, size_t \fIn\fR);
+.SH DESCRIPTION
+\fIstrright\fR will return a pointer to the first of the \fIn\fR rightmost
+characters (not counting the '\\0') in the string \fIs\fR.  It does \fInot\fR
+make a copy of the string, but will return a pointer into the argument
+string.
+.SH "SEE ALSO"
+publib(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

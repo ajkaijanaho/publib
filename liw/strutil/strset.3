@@ -1,0 +1,19 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: strset.3,v 1.1 1994/06/20 20:30:35 liw Exp $"
+.\"
+.TH STRSET 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+strset \- set all characters in a string to a given character
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+char *\fBstrset\fR(char *\fIstr\fR, int \fIc\fR);
+.SH DESCRIPTION
+\fIstrset\fR will set all characters (before the terminating '\\0') in
+the string \fIstr\fR to \fIc\fR.
+.SH "RETURN VALUE"
+\fIstrset\fR returns its first argument.
+.SH "SEE ALSO"
+publib(3), memset(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

@@ -1,0 +1,21 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: memarrfill.3,v 1.1 1994/07/12 21:11:35 liw Exp $"
+.\"
+.TH MEMARRFILL 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+memarrfill \- fill an array with the value of its first element
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+void *\fBmemarrfill\fR(void *\fIarr\fR, size_t \fIelsize\fR, size_t \fInelem\fR);
+.SH DESCRIPTION
+\fImemarrfill\fR sets all elements the array \fIarr\fR to the value of
+its first element.
+The array has \fInelem\fR elements (including the first one),
+each of which is \fIelsize\fR bytes big.
+.SH "RETURN VALUE"
+\fImemarrfill\fR returns its first argument.
+.SH "SEE ALSO"
+publib(3), memfill(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

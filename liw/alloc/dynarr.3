@@ -1,0 +1,80 @@
+.\" part of publib
+.\" "@(#)publib-alloc:$Id: dynarr.3,v 1.2 1995/07/31 19:36:20 liw Exp $"
+.\"
+.TH DYNARR 3 "C Programmer's Manual" "Publib" "C Programmer's Manual"
+.SH NAME
+dynarr, dynarr_init, dynarr_resize, dynarr_free \- simple dynamic arrays
+.SH SYNOPSIS
+#include <publib.h>
+.sp 1
+.nf
+void \fBdynarr_init\fR(struct dynarr *\fIda\fR, size_t \fIelsize\fR);
+int \fBdynarr_resize\fR(struct dynarr *\fIda\fR, size_t \fInewsize\fR);
+void \fBdynarr_free\fR(struct dynarr *\fIda\fR);
+.SH "DESCRIPTION"
+These functions make it easier to use dynamic arrays, i.e., arrays that
+are allocated with \fImalloc\fR(3) and resized with \fIrealloc\fR(3).
+Below is a typical code fragment for implementing a dynamic array that is
+resized as more input is read.
+.in +5
+.sp 1
+.nf
+char *p, *line;
+size_t alloc, len;
+
+len = 0;
+alloc = 1024;
+if ((line = malloc(alloc)) == NULL) abort();
+
+while (fgets(line + len, alloc-len, stdin) != NULL) {
+	len = strlen(line);
+	alloc += 1024;
+	if ((p = realloc(alloc)) == NULL) abort();
+	alloc = p;
+}
+.fi
+.in -5
+.sp 1
+(The error handling is intentionally simplified.)  Below is
+the above fragment with the \fIdynarr\fR(3).
+.in +5
+.sp 1
+.nf
+struct dynarr da;
+
+dynarr_init(&da);
+while (fgets((char *)da.data + da.used, da.alloc-da.len, stdin) != NULL) {
+	da.used = strlen(da.data);
+	if (dynarr_resize(&da, da.alloc + 1024) == -1) abort();
+}
+.fi
+.in -5
+.sp 1
+The code is a bit simpler, and all the memory allocation details and
+most of the error checking code is hidden away.
+.PP
+The dynamic array is represented by a \fIstruct dynarr\fR:
+.in +5
+.sp 1
+.nf
+struct dynarr {
+    void *data;
+    size_t alloc, used;
+};
+.fi
+.in -5
+.sp 1
+The interface to the dynamic allocation has intentionally been made
+unopaque.
+.PP
+\fIdynarr_init\fR initializes a struct dynarr to be an
+empty array, \fIdynarr_resize\fR sets its size to be \fInewsize\fR,
+and \fIdynarr_free\fR frees the array (it will become an empty array
+again).
+.SH RETURNS
+\fIdynarr_resize\fR returns -1 if it failed, 0 if it succeeded.  It
+does not change the array in any way if it failed.
+.SH "SEE ALSO"
+publib(3), malloc(3), realloc(3), strdup(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

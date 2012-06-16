@@ -1,0 +1,20 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: strmove.3,v 1.1 1994/06/20 20:30:18 liw Exp $"
+.\"
+.TH STRMOVE 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+strmove \- make a copy of a string, handling overlapping strings
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+char *\fBstrmove\fR(char *\fItgt\fR, const char *\fIsrc\fR);
+.SH DESCRIPTION
+\fIstrmove\fR copies the string \fIsrc\fR to \fItgt\fR, just like
+\fIstrcpy\fR(3), but handles overlapping moves correctly (cf. \fImemcpy\fR(3)
+vs. \fImemmove\fR(3)).
+.SH "RETURN VALUE"
+\fIstrmove\fR returns \fItgt\fR.
+.SH "SEE ALSO"
+publib(3), strcpy(3), memcpy(3), memmove(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

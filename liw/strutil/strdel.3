@@ -1,0 +1,43 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: strdel.3,v 1.1.1.1 1994/02/03 17:25:29 liw Exp $"
+.\"
+.TH STRDEL 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+strdel \- delete characters from beginning of string
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+char *\fBstrdel\fR(char *\fIs\fR, size_t \fIn\fR);
+.SH DESCRIPTION
+\fIstrdel\fR removes the first \fIn\fR characters of \fIs\fR.  If
+\fIn\fR is greater than the length of the string, all characters
+in the string (not counting '\\0') are removed but no more.
+.SH "RETURN VALUE"
+\fIstrdel\fR returns its first argument.
+.SH EXAMPLE
+To change all occurences of "Pascal" in the input to "Yuck!", you might do
+the following:
+.sp 1
+.nf
+.in +5
+#include <string.h>
+#include <stdio.h>
+#include <publib.h>
+
+int main(void) {
+	char line[512];
+
+	while (fgets(line, sizeof(line), stdio) != NULL) {
+		while ((p = strstr(line, "Pascal")) != NULL) {
+			strdel(p, 6);
+			strins(p, "Yuck!");
+		}
+		printf("%s", line);
+	}
+	return 0;
+}
+.in -5
+.SH "SEE ALSO"
+publib(3), strins(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

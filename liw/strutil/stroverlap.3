@@ -1,0 +1,21 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: stroverlap.3,v 1.1 1994/06/20 20:30:25 liw Exp $"
+.\"
+.TH STROVERLAP 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+stroverlap \- check whether two strings overlap
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+int \fBstroverlap\fR(const char *\fIs\fR, const char *\fIt\fR);
+.SH DESCRIPTION
+\fIstroverlap\fR checks whether the storage used by two strings
+overlap (i.e., if they even partially stored in the same place
+in memory).
+.SH "RETURN VALUE"
+\fIstroverlap\fR returns 0 for no overlap, nonzero for any overlap
+at all.
+.SH "SEE ALSO"
+publib(3), memoverlap(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

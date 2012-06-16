@@ -1,0 +1,54 @@
+objs =  memarrfill.o	\
+	memdel.o	\
+	memfill.o	\
+	memins.o	\
+	memisort.o	\
+	memmem.o	\
+	memoverlap.o	\
+	memrchr.o	\
+	memrev.o	\
+	memrmem.o	\
+	memshuffle.o	\
+	memswap.o	\
+	stracat.o	\
+	stranaxfrm.o	\
+	strchange.o	\
+	strcins.o	\
+	strcstr.o	\
+	strdel.o	\
+	strdiff.o	\
+	strend.o	\
+	strendzap.o	\
+	strgsub.o	\
+	strhash.o	\
+	strinit.o	\
+	strins.o	\
+	strltrim.o	\
+	strmaxcpy.o	\
+	strmove.o	\
+	strmtrim.o	\
+	strndup.o	\
+	strnins.o	\
+	strnlen.o	\
+	stroverlap.o	\
+	strrev.o	\
+	strright.o	\
+	strrot13.o	\
+	strrstr.o	\
+	strrtrim.o	\
+	strset.o	\
+	strshuffle.o	\
+	strsplit.o	\
+	strsub.o	\
+	strtabify.o	\
+	strtrexpand.o	\
+	strtrim.o	\
+	struncstr.o	\
+	struntabify.o	\
+	strvars.o	\
+	strzap.o	
+
+testprogs = 
+include $(fwdir)/Generic.mk
+
+$(objs): strutil.h

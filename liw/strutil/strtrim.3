@@ -1,0 +1,38 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: strtrim.3,v 1.1.1.1 1994/02/03 17:25:30 liw Exp $"
+.\"
+.TH STRTRIM 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+strtrim \- remove leading and trailing whitespace
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+char *\fBstrtrim\fR(char *\fIs\fR);
+.SH DESCRIPTION
+\fIstrtrim\fR removes all whitespace characters from the beginning and
+the end of a string.  As whitespace is counted everything for which
+\fIisspace\fR(3) returns true.
+.SH "RETURN VALUE"
+\fIstrtrim\fR returns its argument.
+.SH EXAMPLE
+To remove whitespace from the beginning and end of all lines, you might do the
+following:
+.sp 1
+.nf
+.in +5
+#include <publib.h>
+
+int main(void) {
+	char line[512];
+
+	while (fgets(line, sizeof(line), stdio) != NULL) {
+		strtrim(line);
+		printf("%s", line);
+	}
+	return 0;
+}
+.in -5
+.SH "SEE ALSO"
+publib(3), strrtrim(3), strltrim(3), isspace(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

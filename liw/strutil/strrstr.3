@@ -1,0 +1,41 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: strrstr.3,v 1.1.1.1 1994/02/03 17:25:29 liw Exp $"
+.\"
+.TH STRRSTR 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+strrstr \- locate last occurence of substring
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+char *\fBstrrstr\fR(const char *\fIstr\fR, const char *\fIpat\fR);
+.SH DESCRIPTION
+\fIstrrstr\fR finds the last occurence of the string \fIpat\fR in
+the string \fIstr\fR.  The terminating '\\0' characters are not
+compared.
+.SH "RETURN VALUE"
+\fIstrrstr\fR returns a pointer to the first character of the substring,
+or \fBNULL\fR if the substring is not found.
+.SH EXAMPLE
+To print out everything on each line starting with the last occurence
+of "/* " on each line, you might use the following code:
+.sp 1
+.nf
+.in +5
+#include <stdio.h>
+#include <publib.h>
+
+int main(void) {
+	char *p, line[512];
+
+	while (fgets(line, sizeof(line), stdin) != NULL) {
+		p = strrstr(line, "/* ");
+		if (p != NULL)
+			printf("%s", p);
+	}
+	return 0;
+}
+.in -5
+.SH "SEE ALSO"
+publib(3), string(3), strstr(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

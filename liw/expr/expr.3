@@ -1,0 +1,132 @@
+.\" part of publib
+.\" "@(#)publib-expr:$Id: expr.3,v 1.2 1994/02/03 17:33:55 liw Exp $"
+.\"
+.TH EXPR 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+expr_eval, expr_compile, expr_run, expr_free \- evaluate arithmetic
+expressions
+.SH SYNOPSIS
+#include <expr.h>
+.sp 1
+.nf
+int \fBexpr_eval\fR(const char *\fIexpr\fR, double *\fIres\fR, expr_hook *\fIhook\fR);
+Expr *\fBexpr_compile\fR(const char *\fIsource\fR);
+int \fBexpr_run\fR(Expr *\fIcompiled\fR, double *\fIres\fR, expr_hook *\fIhook\fR);
+void \fBexpr_free\fR(Expr *\fIcompiled\fR);
+.fi
+.SH "DESCRIPTION"
+These functions evaluate arithmetic expressions given as a string.
+All values used in the expression (constants, any symbols, functions
+and variables provided by the hook function, and the result of the
+expression) are floating point values of type double.
+.PP
+An expression may contain operators + (add or sign), - (subtract or
+sign), * (multiply), / (divide), and % (remainder), may use
+parentheses for grouping, may express constants using C floating point
+and integer syntax, and may use symbols (variables, constants, or
+whatever; the meaning is determined by a hook function) and functions
+(i.e., a symbol followed by an argument list in parentheses).  The
+expression may also be an assignment, which gives a new value to a
+symbol (if the hook function allows it).
+.PP
+The exact syntax of the expression using BNF is:
+.sp 1
+.nf
+.in +5
+\fB
+assignment = symbol '=' expr 
+.ti +5
+     | expr.
+expr = term '+' expr
+.ti +5
+     | term '-' expr
+.ti +5
+     | term.
+term = factor '*' term
+.ti +5
+     | factor '/' term
+.ti +5
+     | factor '%' term
+.ti +5
+     | factor.
+factor = simple_expr
+.ti +5
+     | '-' simple_expr.
+.ti +5
+     | '+' simple_expr.
+simple_expr = constant 
+.ti +5
+     | symbol 
+.ti +5
+     | symbol '(' arglist ')' 
+.ti +5
+     | '(' expr ')'.
+arglist = expr | expr ',' arglist.
+constant = integer or float, C syntax.
+symbol = C identifier.
+\fR
+.in -5
+.fi
+.PP
+The \fIexpr_compile\fR function will parse a string representation for
+an expression, and will `compile' it into a form that is more
+efficient to execute.  The \fIexpr_run\fR function will execute the
+compiled form of the expression, and returns the value of the
+expression.  The \fIexpr_free\fR function will free all resources
+allocated for the compiled form.  Use it after the last time you need
+to evaluate the expression.  The \fIexpr_eval\fR function will do all
+three operations mentioned above.  It is more convenient to use when
+you only need to evaluate an expression once.
+.PP
+The \fIexpr_run\fR and \fIexpr_eval\fR functions take as their last
+argument a `hook', or a pointer to a function that will be used to get
+the value of a symbol.  The hook should report an error by returning
+-1, and success by returning 0.  The syntax allows symbols to be given
+an argument list (in parentheses), and the hook is supposed to be
+prepared to handle those cases as well, interpreting the symbol as a
+function and the argument list as its arguments.  (The hook may report
+an error, if a non-function symbol is used as a function, or vice
+versa, or if the argument list is of the wrong length.)  The hook may
+give any semantics is wishes to the symbol, neither the expression
+syntax nor the evaluation code assumes anything.  Useful symbols might
+be trigonometric functions, a random number generator, or the time of
+the day.
+.PP
+Assignments are also handled via the hook.  If the second argument to
+the hook is -1, the hook is supposed to modify the value of the
+symbol.  Again, it may give any semantics it wishes (i.e., it needn't
+actually modify it, or it might store a different value, or it might
+output something, or do something totally different), and may report
+errors by returning -1.
+.SH EXAMPLES
+The following function implements a variable, "doug", and a function,
+"sum".
+.sp 1
+.nf
+int hook(const char *sym, int nargs, double *args, double *val) {
+	if (strcmp(sym, "doug") == 0) {
+		if (nargs != 0)
+			return -1;
+		*val = 42.0;
+	} else if (strcmp(sym, "sum") == 0) {
+		if (nargs != 2)
+			return -1;
+		*val = args[0] + args[1];
+	}
+	return 0;
+}
+.fi
+.SH "SEE ALSO"
+publib(3)
+.PP
+Literature about symbol tables or hash tables might come in handy when
+implementing hooks.
+.SH BUGS
+Only having one data type is restricting.  At least truth values (and
+operators), string expressions, and integers would be nice, if they
+can be folded in nicely, without making the syntax and implementation
+of the function overly baroque.  On the other hand, simplicity has its
+virtue, and the current syntax is powerful enough for most things that
+the author can imagine the system being used for.
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

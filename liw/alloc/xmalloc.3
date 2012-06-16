@@ -1,0 +1,47 @@
+.\" part of publib
+.\" "@(#)publib-alloc:$Id: xmalloc.3,v 1.4 1994/08/28 16:55:04 liw Exp $"
+.\"
+.TH XMALLOC 3 "C Programmer's Manual" "Publib" "C Programmer's Manual"
+.SH NAME
+xmalloc, xrealloc, xfree, xstrdup, xmemdup, memdup \- memory 
+allocation functions for Publib
+.SH SYNOPSIS
+#include <publib.h>
+.sp 1
+.nf
+void *\fBxmalloc\fR(size_t \fIbytes\fR);
+void *\fBxrealloc\fR(void *\fIptr\fR, size_t \fIbytes\fR);
+void \fBxfree\fR(void *\fIptr\fR);
+char *\fBstrdup\fR(const char *\fIstring\fR);
+char *\fBxstrdup\fR(const char *\fIstring\fR);
+void *\fBmemdup\fR(const void *\fImem\fR, size_t \fIbytes\fR);
+void *\fBxmemdup\fR(const void *\fImem\fR, size_t \fIbytes\fR);
+.SH "DESCRIPTION"
+These functions are utility functions for memory allocation from the
+publib library.  \fIxmalloc\fR, \fIxrealloc\fR, and \fIxfree\fR are
+error checking versions of the standard library routines \fImalloc\fR,
+\fIrealloc\fR, and \fIfree\fR, respectively.  They are guaranteed to
+never return unless there was no problem: if, for example,
+\fIxmalloc\fR is unable to allocate the requested amount of memory, it
+prints an error message and terminates the program.  Hence, the caller
+does not need to check for a NULL return value, and the code that
+calls these functions is simpler due to the lack of error checks.
+.PP
+Similarly, \fIxstrdup\fR is an error checking version of the common
+(though not standard) \fIstrdup\fR routine, which creates a duplicate
+of a string by allocating memory for the copy with \fImalloc\fR.  (For
+systems that lack \fIstrdup\fR, publib provides one in its portability
+module; it is always declared in <publib.h>.)
+.PP
+\fImemdup\fR is similar to \fIstrdup\fR, it creates a copy of an
+arbitrary memory area (the arguments are a pointer to the beginning of
+the area, and its size) by allocating memory for the copy with
+\fImalloc\fR.  \fIxmemdup\fR is its error checking version.
+.SH NOTE
+\fIxmalloc\fR and \fIxrealloc\fR treat a request to allocate a block
+of 0 bytes as an error.
+\fIxrealloc\fR will allow its first argument to be NULL.
+.SH "SEE ALSO"
+publib(3), malloc(3), strdup(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

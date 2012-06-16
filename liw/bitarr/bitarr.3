@@ -1,0 +1,53 @@
+.\" part of publib
+.\" "@(#)publib-bitarr:$Id: bitarr.3,v 1.3 1994/08/28 17:06:25 liw Exp $"
+.\"
+.TH BITARR 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+ba_and_ba, ba_clear, ba_clear_all, ba_copy, ba_create,
+ba_destroy, ba_not, ba_or_ba, ba_or_not_ba, ba_query,
+ba_resize, ba_set, ba_xor_ba \- bit array manipulation
+.SH SYNOPSIS
+.nf
+#include <bitarr.h>
+.sp 1
+Bitarr *\fBba_create\fR(void);
+void \fBba_destroy\fR(Bitarr *\fIba\fR);
+Bitarr *\fBba_copy\fR(const Bitarr *\fIba\fR);
+int \fBba_resize\fR(Bitarr *\fIba\fR, size_t \fImax_number\fR);
+.sp 1
+int \fBba_set\fR(Bitarr *\fIba\fR, unsigned \fInumber\fR);
+int \fBba_clear\fR(Bitarr *\fIba\fR, unsigned \fInumber\fR);
+void \fBba_clear_all\fR(Bitarr *\fIba\fR);
+int \fBba_query\fR(Bitarr *\fIba\fR, unsigned \fInumber\fR);
+void \fBba_and_ba\fR(Bitarr *\fIba1\fR, const Bitarr *\fIba2\fR);
+int \fBba_or_ba\fR(Bitarr *\fIba1\fR, const Bitarr *\fIba2\fR);
+void \fBba_xor_ba\fR(Bitarr *\fIba1\fR, const Bitarr *\fIba2\fR);
+void \fBba_or_not_ba\fR(Bitarr *\fIba1\fR, const Bitarr *\fIba2\fR);
+void \fBba_not\fR(Bitarr *\fIba\fR);
+.SH "DESCRIPTION"
+These functions operate on bit arrays.
+\fIba_create\fR creates one and \fIba_destroy\fR it.
+\fIba_copy\fR makes a copy of one, and \fIba_resize\fR changes its size.
+The bit arrays resize themselves automatically,
+but \fIba_resize\fR can be used to get rid of extra memory allocated for
+the array, or to make sure there is enough memory allocated for the array
+(so that further operations are guaranteed to work).
+.PP
+\fIba_set\fR sets one element (bit) in the array to 1.
+\fIba_clear\fR clears one element (sets it to 0),
+\fIba_clear_all\fR clears all elements.
+\fIba_query\fR returns the current value of an element.
+.PP
+\fIba_and_ba\fR, \fIba_or_ba\fR, \fIba_xor_ba\fR, and \fIba_or_ba\fR
+do logical operations on two arrays.
+The result will be stored in the first one.
+\fIba_not\fR will invert all elements in the array.
+.SH RETURNS
+\fIba_create\fR and \fIba_copy\fR return a pointer to the new array,
+or NULL if they fail.
+Those that return an integer, return -1 for error, non-negative for
+success.
+.SH "SEE ALSO"
+publib(3), iset(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

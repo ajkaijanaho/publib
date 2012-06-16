@@ -1,0 +1,23 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: strnins.3,v 1.1 1994/07/25 23:15:37 liw Exp $"
+.\"
+.TH STRNINS 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+strnins \- insert prefix of a string at the beginning of another string
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+char *\fBstrnins\fR(char *\fItgt\fR, const char *\fIsrc\fR, size_t \fIn\fR);
+.SH DESCRIPTION
+\fIstrins\fR inserts upto \fIn\fR characters from the beginning of
+the \fIsrc\fR string at the beginning of the \fItgt\fR string.
+The strings must not overlap.
+The target string must contain enough memory to hold both strings.
+.SH "RETURN VALUE"
+\fIstrnins\fR returns its first argument.
+.SH EXAMPLE
+See the manual page for \fIstrdel\fR(3) for an example.
+.SH "SEE ALSO"
+publib(3), strdel(3), strins(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

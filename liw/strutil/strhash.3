@@ -1,0 +1,25 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: strhash.3,v 1.1 1994/06/20 20:30:13 liw Exp $"
+.\"
+.TH STRHASH 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+strhash \- hash function for strings
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+unsigned long \fBstrhash\fR(const char *\fIs\fR);
+.SH DESCRIPTION
+\fIstrhash\fR is a hash function for strings.  It uses an algorithm
+that tries to be good in most cases, but it is often possible to use
+a better algorithm that takes better into account the characteristics
+of the data for a given application.  However, \fIstrhash\fR often
+good enough; test it before spending time to develop a better one.
+.SH "RETURN VALUE"
+\fIstrhash\fR returns the computed hash value.  Note that the value
+is not scaled into any particular range (all values that an unsigned
+long can take are possible).  The caller will have to do the scaling
+himself.
+.SH "SEE ALSO"
+publib(3), hashtab(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

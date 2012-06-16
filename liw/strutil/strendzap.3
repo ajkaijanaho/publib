@@ -1,0 +1,28 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: strendzap.3,v 1.3 1994/07/22 12:22:50 liw Exp $"
+.\"
+.TH STRENDZAP 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+strendzap \- remove pattern from end of str, if it is there
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+int \fBstrendzap\fR(char *\fIstr\fR, const char *\fIpat\fR);
+.SH DESCRIPTION
+\fIstrendzap\fR removes \fIpat\fR from the end of \fIstr\fR if it
+is there.  Otherwise, it does nothing.
+.SH "RETURN VALUE"
+\fIstrendzap\fR returns non-zero if it removed anything, 0 if not.
+.SH EXAMPLE
+To remove the suffix .c from the end of a filename, you might do this:
+.sp 1
+.nf
+.in +5
+#include <publib.h>
+
+strendzap(filename, ".c");
+.in -5
+.SH "SEE ALSO"
+publib(3), strzap(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

@@ -1,0 +1,19 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: strshuffle.3,v 1.1 1994/06/20 20:30:37 liw Exp $"
+.\"
+.TH STRSHUFFLE 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+strshuffle \- make the characters in a string be in random order
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+char *\fBstrshuffle\fR(char *\fIstr\fR);
+.SH DESCRIPTION
+\fIstrshuffle\fR will make the characters in a string be in random
+order.
+.SH "RETURN VALUE"
+\fIstrshuffle\fR will return its argument.
+.SH "SEE ALSO"
+publib(3), memshuffle(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

@@ -1,0 +1,35 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: strsub.3,v 1.1.1.1 1994/02/03 17:25:30 liw Exp $"
+.\"
+.TH STRSUB 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+strsub \- substitute first occurence of pattern with another string
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+char *\fBstrsub\fR(char *\fIstr\fR, const char *\fIpat\fR, const char *\fIsub\fR);
+.SH DESCRIPTION
+\fIstrsub\fR finds the first occurence of the pattern \fIpat\fR in the
+string \fIstr\fR (using a method similar to \fIstrstr\fR(3), i.e., no
+regular expressions), and replaces it with \fIsub\fR. 
+If \fIpat\fR does not occur in \fIstr\fR, no substitution is made.
+.PP
+Of course, if \fIsub\fR is an empty string, the pattern is deleted from
+the string.
+.SH "RETURN VALUE"
+\fIstrsub\fR returns a pointer to the first character after the substitution,
+or NULL if no substitution was made.
+.SH EXAMPLE
+To substitute up to two occurences of "foo" with "bar" in a line,
+one might do the following.
+.sp 1
+.nf
+.in +5
+p = strsub(line, "foo", "bar");
+if (p != NULL)
+	strsub(line, "foo", "bar");
+.in -5
+.SH "SEE ALSO"
+publib(3), strstr(3), strgsub(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

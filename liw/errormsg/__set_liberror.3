@@ -1,0 +1,31 @@
+.\" Part of publib
+.\" "@(#)publib-errormsg:$Id: __set_liberror.3,v 1.1.1.1 1995/08/06 21:57:17 liw Exp $"
+.\"
+.TH __set_liberror 3
+.SH NAME
+__set_liberror \- modify error handling for publib
+.SH SYNOPSIS
+#include <publib.h>
+.sp 1
+.br
+void __set_liberror(enum __liberror);
+.SH "DESCRIPTION"
+Unless the documentation for the function specifies otherwise, the
+default action when a library function notices an error is to abort
+whatever it was doing and return an error indication.  It is possible
+to change this behaviour with \fI__set_liberror(3)\fR.  The argument
+should be a bitwise OR of the following values:
+.sp 1
+.nf
+	__abort_on_error
+	__exit_on_error
+	__complain_on_error
+.in +5
+.in -5
+.sp 1
+Note that \fI__abort_on_error\fR and \fI__exit_on_error\fR are
+mutually exclusive, only use one.
+.SH "SEE ALSO"
+publib(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

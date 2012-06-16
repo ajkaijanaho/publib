@@ -1,0 +1,37 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: memshuffle.3,v 1.1.1.1 1994/02/03 17:25:30 liw Exp $"
+.\"
+.TH MEMSHUFFLE 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+memshuffle \- make an array be in random order
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+void *\fBmemshuffle\fR(void *\fIblock\fR, size_t \fIelsize\fR, size_t \fIelnum\fR);
+.SH DESCRIPTION
+\fImemshuffle\fR will move around the elements of an array in a random
+fashion.  It uses the standard library function \fIrand\fR(3) to get
+the pseudo-random numbers it needs.  The caller must set a suitable
+seed with \fIsrand\fR(3).
+.SH "RETURN VALUE"
+\fImemshuffle\fR returns its first argument.
+.SH EXAMPLE
+To shuffle an integer array one might do the following.
+.sp 1
+.nf
+.in +5
+int array[4] = { 1, 2, 3, 4 };
+
+memshuffle(array, sizeof(array[0]), 4);
+.in -5
+.SH BUGS
+On many systems \fIrand\fR(3) is not of very good quality.  However,
+it is the only random number generator that can be assumed to exist.
+Making it possible for the caller to provide an alternate source
+of random numbers (e.g., via a function pointer) is perhaps too more
+trouble than its worth.  A better way would be for everyone to fix
+their \fIrand\fR's.
+.SH "SEE ALSO"
+publib(3), memrev(3), rand(3), srand(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

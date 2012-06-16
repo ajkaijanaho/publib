@@ -1,0 +1,32 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: strinit.3,v 1.1 1994/06/20 20:30:16 liw Exp $"
+.\"
+.TH STRINIT 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+strinit \- initialize a string with a given character to a given length
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+char *\fBstrinit\fR(char *\fIs\fR, int \fIc\fR, size_t \fIlen\fR) {
+.SH DESCRIPTION
+\fIstrinit\fR initializes the string pointed to by \fIs\fR to be of
+length \fIlen\fR, all characters being \fIc\fR, where the terminating
+'\\0' is \fInot\fR included in the length, i.e., the string will use
+\fIlen+1\fR characters.
+.SH "RETURN VALUE"
+\fIstrinit\fR will return \fIs\fR.
+.SH EXAMPLE
+To initialize a string to consist of twenty underscores, one would
+do the following.
+.sp 1
+.nf
+.in +5
+#include <publib.h>
+
+char string[21];     /* note 21 to make room for '\\0' */
+strinit(string, '_', 20);
+.in -5
+.SH "SEE ALSO"
+publib(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

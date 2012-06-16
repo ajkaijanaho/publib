@@ -1,0 +1,18 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: strcins.3,v 1.1 1994/07/22 21:02:15 liw Exp $"
+.\"
+.TH STRCINS 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+strcins \- insert a character at the beginning of a string
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+void \fBstrins\fR(char *\fIstr\fR, int \fIc\fR);
+.SH DESCRIPTION
+\fIstrcins\fR inserts the character \fIc\fR at the beginning of the
+string \fIstr\fR.
+The target string must contain enough memory to hold the result.
+.SH "SEE ALSO"
+publib(3), strdel(3), strins(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

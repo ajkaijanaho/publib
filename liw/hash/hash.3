@@ -1,0 +1,67 @@
+.\" part of publib
+.\" "@(#)publib-hash:$Id: hash.3,v 1.1 1994/08/28 17:59:35 liw Exp $"
+.\"
+.TH HASH 3 "C Programmer's Manual" "Publib" "C Programmer's Manual"
+.SH NAME
+hash_create, hash_destroy, hash_install, hash_lookup, hash_uninstall,
+hash_iter \- generic hash tables
+.SH SYNOPSIS
+#include <publib.h>
+.sp 1
+.nf
+#include <publib.h>
+.sp 1
+Hashtab *\fBhash_create\fR(unsigned long (*\fIfun\fR)(void *),
+         int (*\fIcmp\fR)(const void *, const void *));
+void \fBhash_destroy\fR(Hashtab *\fIht\fR);
+void *\fBhash_install\fR(Hashtab *\fIht\fR, void *\fIdata\fR, size_t \fIsize\fR);
+void *\fBhash_lookup\fR(Hashtab *\fIht\fR, void *\fIdata\fR);
+int \fBhash_uninstall\fR(Hashtab *\fIht\fR, void *\fIdata\fR);
+int \fBhash_iter\fR(Hashtab *\fIht\fR, int (*\fIdoit\fR)(void *, void *), void *\fIparam\fR);
+.SH "DESCRIPTION"
+These functions implement generic hash tables.
+The table is created by \fIhash_create\fR and destroyed by \fIhash_destroy\fR.
+The \fIfun\fR argument is a pointer to the hashing function,
+which must convert a datum to an unsigned long, which is then converted
+to an index into the hashing table.
+\fIcmp\fR is a \fIqsort\fR(3)-like comparison functions, used to compare
+to (wannabe) hash table elements.
+.PP
+\fIhash_install\fR installs a new datum into the table.
+A pointer to the data and the size of the data are given as the arguments.
+If the size is 0, only the pointer value is copied to the table.
+Otherwise a copy of the data is made into dynamically allocated memory.
+.PP
+\fIhash_lookup\fR attempts to find a datum in the hash table.
+A pointer to another datum is given as the argument.
+The comparison function should compare equal (return 0)
+the desired datum and this datum (but the argument needn't be a fully
+initialized datum, although that is up to the writer of the comparison
+function).
+There cannot be two elements in the hash table that are equal (the
+comparison function returns 0 for them).
+It is up to the user to handle collisions.
+.PP
+\fIhash_uninstall\fR removes an element from a table.
+The argument is a pointer to a datum that identifies the element.
+.PP
+\fIhash_iter\fR goes through every element in the hash table
+and calls the \fIdoit\fR function.
+If \fIdoit\fR returns -1 or 0, \fIhash_iter\fR will stop the
+traversal and return the same value.
+.SH RETURNS
+\fIhash_create\fR returns a pointer to the new hash table, or NULL if
+it fails.
+\fIhash_install\fR returns a pointer to an element in the table
+(either the installed one, or one that was already installed, if one
+tries to install the same datum twice).
+\fIhash_uninstall\fR returns 0 if it found the element in the array,
+or -1 if it didn't.
+\fIhash_lookup\fR return a pointer to the element it finds, or NULL if
+it doesn't find anything beautiful.
+\fIhash_iter\fR returns -1 or 0, if \fIdoit\fR returns either of those
+values, or 1 if it gets through all elements in the table.
+.SH "SEE ALSO"
+publib(3), qsort(3), bsearch(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

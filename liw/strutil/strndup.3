@@ -1,0 +1,22 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: strndup.3,v 1.1 1994/06/20 20:30:23 liw Exp $"
+.\"
+.TH STRNDUP 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+strndup \- duplicate part of a string
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+char *\fBstrndup\fR(const char *\fIstr\fR, size_t \fIn\fR);
+.SH DESCRIPTION
+\fIstrndup\fR will make a duplicate of the \fIn\fR first characters
+of \fIstr\fR, using \fImalloc\fR(3) to allocate memory for the
+duplicate.  The caller is supposed to free the duplicate's memory
+when no longer needed.
+.SH "RETURN VALUE"
+\fIstrndup\fR will return a pointer to the duplicate, or NULL if no
+memory could be allocated.
+.SH "SEE ALSO"
+publib(3), strdup(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

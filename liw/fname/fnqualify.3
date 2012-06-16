@@ -1,0 +1,31 @@
+.\" part of publib
+.\" "@(#)publib-fname:$Id: fnqualify.3,v 1.2 1994/02/03 17:34:02 liw Exp $"
+.\"
+.TH FNQUALIFY 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+fnqualify \- qualify a filename
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+.sp 1
+size_t \fBfnqualify\fR(char *\fIresult\fR, const char *\fIpath\fR, size_t \fImax\fR);
+.SH "DESCRIPTION"
+\fIfname_qualify\fR qualifies a filename.  This means that if the
+input name is not an absolute name (i.e. starts from the root
+directory, e.g. is \fBfoo\fR, not \fB/tmp/foo\fR), the current
+directory will be prepended to it.  Also, tilde conversion is done: if
+the filename begins with a tilde (~), the tilde is replaced with the
+home directory of the user, and if it begins with a tilde and a
+username, both are replaced with the home directory of the given user.
+.PP
+Simplifications like replacing /./ with /, and /foo/../bar with /bar
+are not done because of problems with symbolic links.
+.SH RETURNS
+The function returns -1 if there was some error, or the total size of
+the full name otherwise.  The return value may be greater than the
+maximum size given by the last argument; only as much as allowed by
+that is actually written, though.
+.SH "SEE ALSO"
+publib(3), fname(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

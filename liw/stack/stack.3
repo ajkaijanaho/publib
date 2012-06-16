@@ -1,0 +1,23 @@
+.\" part of publib
+.\" "@(#)publib-stack:$Id: stack.3,v 1.2 1994/02/03 17:34:05 liw Exp $"
+.\"
+.TH STACK 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+stack_create, stack_destroy, stack_pop, stack_is_empty, stack_copy,
+stack_push \- manipulate stacks
+.SH SYNOPSIS
+.nf
+#include <stack.h>
+.br
+Stack *\fBstack_create\fR(void);
+void \fBstack_destroy\fR(Stack *);
+void *\fBstack_pop\fR(Stack *);
+int \fBstack_is_empty\fR(Stack *);
+Stack *\fBstack_copy\fR(Stack *);
+int \fBstack_push\fR(Stack *, void *\fIdata\fR, size_t \fIbytes\fR);
+.SH "DESCRIPTION"
+These functions operate on stacks.  This manual page is shortish.
+.SH "SEE ALSO"
+publib(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

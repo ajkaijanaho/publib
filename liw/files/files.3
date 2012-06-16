@@ -1,0 +1,41 @@
+.\" part of publib
+.\" "@(#)publib-files:$Id: files.3,v 1.2 1994/02/03 17:33:58 liw Exp $"
+.\"
+.TH FILES 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+xgetaline, xfseek, xfopen, xfclose, getaline, fassert \- file
+manipulation utilities
+.SH SYNOPSIS
+.nf
+#include <files.h>
+.sp 1
+FILE *\fBxfopen\fR(const char *\fIfilename\fR, const char *\fImode\fR);
+void \fBxfclose\fR(FILE *\fIfp\fR);
+void \fBxfseek\fR(FILE *\fIfp\fR, long \fIoffset\fR, int \fIorigin\fR);
+char *\fBgetaline\fR(FILE *\fIfp\fR);
+char *\fBxgetaline\fR(FILE *\fIfp\fR);
+void \fBfassert\fR(FILE *\fIfp\fR);
+.SH "DESCRIPTION"
+These functions are useful for file manipulation.  The functions that
+begin with \fIx\fR work like the functions without the letter, except
+if there is an error, they print an error message and kill the
+program.
+.PP
+\fIgetaline\fR reads a line from the given file.  It allocates the
+memory for the line with \fImalloc(3)\fR, and returns a pointer to the
+beginning of the line.  If there is an error, it returns NULL.  If the
+returned value is not NULL, the caller is responsible for freeing the
+memory.  The newline is removed from the end of the line.
+.PP
+\fIfassert\fR checks that the argument is not NULL, and that (for a
+non-NULL argument) the file does not have its error indicator flag
+set.  If either condition is true, it prints an error message and
+termiantes the program.   If neither condition is true, it does
+nothing.  This can be used to add checks that the I/O in a program is
+going well; however, it is mostly useful only for small programs,
+because more serious programs need to handle the errors more
+gracefully.
+.SH "SEE ALSO"
+publib(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

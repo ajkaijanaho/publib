@@ -1,0 +1,11 @@
+Here are some things that should be done.
+
+* My hacks to get around missing VPATH support in some makes do not work
+  very well.  At the moment they require that _all_ dependencies are
+  listed explicitly.  This is not good.  I think I may have require VPATH
+  support in the future (GNU make supports it; Sun make does not).  That
+  is also not good, but better than the current situation.  Alternatively,
+  I could start creating makefiles from configuration scripts, but that
+  doesn't work very well, either, since it loses on flexibility.
+
+* --with-library should set --with-libshort as well, if not already set

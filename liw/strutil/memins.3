@@ -1,0 +1,34 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: memins.3,v 1.2 1994/06/20 20:29:53 liw Exp $"
+.\"
+.TH MEMINS 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+memins \- insert bytes at beginning of memory block
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+void *\fBmemins\fR(void *\fItgt\fR, size_t \fItgtsize\fR, const void *\fIsrc\fR, size_t \fIsrcsize\fR);
+.SH DESCRIPTION
+\fImemins\fR inserts \fIsrcsize\fR bytes from \fIsrc\fR at the beginning
+of \fItgt\fR, but moves the first \fItgtsize\fR out of the way.  The source
+and target memory blocks must not overlap.
+.SH "RETURN VALUE"
+\fImemins\fR returns its first argument.
+.SH EXAMPLE
+To insert a new element at the \fIi\fRth position of an array,
+one might do the following.
+.sp 1
+.nf
+.in +5
+int new, array[10];
+
+memins(array+i, (10-i-1)*sizeof(array[0]), &new, sizeof(new));
+.in -5
+.sp 1
+.fi
+Please note that the above code carefully avoids the trap of moving the
+last element of the array past the end of the array.
+.SH "SEE ALSO"
+publib(3), strins(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)

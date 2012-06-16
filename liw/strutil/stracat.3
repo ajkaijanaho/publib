@@ -1,0 +1,37 @@
+.\" part of publib
+.\" "@(#)publib-strutil:$Id: stracat.3,v 1.1.1.1 1994/02/03 17:25:30 liw Exp $"
+.\"
+.TH STRACAT 3 "C Programmer's Manual" Publib "C Programmer's Manual"
+.SH NAME
+stracat \- concatenate many strings into an allocated memory block
+.SH SYNOPSIS
+.nf
+#include <publib.h>
+char *\fBstracat\fR(const char *\fIs\fR, ...);
+.SH DESCRIPTION
+\fIstracat\fR will allocate a block of memory with malloc and concatenate
+all arguments strings into this block.  The user is supposed
+to free the returned block.  The end of the argument list is signalled
+by a null pointer.
+.SH "RETURN VALUE"
+\fIstracat\fR returns a pointer to the allocated block,
+or NULL if it could not be allocated.
+.SH EXAMPLE
+To concatenate "hello, " and "world", one might say the following.
+.sp 1
+.nf
+.in +5
+p = stracat("hello, ", "world", (char *)NULL);
+if (p != NULL)
+	puts(p);
+.in -5
+.sp 1
+Please note that it is necessary to case NULL as in the example above,
+since there is no information about the type of the argument available
+in the prototype, and since an unadorned NULL might not be of the 
+correct type.  (See any good C reference book or the comp.lang.c FAQ for
+more information.)
+.SH "SEE ALSO"
+publib(3), strcat(3)
+.SH AUTHOR
+Lars Wirzenius (lars.wirzenius@helsinki.fi)
