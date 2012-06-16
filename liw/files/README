@@ -1,6 +1,6 @@
 README for Publib module files
 Lars Wirzenius
-"@(#)publib-files:$Id: README,v 1.1 1994/08/28 17:18:07 liw Exp $"
+"@(#)publib-files:$Id$"
 
 These routines do various operations on files.  The functions with
 names beginning with an x are error checking frontends to the

@@ -2,7 +2,7 @@
  * File:	base64.c
  * Purpose:	Implementation of MIME's Base64 encoding and decoding.
  * Author:	Lars Wirzenius
- * Version:	$Id: base64.c,v 1.1.1.1 1996/11/05 21:01:42 liw Exp $
+ * Version:	$Id: base64.c,v 1.1 1996/10/14 03:14:58 liw Exp $
  */
 
 #include <limits.h>

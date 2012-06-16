@@ -2,7 +2,7 @@
  * iset_iset.c -- remove elements from set that are not also in another set
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-iset:$Id: iset_isect.c,v 1.1.1.1 1993/11/20 17:02:32 liw Exp $"
+ * "@(#)publib-iset:$Id$"
  */
 
 #include <assert.h>

@@ -2,7 +2,7 @@
  * ba_and_ba.c -- and a set with another set
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-bitarr:$Id: ba_and_ba.c,v 1.3 1995/05/12 14:43:58 wirzeniu Exp $"
+ * "@(#)publib-bitarr:$Id: ba_and_ba.c,v 1.2 1993/11/29 19:41:40 liw Exp $"
  */
 
 #include <assert.h>

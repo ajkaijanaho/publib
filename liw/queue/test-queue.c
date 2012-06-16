@@ -2,7 +2,7 @@
  * File:	test-queue.c
  * Purpose:	Test the queue data structure routines.
  * Author:	Lars Wirzenius
- * Version:	"@(#)publib:$Id: test-queue.c,v 1.1.1.1 1996/01/18 15:44:03 liw Exp $"
+ * Version:	"@(#)publib:$Id$"
  */
 
 #include <stdio.h>

@@ -1,6 +1,6 @@
 README for Publib module hash
 Lars Wirzenius
-"@(#)publib-hash:$Id: README,v 1.1 1994/08/28 17:21:56 liw Exp $"
+"@(#)publib-hash:$Id$"
 
 These routines implement a generic hashing table.
 

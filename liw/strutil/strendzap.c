@@ -2,7 +2,7 @@
  * strendzap.c -- remove pat from end of str, if it is there
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-strutil:$Id: strendzap.c,v 1.2 1994/07/22 12:22:51 liw Exp $"
+ * "@(#)publib-strutil:$Id: strendzap.c,v 1.1.1.1 1994/02/03 17:25:30 liw Exp $"
  */
 
 #include <assert.h>

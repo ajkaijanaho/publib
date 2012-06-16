@@ -2,7 +2,7 @@
  * iset_create.c -- create an empty integer set
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-iset:$Id: iset_create.c,v 1.1.1.1 1993/11/20 17:02:31 liw Exp $"
+ * "@(#)publib-iset:$Id$"
  */
 
 #include <stdlib.h>

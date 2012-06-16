@@ -1,6 +1,6 @@
 README for Publib module cmp
 Lars Wirzenius
-"@(#)publib-cmp:$Id: README,v 1.2 1994/08/28 17:09:07 liw Exp $"
+"@(#)publib-cmp:$Id: README,v 1.1 1994/08/28 17:07:54 liw Exp $"
 
 These routines implement comparison functions for qsort(3),
 bsearch(3) and others with the same interface.

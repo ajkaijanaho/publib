@@ -6,7 +6,7 @@
  * "e", and "da", and the functions "sin", "cos", "ln", and "sqrt".
  *
  * This program is part of publib.
- * "@(#)publib-expr:$Id: test_expr.c,v 1.2 1995/08/11 15:52:42 liw Exp $"
+ * "@(#)publib-expr:$Id: test_expr.c,v 1.1.1.1 1993/11/20 15:57:29 liw Exp $"
  */
 
 #include <assert.h>

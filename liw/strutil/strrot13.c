@@ -2,7 +2,7 @@
  * strrot13.c -- encrypt string with rot13
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-strutil:$Id: strrot13.c,v 1.1.1.1 1994/02/03 17:25:31 liw Exp $"
+ * "@(#)publib-strutil:$Id$"
  */
 
 #include <assert.h>

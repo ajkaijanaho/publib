@@ -7,11 +7,18 @@
 
 
 #include <assert.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "publib/sbuf.h"
 #include "publib/errormsg.h"
+
+#ifdef SBUF_LOG
+#include <unistd.h>
+#else
+#define getpid() 0
+#endif
 
 
 /* Return length of gap */
@@ -28,6 +35,7 @@ static int remove_columnar_mark(Sbufmark *);
 static long count_chars(const char *, int, long);
 static int insert_columnar_text(Sbuf *, Sbufmark *, const char *, long, long);
 static int strchange(Sbuf *, long, long, const char *, long);
+static void __sbuf_log(const char *, ...);
 
 
 
@@ -116,7 +124,7 @@ int sbuf_movegap(Sbuf *buf, size_t pos, size_t len) {
 
 	sbuf_validate(buf);
 	assert(pos <= buf->len);
-	assert(!buf->locked);
+	assert(!sbuf_has_flags(buf, SBUF_LOCKED_FLAG));
 
 	if (gaplen(buf) < len || buf->block == NULL) {
 		if (buf->block != NULL && sbuf_movegap(buf, buf->len, 0) < 0) {
@@ -254,7 +262,7 @@ int (sbuf_charat)(Sbuf *buf, long pos) {
 	sbuf_validate(buf);
 	assert(pos >= 0);
 	assert(pos <= buf->len);
-	assert(!buf->locked);
+	assert(!sbuf_has_flags(buf, SBUF_LOCKED_FLAG));
 
 	if (pos == buf->len)
 		return EOF;
@@ -516,9 +524,12 @@ int sbuf_strchange(Sbufmark *mark, const char *str, size_t len) {
 
 	sbuf_validate_mark(mark);
 	assert(str != NULL);
-	assert(!mark->buf->locked);
+	assert(!sbuf_has_flags(mark->buf, SBUF_LOCKED_FLAG));
 
 	m = mark->buf->marks + mark->mark;
+
+	__sbuf_log("%d %p %ld %ld %ld\n", getpid(), (void *) mark->buf, m->begin, m->len, len, (long) len);
+
 	if (m->columnar) {
 		if (remove_columnar_mark(mark) == -1)
 			return -1;
@@ -954,4 +965,28 @@ long textlen) {
 	adjust_marks(buf, pos, len, textlen);
 
 	return 0;
+}
+
+
+
+/*
+ * Function:	__sbuf_log
+ * Purpose:	Write (and open, if necessary) a log file for logging changes to sbufs.
+ */
+static void __sbuf_log(const char *fmt, ...) {
+#if SBUF_LOG
+	static FILE *log = NULL;
+	va_list args;
+	
+	if (log == NULL) {
+		log = fopen("/home/liw/sbuf-changes-log", "a");
+		if (log == NULL)
+			return;
+	}
+	
+	va_start(args, fmt);
+	vfprintf(log, fmt, args);
+	va_end(args);
+	(void) fflush(log);
+#endif
 }

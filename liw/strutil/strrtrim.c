@@ -2,7 +2,7 @@
  * strrtrim.c -- remove trailing whitespace from a string
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-strutil:$Id: strrtrim.c,v 1.3 1994/07/16 12:11:02 liw Exp $"
+ * "@(#)publib-strutil:$Id: strrtrim.c,v 1.2 1994/06/20 20:30:34 liw Exp $"
  */
 
 #include <assert.h>

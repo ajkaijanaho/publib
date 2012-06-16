@@ -2,11 +2,12 @@
  * log.c -- log files
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-log:$Id: log.c,v 1.10 1996/04/19 20:38:49 liw Exp $"
+ * "@(#)publib-log:$Id: log.c,v 1.11 1997/05/09 13:43:49 liw Exp $"
  */
 
 #include <assert.h>
 #include <time.h>
+#include <unistd.h>
 #include "publib/log.h"
 #include "publib/errormsg.h"
 
@@ -15,6 +16,7 @@
 static struct {
 	FILE *f;
 	int min;
+	int use_localtime;
 } logs[MAX];
 static int nlogs = 0;
 static int log_is_on = 1;
@@ -38,6 +40,7 @@ int log_open(const char *filename, int min_level) {
 
 	logs[nlogs].f = f;
 	logs[nlogs].min = min_level;
+	logs[nlogs].use_localtime = 0;
 	return nlogs++;
 }
 
@@ -52,6 +55,7 @@ int log_add(FILE *f, int min_level) {
 
 	logs[nlogs].f = f;
 	logs[nlogs].min = min_level;
+	logs[nlogs].use_localtime = 0;
 	return nlogs++;
 }
 
@@ -59,6 +63,13 @@ void log_set_level(int logid, int min_level) {
 	assert(logid >= 0);
 	assert(logid < nlogs);
 	logs[logid].min = min_level;
+}
+
+
+void log_set_localtime(int logid, int use_localtime) {
+	assert(logid >= 0);
+	assert(logid < nlogs);
+	logs[logid].use_localtime = use_localtime;
 }
 
 
@@ -97,26 +108,30 @@ void log_on(void) {
 		va_list args; \
 		struct tm *tm; \
 		time_t t; \
-		char buf[100]; \
+		char buf1[100]; \
+		char buf2[200]; \
 		const char *p; \
 		int i; \
+		long pid; \
 		if (!log_is_on) return; \
 		p = get_progname(); \
 		if (*p == '\0') p = "unknown"; \
 		tm = NULL; \
+		pid = (long) getpid(); \
 		for (i = 0; i < nlogs; ++i) { \
 			if (log_level_##level < logs[i].min) continue; \
 			if (tm == NULL) { \
 				time(&t); \
-				tm = gmtime(&t); \
-				sprintf(buf, \
-				"%04d-%02d-%02d %02d:%02d:%02d UTC %.50s %d ", \
-				tm->tm_year+1900, tm->tm_mon+1, tm->tm_mday, \
-				tm->tm_hour, tm->tm_min, tm->tm_sec, \
-				p, log_level_##level); \
+				if (logs[i].use_localtime) \
+					tm = localtime(&t); \
+				else \
+					tm = gmtime(&t); \
+				strftime(buf1, sizeof(buf1), \
+				"%Y-%m-%d %H-%M-%S %Z %%.50s %%ld %%d ", tm); \
+				sprintf(buf2, buf1, p, pid, log_level_##level);\
 			} \
 			va_start(args, fmt); \
-			(void) fputs(buf, logs[i].f); \
+			(void) fputs(buf2, logs[i].f); \
 			(void) vfprintf(logs[i].f, fmt, args); \
 			(void) fflush(logs[i].f); \
 			va_end(args); \
@@ -133,9 +148,11 @@ void log_printf(int level, const char *fmt, ...) {
 	va_list args;
 	struct tm *tm;
 	time_t t;
-	char buf[100];
+	char buf1[100];
+	char buf2[100];
 	const char *p;
 	int i;
+	long pid;
 
 	if (!log_is_on)
 		return;
@@ -144,20 +161,22 @@ void log_printf(int level, const char *fmt, ...) {
 	if (*p == '\0')
 		p = "unknown";
 	tm = NULL;
+	pid = (long) getpid();
 
 	for (i = 0; i < nlogs; ++i) {
 		if (level >= logs[i].min) {
 			if (tm == NULL) {
 				time(&t);
-				tm = gmtime(&t);
-				sprintf(buf, 
-				"%04d-%02d-%02d %02d:%02d:%02d UTC %.50s %d ",
-				tm->tm_year+1900, tm->tm_mon+1, tm->tm_mday,
-				tm->tm_hour, tm->tm_min, tm->tm_sec,
-				p, level); 
+				if (logs[i].use_localtime)
+					tm = localtime(&t);
+				else
+					tm = gmtime(&t);
+				strftime(buf1, sizeof(buf1),
+				"%Y-%m-%d %H-%M-%S %Z %%.50s %%ld %%d ", tm);
+				sprintf(buf2, buf1, p, pid, level);
 			}
 			va_start(args, fmt);
-			(void) fputs(buf, logs[i].f);
+			(void) fputs(buf2, logs[i].f);
 			(void) vfprintf(logs[i].f, fmt, args);
 			(void) fflush(logs[i].f);
 			va_end(args);

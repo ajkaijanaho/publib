@@ -2,7 +2,7 @@
  * File:	test-priq.c
  * Purpose:	Test priority queue routines.
  * Author:	Lars Wirzenius
- * Version:	"@(#)publib:$Id: test-priq.c,v 1.1.1.1 1996/01/18 17:55:38 liw Exp $"
+ * Version:	"@(#)publib:$Id$"
  */
 
 #include <stdio.h>

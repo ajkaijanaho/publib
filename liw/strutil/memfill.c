@@ -2,7 +2,7 @@
  * memfill.c -- fill memory area with pattern
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-strutil:$Id: memfill.c,v 1.2 1994/02/05 17:08:42 liw Exp $"
+ * "@(#)publib-strutil:$Id: memfill.c,v 1.1.1.1 1994/02/03 17:25:31 liw Exp $"
  */
 
 #include <assert.h>

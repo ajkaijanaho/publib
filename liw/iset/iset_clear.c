@@ -2,7 +2,7 @@
  * is_clear.c -- make an iset be empty
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-iset:$Id: iset_clear.c,v 1.1.1.1 1993/11/20 17:02:31 liw Exp $"
+ * "@(#)publib-iset:$Id$"
  */
 
 #include <assert.h>

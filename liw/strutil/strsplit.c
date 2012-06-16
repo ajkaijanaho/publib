@@ -2,7 +2,7 @@
  * strsplit.c -- split a string into "words"
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-strutil:$Id: strsplit.c,v 1.3 1994/02/19 20:58:38 liw Exp $"
+ * "@(#)publib-strutil:$Id: strsplit.c,v 1.2 1994/02/05 17:08:45 liw Exp $"
  */
 
 #include <assert.h>

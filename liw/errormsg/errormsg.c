@@ -37,7 +37,10 @@ void __set_liberror(enum __liberror i) {
  * (it is valid for argv[0] to be NULL, under ISO C).
  */
 void set_progname(const char *argv0, const char *def) {
-	progname = (argv0 != NULL) ? argv0 : def;
+	if (argv0 != NULL && *argv0 != '\0')
+		progname = argv0;
+	else if (def != NULL && *def != '\0')
+		progname = def;
 }
 
 

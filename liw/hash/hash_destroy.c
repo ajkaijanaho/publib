@@ -2,7 +2,7 @@
  * hash_destroy.c -- destroy a hash table
  *
  * Part of Publib, see man page for more information.
- * "@(#)publib-hash:$Id: hash_destroy.c,v 1.1.1.1 1994/07/20 21:02:54 liw Exp $"
+ * "@(#)publib-hash:$Id$"
  */
 
 #include <assert.h>

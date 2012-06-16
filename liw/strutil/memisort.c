@@ -2,7 +2,7 @@
  * memisort.c -- sort new element in sorted array
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-strutil:$Id: memisort.c,v 1.1 1994/02/06 09:45:09 liw Exp $"
+ * "@(#)publib-strutil:$Id$"
  */
 
 #include <assert.h>

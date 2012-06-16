@@ -2,7 +2,7 @@
  * ba_xor_ba.c -- xor a set with another set
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-bitarr:$Id: ba_xor_ba.c,v 1.3 1995/05/12 14:44:07 wirzeniu Exp $"
+ * "@(#)publib-bitarr:$Id: ba_xor_ba.c,v 1.2 1993/11/29 19:41:42 liw Exp $"
  */
 
 #include <assert.h>

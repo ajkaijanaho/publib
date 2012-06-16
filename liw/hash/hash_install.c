@@ -2,7 +2,7 @@
  * hash_install.c -- add a new data value in a hash table
  *
  * Part of Publib, see man page for more information.
- * "@(#)publib-hash:$Id: hash_install.c,v 1.3 1995/11/26 10:13:09 liw Exp $"
+ * "@(#)publib-hash:$Id: hash_install.c,v 1.2 1995/09/23 09:11:54 liw Exp $"
  */
 
 #include <assert.h>

@@ -1,6 +1,6 @@
 README for Publib module cfgtool
 Lars Wirzenius
-"@(#)publib-cfgtool:$Id: README,v 1.1.1.1 1996/11/05 21:13:54 liw Exp $"
+"@(#)publib-cfgtool:$Id$"
 
 These routines for manipulating the cfgtool system configuration variable
 database of the Debian GNU/Linux system. This module is used by Debian's

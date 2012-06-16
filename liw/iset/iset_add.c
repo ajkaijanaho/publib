@@ -2,7 +2,7 @@
  * iset_add.c -- add an integer to an iset
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-iset:$Id: iset_add.c,v 1.5 1995/08/25 20:45:09 liw Exp $"
+ * "@(#)publib-iset:$Id: iset_add.c,v 1.4 1994/07/16 15:28:50 liw Exp $"
  */
 
 #include <assert.h>

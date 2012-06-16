@@ -2,7 +2,7 @@
  * xfclose.c -- error checking front-end for fclose
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-files:$Id: xfclose.c,v 1.2 1995/08/11 15:53:17 liw Exp $"
+ * "@(#)publib-files:$Id: xfclose.c,v 1.1.1.1 1993/11/20 17:02:01 liw Exp $"
  */
 
 #include <stdio.h>

@@ -2,7 +2,7 @@
  * stack.h -- stack routines
  *
  * Part of publib
- * "@(#)publib-stack:$Id: stack.h,v 1.1.1.1 1993/11/20 17:02:51 liw Exp $"
+ * "@(#)publib-stack:$Id$"
  */
 
 #ifndef __publib_stack_h

@@ -2,7 +2,7 @@
  * struncstr.c -- convert C string literal notation into binary data
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-strutil:$Id: struncstr.c,v 1.3 1995/08/11 15:52:07 liw Exp $"
+ * "@(#)publib-strutil:$Id: struncstr.c,v 1.2 1994/02/05 17:08:46 liw Exp $"
  */
 
 #include <assert.h>

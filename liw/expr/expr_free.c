@@ -2,7 +2,7 @@
  * expr_free.c -- free resources allocated for compiled expression
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-expr:$Id: expr_free.c,v 1.1.1.1 1993/11/20 15:57:29 liw Exp $"
+ * "@(#)publib-expr:$Id$"
  */
 
 #include <assert.h>

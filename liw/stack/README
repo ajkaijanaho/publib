@@ -1,6 +1,6 @@
 README for Publib module stack
 Lars Wirzenius
-"@(#)publib-stack:$Id: README,v 1.1 1994/08/28 18:09:27 liw Exp $"
+"@(#)publib-stack:$Id$"
 
 These routines implement a generic stack.
 

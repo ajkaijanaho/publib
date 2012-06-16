@@ -2,7 +2,7 @@
  * File:	file_io.c
  * Purpose:	File I/O.
  * Author:	Lars Wirzenius
- * Version:	"@(#)publib:$Id: file_io.c,v 1.1 1996/11/05 21:15:46 liw Exp $"
+ * Version:	"@(#)publib:$Id$"
  */
 
 #include <stdio.h>

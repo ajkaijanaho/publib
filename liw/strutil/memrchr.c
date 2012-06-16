@@ -2,7 +2,7 @@
  * memrchr.c -- reverse search for character inside another memory block
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-strutil:$Id: memrchr.c,v 1.2 1994/10/06 11:09:24 liw Exp $"
+ * "@(#)publib-strutil:$Id: memrchr.c,v 1.1 1994/08/28 18:13:42 liw Exp $"
  */
 
 #include <assert.h>

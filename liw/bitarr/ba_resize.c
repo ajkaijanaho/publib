@@ -2,7 +2,7 @@
  * ba_resize.c -- change size of set
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-bitarr:$Id: ba_resize.c,v 1.4 1995/05/12 14:44:06 wirzeniu Exp $"
+ * "@(#)publib-bitarr:$Id: ba_resize.c,v 1.3 1994/07/16 15:28:30 liw Exp $"
  */
 
 #include <assert.h>

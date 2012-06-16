@@ -22,6 +22,7 @@ enum log_level {
 int log_open(const char *, int);
 int log_add(FILE *, int);
 void log_set_level(int, int);
+void log_set_localtime(int, int);
 int log_close(void);
 void log_off(void);
 void log_on(void);

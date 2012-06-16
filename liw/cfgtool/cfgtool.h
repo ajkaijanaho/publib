@@ -42,17 +42,17 @@ int cfgtool_read_all(Cfgtool *, FILE *, int);
 
 #ifdef __publib__
 
-	#include <publib/alloc.h>
-	struct cfgtool_repository {
-		struct dynarr da;
-		char *lock_file;
-		char *repository;
-		char *value_file;
-		unsigned loaded:1;
-		unsigned dirty:1;
-		unsigned have_lock:1;
-		unsigned keep_lock:1;
-	};
+#include <publib/alloc.h>
+struct cfgtool_repository {
+	struct dynarr da;
+	char *lock_file;
+	char *repository;
+	char *value_file;
+	unsigned loaded:1;
+	unsigned dirty:1;
+	unsigned have_lock:1;
+	unsigned keep_lock:1;
+};
 
 #endif
 

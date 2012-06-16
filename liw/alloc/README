@@ -1,6 +1,6 @@
 README for Publib module alloc
 Lars Wirzenius
-"@(#)publib-alloc:$Id: README,v 1.2 1994/08/28 17:09:28 liw Exp $"
+"@(#)publib-alloc:$Id: README,v 1.1 1994/08/28 16:51:24 liw Exp $"
 
 These routines do dynamic memory allocation.  Those with names starting
 with an x are error checking front-ends of the usual functions.

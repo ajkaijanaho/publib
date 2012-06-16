@@ -2,7 +2,7 @@
  * strvars.c -- expand variables in string
  *
  * Part of publib.  See man page for more information.
- * "@(#)publib-strutil:$Id: strvars.c,v 1.6 1995/08/24 16:51:36 liw Exp $"
+ * "@(#)publib-strutil:$Id: strvars.c,v 1.5 1995/07/23 12:44:18 wirzeniu Exp $"
  */
 
 #include <assert.h>

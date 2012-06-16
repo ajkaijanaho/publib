@@ -26,7 +26,7 @@
 # It needs to have at least all the targets in this makefile, and will
 # have to include $(srcdir)/Rules.mk.
 #
-# "@(#)publib-framework:$Id: Generic.mk,v 1.3 1995/09/23 09:09:35 liw Exp $"
+# "@(#)publib-framework:$Id: Generic.mk,v 1.2 1995/08/11 16:28:44 liw Exp $"
 
 include $(objdir)/Rules.mk
 

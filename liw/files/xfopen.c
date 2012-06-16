@@ -2,7 +2,7 @@
  * xfopen.c -- error checking front-end for fopen
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-files:$Id: xfopen.c,v 1.1.1.1 1993/11/20 17:02:01 liw Exp $"
+ * "@(#)publib-files:$Id$"
  */
 
 #include <stdio.h>

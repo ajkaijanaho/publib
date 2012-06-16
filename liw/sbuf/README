@@ -1,6 +1,6 @@
 README for Publib module sbuf
 Lars Wirzenius
-"@(#)publib-sbuf:$Id: README,v 1.1.1.1 1994/08/28 17:12:05 liw Exp $"
+"@(#)publib-sbuf:$Id$"
 
 These routines implement a text editor's editing buffer using
 a simple buffer gap data structure.

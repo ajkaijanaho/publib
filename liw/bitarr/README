@@ -1,6 +1,6 @@
 README for Publib module bitarr
 Lars Wirzenius
-"@(#)publib-alloc:$Id: README,v 1.2 1994/08/28 17:09:42 liw Exp $"
+"@(#)publib-alloc:$Id: README,v 1.1 1994/08/28 16:56:00 liw Exp $"
 
 These routines implement a bit array.
 

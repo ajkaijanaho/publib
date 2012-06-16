@@ -3,7 +3,7 @@
  *
  * Lars Wirzenius
  * Part of Publib, see publib(3).
- * "@(#)publib-lsm:$Id: lsm.h,v 1.3 1996/04/08 22:28:34 liw Exp $"
+ * "@(#)publib-lsm:$Id: lsm.h,v 1.2 1995/12/02 19:25:26 liw Exp $"
  */
  
 

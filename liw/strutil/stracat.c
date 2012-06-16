@@ -2,7 +2,7 @@
  * stracat.c -- concatenate many strings into an allocated memory block
  *
  * Part of publib.  See man page for more information.
- * "@(#)publib-strutil:$Id: stracat.c,v 1.5 1994/07/16 15:29:17 liw Exp $"
+ * "@(#)publib-strutil:$Id: stracat.c,v 1.4 1994/07/16 12:11:39 liw Exp $"
  */
 
 #include <assert.h>

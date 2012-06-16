@@ -2,7 +2,7 @@
  * getaline.c -- read arbitrarily long line from file
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-files:$Id: getaline.c,v 1.4 1996/04/28 14:01:19 liw Exp $"
+ * "@(#)publib-files:$Id: getaline.c,v 1.3 1995/11/26 10:13:09 liw Exp $"
  */
 
 #include <stdio.h>

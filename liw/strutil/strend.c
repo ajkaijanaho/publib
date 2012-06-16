@@ -2,7 +2,7 @@
  * strend.c -- return pointer to the '\0' terminator of a string
  *
  * Part of publib.  See man page for more information.
- * "@(#)publib-strutil:$Id: strend.c,v 1.1 1994/06/20 20:30:11 liw Exp $"
+ * "@(#)publib-strutil:$Id$"
  */
 
 #include <assert.h>

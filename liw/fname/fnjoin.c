@@ -2,7 +2,7 @@
  * fnjoin.c -- join two filenames together
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-fname:$Id: fnjoin.c,v 1.2 1994/06/20 20:49:23 liw Exp $"
+ * "@(#)publib-fname:$Id: fnjoin.c,v 1.1.1.1 1993/11/20 17:02:15 liw Exp $"
  */
 
 #include <assert.h>

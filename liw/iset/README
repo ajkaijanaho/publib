@@ -1,6 +1,6 @@
 README for Publib module iset
 Lars Wirzenius
-"@(#)publib-iset:$Id: README,v 1.1 1994/08/28 18:01:52 liw Exp $"
+"@(#)publib-iset:$Id$"
 
 These routines implement a set of long integers.  It is implemented
 as a linked list of ranges, so as to make it more efficient if there

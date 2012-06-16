@@ -2,7 +2,7 @@
  * memdel.c -- delete bytes from beginning of memory block
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-strutil:$Id: memdel.c,v 1.1 1994/06/20 20:29:52 liw Exp $"
+ * "@(#)publib-strutil:$Id$"
  */
 
 #include <assert.h>

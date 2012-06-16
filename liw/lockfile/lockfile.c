@@ -11,6 +11,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <stdio.h>
+#include <string.h>
 #include <publib.h>
 
 #include "lockfile.h"

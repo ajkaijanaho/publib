@@ -3,7 +3,7 @@
  *
  * Lars Wirzenius
  * Part of Publib, see publib(3).
- * "@(#)publib-lsm:$Id: lsm_format_entry.c,v 1.2 1996/01/07 22:00:04 liw Exp $"
+ * "@(#)publib-lsm:$Id$"
  */
  
 #include <string.h>

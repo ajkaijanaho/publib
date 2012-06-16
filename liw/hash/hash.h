@@ -2,7 +2,7 @@
  * hash.h -- hashing table routines
  *
  * Part of Publib, see man page for more information.
- * "@(#)publib-hash:$Id: hash.h,v 1.2 1995/09/23 09:11:54 liw Exp $"
+ * "@(#)publib-hash:$Id: hash.h,v 1.1.1.1 1994/07/20 21:02:54 liw Exp $"
  */
 
 #ifndef __publib_hash_h_included

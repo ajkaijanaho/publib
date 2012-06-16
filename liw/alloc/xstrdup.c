@@ -2,7 +2,7 @@
  * xstrdup.c -- error checking string duplication
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-alloc:$Id: xstrdup.c,v 1.1.1.1 1993/11/20 17:01:28 liw Exp $"
+ * "@(#)publib-alloc:$Id$"
  */
 
 #include <assert.h>

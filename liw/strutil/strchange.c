@@ -2,7 +2,7 @@
  * strchange.c -- change beginning of string to another string
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-strutil:$Id: strchange.c,v 1.1 1994/06/20 20:30:08 liw Exp $"
+ * "@(#)publib-strutil:$Id$"
  */
 
 #include <assert.h>

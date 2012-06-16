@@ -2,7 +2,7 @@
  * memshuffle.c -- make an array be in random order
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-strutil:$Id: memshuffle.c,v 1.3 1994/06/20 20:30:02 liw Exp $"
+ * "@(#)publib-strutil:$Id: memshuffle.c,v 1.2 1994/02/19 20:58:36 liw Exp $"
  */
 
 #include <assert.h>

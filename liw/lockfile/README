@@ -1,6 +1,6 @@
 README for Publib module lockfile
 Lars Wirzenius
-"@(#)publib-lockfile:$Id: README,v 1.1.1.1 1996/11/05 21:06:56 liw Exp $"
+"@(#)publib-lockfile:$Id$"
 
 These routines implement creating and deleting lock files.
 

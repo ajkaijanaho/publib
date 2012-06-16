@@ -2,7 +2,7 @@
  * files.h -- utility functions for files
  *
  * Part of publib.
- * "@(#)publib-files:$Id: files.h,v 1.2 1996/11/05 21:15:47 liw Exp $"
+ * "@(#)publib-files:$Id: files.h,v 1.1.1.1 1993/11/20 17:02:01 liw Exp $"
  */
 
 #ifndef __publib_files_h

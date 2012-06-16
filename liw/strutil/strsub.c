@@ -2,7 +2,7 @@
  * strsub.c -- substitute first occurence of pattern with another string
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-strutil:$Id: strsub.c,v 1.1.1.1 1994/02/03 17:25:30 liw Exp $"
+ * "@(#)publib-strutil:$Id$"
  */
 
 #include <assert.h>

@@ -1,0 +1,106 @@
+* log: syslog, __file__ and __line__ automatically
+
+* have indexes with all publib-manual pages
+
+* manual pages should be compressed for Debian.
+
+* manual pages should have optional suffix
+
+* install should create target dirs
+
+* several module daddy dirs
+
+* build shared libraries
+
+* create some automatic testing (even if rudimentary)
+
+* config files: write back as well, and retain comments in the original
+
+* getaline: make it possible to restrict the size of one line
+
+* extensible printf; snprintf
+
+* something to replace scanf?
+
+* tab positions
+
+* isxdigit, isodigit
+
+* function to read from file/string C tokens
+
+* ...and C tokens in general?
+
+* guaranteed good random number generator, with randomize
+
+* bitfiles
+
+* dynamic arrays, multidimensional too
+
+* files: length of file, copy files and streams, move files (across disks),
+  get list of files in a directory, select files in list, do operation
+  for all/selected files in list (i.e., copy/move/rename/delete)
+
+* strings: approximate matching; non-null-terminated strings; fast strstr
+
+* rfc822 et al mail message handling; UNIX mailbox handling
+
+* dos framework: write program to read the list files to be compiled (scan
+  the modules directory's subdirectories) and output a BC++ project file
+
+* function to compare strings numerically: abc1 < abc2 < abc10
+
+* strexpandvars
+
+* bitarr: set, clear ranges
+
+* cmp: cmp_uchararr, ucharstr, cmp_schararr, scharstr
+
+* symtab
+
+* fname: /./ -> /
+
+* iset: hashtable+bitmap
+
+* expr: unget_token: error if ungot_count too large
+* expr: don't have globals at all
+* expr: on errors, free ungot tokens as well
+
+* automatic more for output
+
+* Template: not-explicitly-changing input files
+
+* recognize function keys / other key sequences
+
+* tmpdir - create temporary directory (to be deleted on normal exit)
+
+* handle errno correctly
+
+* dates and times, handle all timezones, all possible times (i.e., as
+  long a time range as possible), support the timesrc timezone db,
+  conversions to and from string formats; make it as a replacement
+  for normal <time.h>?
+
+* incremental searches from arrays (generic)
+
+* file copy, move, rename
+
+* get list of filenames; directory tree; display as ascii
+
+* bm or knp search routines (memfmem[setup], memfrmem, strfstr, strfrstr, f for
+  fancy)
+
+* compression
+
+* write text on library function design: degrees of tightness (Meyers),
+	uniform interface, how to deal with errors, try to define function
+	so it can't fail, use asserts properly to catch errors, don't
+	blend status codes and useful data, but do otherwise follow the
+	unix system call interface; memory allocation principles
+
+* allocation of fixed size blocks (handles a few sizes automatically, keeps a list of
+  freed blocks of the given sizes)
+
+* write better text on the design of the framework, the modules, and their
+	interface; write tutorial on writing a module
+
+* fname: there is no suffix in ".profile".

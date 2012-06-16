@@ -1,0 +1,28 @@
+#!/bin/sh
+
+set -e
+
+[ -z "$OBJDIR" ] && OBJDIR=../../o
+
+rm -f stat-*.dat
+find "$@" -type f | 
+while read file
+do
+	# echo $file 1>&2
+	$OBJDIR/test_tbuf_with_stats < $file
+done |
+awk '{ 
+	print $1, $2 >>"stat-length-height.dat" 
+	print $1, $3 >>"stat-length-nodes.dat" 
+	print $1, $4 >>"stat-length-chunks.dat" 
+	print $1, $5 >>"stat-length-memtotal.dat" 
+	print $1, $6 >>"stat-length-fewkids.dat" 
+}'
+
+for file in stat-*.dat
+do
+	cat <<EOF | gnuplot > `basename $file .dat`.ps
+set terminal postscript
+plot "$file"
+EOF
+done

@@ -3,7 +3,7 @@
  *
  * Lars Wirzenius
  * Part of Publib, see README and publib(3) for more info.
- * "@(#)colawatcher:$Id: nntp.c,v 1.2 1995/08/05 21:40:52 liw Exp $"
+ * "@(#)colawatcher:$Id: nntp.c,v 1.1.1.1 1995/07/23 12:41:47 wirzeniu Exp $"
  */
 
 

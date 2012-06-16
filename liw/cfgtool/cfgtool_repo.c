@@ -2,7 +2,7 @@
  * File:	cfgtool_repo.c
  * Purpose:	Implementation of library routines handling Debian's cfgtool.
  * Author:	Lars Wirzenius
- * Version:	"@(#)publib-cfgtool:$Id: cfgtool_repo.c,v 1.1.1.1 1996/11/05 21:13:54 liw Exp $"
+ * Version:	"@(#)publib-cfgtool:$Id$"
  */
 
 #include <stdlib.h>

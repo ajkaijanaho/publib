@@ -2,7 +2,7 @@
  * strright.c -- return a pointer to the beginning of the rightmost n chars
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-strutil:$Id: strright.c,v 1.1 1994/06/20 20:30:32 liw Exp $"
+ * "@(#)publib-strutil:$Id$"
  */
 
 #include <assert.h>

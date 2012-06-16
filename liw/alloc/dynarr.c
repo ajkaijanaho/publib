@@ -2,7 +2,7 @@
  * dynarr.c -- dynamic arrays
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-alloc:$Id: dynarr.c,v 1.5 1995/11/26 10:13:06 liw Exp $"
+ * "@(#)publib-alloc:$Id: dynarr.c,v 1.4 1995/07/23 12:43:31 wirzeniu Exp $"
  */
 
 #include <assert.h>

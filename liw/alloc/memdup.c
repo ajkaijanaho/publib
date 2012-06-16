@@ -2,7 +2,7 @@
  * memdup.c -- duplicate memory block
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-alloc:$Id: memdup.c,v 1.2 1995/11/26 10:13:06 liw Exp $"
+ * "@(#)publib-alloc:$Id: memdup.c,v 1.1.1.1 1993/11/20 17:01:29 liw Exp $"
  */
 
 #include <assert.h>

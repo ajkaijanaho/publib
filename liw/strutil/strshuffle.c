@@ -2,7 +2,7 @@
  * strshuffle.c -- make the characters in a string be in random order
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-strutil:$Id: strshuffle.c,v 1.1 1994/06/20 20:30:38 liw Exp $"
+ * "@(#)publib-strutil:$Id: memshuffle.c,v 1.2 1994/02/19 20:58:36 liw Exp $"
  */
 
 #include <assert.h>

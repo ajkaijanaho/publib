@@ -1,0 +1,24 @@
+#!/usr/bin/python
+
+import sys, string
+
+def main():
+	opers = {}
+	while 1:
+		line = sys.stdin.readline()
+		if not line:
+			break
+		fields = string.split(line)
+		key = fields[0] + "." + fields[1]
+		if not opers.has_key(key):
+			opers[key] = []
+		opers[key].append(fields[2], fields[3], fields[4])
+
+	for key in opers.keys():
+		f = open(key, "w")
+		for a, b, c in opers[key]:
+			f.write("%s %s %s\n" % (a, b, c))
+		f.close()
+
+if __name__ == "__main__":
+	main()

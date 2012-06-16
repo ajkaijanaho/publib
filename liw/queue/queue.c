@@ -2,7 +2,7 @@
  * File:	queue.c
  * Purpose:	Implement the queue abstract data type.
  * Author:	Lars Wirzenius
- * Version:	"@(#)publib:$Id: queue.c,v 1.1.1.1 1996/01/18 15:44:03 liw Exp $"
+ * Version:	"@(#)publib:$Id$"
  */
 
 

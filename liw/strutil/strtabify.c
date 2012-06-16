@@ -2,7 +2,7 @@
  * strtabify.c -- convert runs of spaces and tabs to tabs (+ necessary spaces)
  *
  * Part of publib.  See man page for more information.
- * "@(#)publib-strutil:$Id: strtabify.c,v 1.1 1994/06/20 20:30:40 liw Exp $"
+ * "@(#)publib-strutil:$Id$"
  */
 
 #include <assert.h>

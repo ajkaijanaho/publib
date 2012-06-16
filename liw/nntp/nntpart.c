@@ -2,7 +2,7 @@
  * File: nntpart.c
  * Purpose: Routines for manipulating Usenet articles
  * Author: Lars Wirzenius
- * CVS: "@(#)publib:$Id: nntpart.c,v 1.4 1996/04/08 22:27:54 liw Exp $"
+ * CVS: "@(#)publib:$Id: nntpart.c,v 1.3 1995/11/26 09:56:03 liw Exp $"
  */
 
 #include <assert.h>

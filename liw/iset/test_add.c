@@ -2,7 +2,7 @@
  * add.c -- add numbers to an iset, then print out minimum ranges
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-iset:$Id: test_add.c,v 1.1.1.1 1993/11/20 17:02:31 liw Exp $"
+ * "@(#)publib-iset:$Id$"
  */
 
 #undef NDEBUG

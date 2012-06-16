@@ -2,7 +2,7 @@
  * stack_push.c -- push element on top of stack
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-stack:$Id: stack_push.c,v 1.3 1994/07/16 15:29:08 liw Exp $"
+ * "@(#)publib-stack:$Id: stack_push.c,v 1.2 1994/07/16 12:10:07 liw Exp $"
  */
 
 #include <assert.h>

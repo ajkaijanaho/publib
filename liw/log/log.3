@@ -11,6 +11,7 @@ log \- simple log file output
 int \fBlog_open\fR(const char *\fIfilename\fR, int \fImin_level\fR);
 int \fBlog_add\fR(FILE *\fIf\fR, int \fImin_level\fR);
 void \fBlog_set_level\fR(int \fIlog_handle\fR, int \fImin_level\fR);
+void \fBlog_set_localtime\fR(int \fIlog_handle\fR, int \fIuse_localtime\fR);
 int \fBlog_close\fR(void);
 void \fBlog_off\fR(void);
 void \fBlog_on\fR(void);
@@ -53,6 +54,10 @@ They return a log file handle, which is used to identify
 the log file to the other functions.
 The minimum level can later be adjusted with \fIlog_set_level\fR.
 \fIlog_close\fR closes all log files.
+.PP
+By default, times in log files are reported in UTC,
+but each log file can be set to use local time with
+\fIlog_set_localtime\fR.
 .PP
 Logging may temporarily be turned off for all log files at the
 same time with \fIlog_off\fR.

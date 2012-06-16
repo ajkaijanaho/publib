@@ -2,7 +2,7 @@
  * iset_add_range.c -- add a range of integers to an iset
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-iset:$Id: iset_add_rng.c,v 1.1.1.1 1993/11/20 17:02:31 liw Exp $"
+ * "@(#)publib-iset:$Id$"
  */
 
 #include <assert.h>

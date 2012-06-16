@@ -36,6 +36,8 @@
 /*
  * Buffer for the last error message.
  * MAXERR is maximum number of chars from variable string arguments.
+ *
+ * XXX this is a bug, since it's non-re-entrant. Should be fixed one day.
  */
 #define MAXERR 128
 static char error[80 + MAXERR] = "";
@@ -45,6 +47,8 @@ static char error[80 + MAXERR] = "";
 /*
  * Hold the current (while cfg_read_file is running) filename and line
  * number.
+ *
+ * XXX these are also a bug, since they're also non-re-entrant.
  */
 static const char *filename;
 static long lineno;
@@ -63,16 +67,49 @@ static const int num_boolnames = sizeof(boolnames) / sizeof(*boolnames);
 
 
 /*
+ * Describe a type.  The two function pointers here will point to functions
+ * that parse a value and set it to the value of a variable, and write
+ * out a value.
+ */
+struct type {
+	enum cfg_type type;
+	int (*set_value)(void *, char *);
+	int (*write)(FILE *, void *);
+};
+
+
+/*
  * Prototypes for local functions.
  */
 static void mkerror(const char *, ...);
 static int parse_line(char *, char **, char **);
-static struct cfg_variable *lookup_name(struct cfg_variable *, const char *);
 static struct cfg_variable *lookup_prefix(struct cfg_variable *, const char *);
 static struct cfg_variable *lookup_option(struct cfg_variable *, int);
 static struct type *lookup_type(enum cfg_type);
 static int write_variable(FILE *, struct cfg_variable *);
-static FILE *open_file(const char *, const char *);
+static int write_unknown(FILE *, char *, char *);
+
+static int unknowns_allowed(struct cfg_variable *);
+static int process_file(FILE *, FILE *, int (*)(FILE *, char *),
+	int (*)(FILE *, char *, char *, struct cfg_variable *), 
+	struct cfg_variable *);
+static int do_nonvar_ignore(FILE *, char *);
+static int do_nonvar_write(FILE *, char *);
+static int do_var_set(FILE *, char *, char *, struct cfg_variable *);
+static int set_value(struct cfg_variable *, char *);
+static int set_unknown(struct cfg_unknown_variable *, char *);
+static int add_unknown(struct cfg_unknown_variable **, char *, char *);
+static int do_var_write(FILE *, char *, char *, struct cfg_variable *);
+static struct cfg_variable *find_known(struct cfg_variable *, char *);
+static int process_without_flag(struct cfg_variable *, unsigned, void *,
+	int (*)(void *, struct cfg_variable *),
+	int (*)(void *, struct cfg_unknown_variable *));
+static int do_known_write(void *, struct cfg_variable *);
+static int do_unknown_write(void *, struct cfg_unknown_variable *);
+
+static int open_file(FILE **, const char *, const char *);
+static int close_file(FILE *, const char *);
+static int rename_file(const char *, const char *);
 
 static int single_char_options(struct cfg_variable *, char **, int *);
 static int long_option(struct cfg_variable *, char **, int *);
@@ -81,14 +118,14 @@ static int str_to_long(const char *, long *);
 static int str_to_ulong(const char *, unsigned long *);
 static int str_to_double(const char *, double *);
 
-static int set_long(void *, char **);
-static int set_long_expr(void *, char **);
-static int set_ulong(void *, char **);
-static int set_ulong_expr(void *, char **);
-static int set_double(void *, char **);
-static int set_double_expr(void *, char **);
-static int set_string(void *, char **);
-static int set_boolean(void *, char **);
+static int set_long(void *, char *);
+static int set_long_expr(void *, char *);
+static int set_ulong(void *, char *);
+static int set_ulong_expr(void *, char *);
+static int set_double(void *, char *);
+static int set_double_expr(void *, char *);
+static int set_string(void *, char *);
+static int set_boolean(void *, char *);
 
 static int write_long(FILE *f, void *);
 static int write_ulong(FILE *f, void *);
@@ -96,18 +133,6 @@ static int write_double(FILE *f, void *);
 static int write_string(FILE *f, void *);
 static int write_boolean(FILE *f, void *);
 
-
-
-/*
- * Describe a type.  The two function pointers here will point to functions
- * that parse a value and set it to the value of a variable, and write
- * out a value.
- */
-struct type {
-	enum cfg_type type;
-	int (*set_value)(void *, char **);
-	int (*write)(FILE *, void *);
-};
 
 
 /*
@@ -168,6 +193,17 @@ int cfg_from_array(struct cfg_variable *variables, char **argv) {
 }
 
 
+int cfg_read_open_file(struct cfg_variable *variables, const char *fn, FILE *f)
+{
+	assert(variables != NULL);
+	assert(fn != NULL);
+	assert(*fn != '\0');
+	assert(f != NULL);
+
+	filename = fn;
+	return process_file(f, NULL, do_nonvar_ignore, do_var_set, variables);
+}
+
 
 /*
  * Read configuration file values from a file.  Return -1 for error,
@@ -176,113 +212,53 @@ int cfg_from_array(struct cfg_variable *variables, char **argv) {
 int cfg_read_file(struct cfg_variable *variables, const char *fn) {
 	FILE *f;
 	int ret;
-	char *line, *value, *varname;
-	struct cfg_variable *v;
 
 	assert(variables != NULL);
 	assert(fn != NULL);
 	assert(*fn != '\0');
 
 	filename = fn;
-	lineno = 0;
-
-	f = fopen(fn, "r");
-	if (f == NULL) {
-		mkerror("couldn't open file for reading: %.*s", 
-			MAXERR, strerror(errno));
+	if (open_file(&f, fn, "r") == -1)
 		return -1;
-	}
-
-	ret = 0;
-	lineno = 0;
-	while (ret == 0 && (line = getaline(f)) != NULL) {
-		++lineno;
-		switch (parse_line(line, &varname, &value)) {
-		case 1: break;
-		case 0:
-			free(line);
-			continue;
-		case -1:
-			free(line);
-			ret = -1;
-			continue;
-		default:		/* unknown return from parse_line */
-			assert(0);
-			abort();
-		}
-
-		v = lookup_name(variables, varname);
-		if (v == NULL) {
-			mkerror("unknown variable %.*s", MAXERR, varname);
-			ret = -1;
-		} else if (!(v->cfg_flags & cfg_set_from_array)) {
-			struct type *t = lookup_type(v->cfg_type);
-			assert(t != NULL);
-			if (t->set_value(v->cfg_value, &value) == -1)
-				ret = -1;
-		}
-		if (value != NULL)
-			free(line);	/* yes, line, not value */
-	}
-
-	if (ferror(f)) {
-		mkerror("unknown error occured while reading");
+	ret = process_file(f, NULL, do_nonvar_ignore, do_var_set, variables);
+	if (close_file(f, fn) == -1)
 		ret = -1;
-	}
-	if (fclose(f) == EOF) {
-		mkerror("unknown error occured while closing");
-		ret = -1;
-	}
-	assert(ret != -1 || *error != '\0');
 	return ret;
 }
 
+
+int cfg_write_open_file(struct cfg_variable *vars, const char *fn, FILE *f) {
+	assert(vars != NULL);
+	assert(fn != NULL);
+	assert(*fn != '\0');
+	assert(f != NULL);
+
+	filename = fn;
+	cfg_reset_some_flags(vars, cfg_saved);
+	return process_without_flag(vars, cfg_saved, f, do_known_write, 
+				 do_unknown_write);
+}
 
 
 /*
  * Write configuration data into file.
  */
-int cfg_write_file(struct cfg_variable *variables, const char *fn) {
-	struct cfg_variable *p;
-	struct type *t;
-	int i, ret;
+int cfg_write_file(struct cfg_variable *vars, const char *fn) {
 	FILE *f;
+	int ret;
+
+	assert(vars != NULL);
+	assert(fn != NULL);
+	assert(*fn != '\0');
 
 	filename = fn;
-	lineno = 0;
-
-	f = fopen(fn, "w");
-	if (f == NULL) {
-		mkerror("error opening file for writing: %.*s", 
-			MAXERR, strerror(errno));
+	if (open_file(&f, fn, "w") == -1)
 		return -1;
-	}
-
-	ret = 0;
-	for (i = 0; p = variables + i, p->cfg_name != NULL; ++i) {
-		if (p->cfg_flags & cfg_read_only)
-			continue;
-
-		fprintf(f, "%s = ", p->cfg_name);
-
-		t = lookup_type(p->cfg_type);
-		assert(t != NULL);
-		if (t->write(f, p->cfg_value) == -1)
-			ret = -1;
-
-		fprintf(f, "\n");
-		++lineno;
-		if (ferror(f)) {
-			mkerror("error writing to file");
-			ret = -1;
-			break;
-		}
-	}
-
-	if (fclose(f) == EOF) {
-		mkerror("unknown error occured while closing");
+	cfg_reset_some_flags(vars, cfg_saved);
+	ret = process_without_flag(vars, cfg_saved, f, do_known_write, 
+				 do_unknown_write);
+	if (close_file(f, fn) == -1)
 		ret = -1;
-	}
 	return ret;
 }
 
@@ -293,97 +269,43 @@ int cfg_write_file(struct cfg_variable *variables, const char *fn) {
  * possible.
  */
 int cfg_rewrite_file(struct cfg_variable *variables, const char *fn) {
-	struct cfg_variable *v;
-	int ret;
 	FILE *old, *new;
 	char buf[10240];
 	char bak[10240];
-	char *line, *orig, *value, *varname;
+	int ret;
+
+	assert(variables != NULL);
+	assert(fn != NULL);
+	assert(*fn != '\0');
 
 	filename = buf;
-	lineno = 0;
-	
 	sprintf(buf, "%.10000s.new", fn);
 	sprintf(bak, "%.10000s.bak", fn);
 
 	old = new = NULL;
-	orig = line = NULL;
 
-	old = open_file(fn, "r");
-	new = open_file(buf, "w");
-	if (old == NULL || new == NULL)
+	if (open_file(&old, fn, "r") == -1 || open_file(&new, buf, "w") == -1)
 		goto error;
 
-	for (v = variables; v->cfg_name != NULL; ++v)
-		v->cfg_flags &= ~cfg_saved;
+	cfg_reset_some_flags(variables, cfg_saved);
+	ret = process_file(old, new, do_nonvar_write, do_var_write, variables);
+	if (process_without_flag(variables, cfg_saved, new, do_known_write, 
+				 do_unknown_write) == -1)
+		ret = -1;
 
-	ret = 0;
-	while (ret == 0 && (line = getaline(old)) != NULL) {
-		orig = strdup(line);
-		if (orig == NULL) {
-			mkerror("strdup failed, out of memory?");
-			goto error;
-		}
-
-		++lineno;
-		if (parse_line(line, &varname, &value) <= 0 ||
-		    (v = lookup_name(variables, varname)) == NULL) {
-			fprintf(new, "%s\n", orig);
-		} else if (write_variable(new, v) == -1) {
-			mkerror("error writing to %.*s", MAXERR, buf);
-			goto error;
-		} else
-			v->cfg_flags |= cfg_saved;
-		
-		++lineno;
-		free(line);
-		free(orig);
-	}
-
-	for (v = variables; v->cfg_name != NULL; ++v) {
-		if ((v->cfg_flags & cfg_saved) != cfg_saved) {
-			if (write_variable(new, v) == -1) {
-				mkerror("error writing to %.*s", MAXERR, buf);
-				goto error;
-			}
-			++lineno;
-		}
-	}
-			
-	if (ferror(new)) {
-		mkerror("error writing to %.*s", MAXERR, buf);
+	if (close_file(old, fn) == -1 || close_file(new, buf) == -1 ||
+	    rename_file(fn, bak) == -1)
 		goto error;
-	}
-	
-	if (fclose(new) == EOF) {
-		mkerror("unknown error occured while closing %.*s", 
-			MAXERR, buf);
+	/* XXX at this point, the old file doesn't exist anymore; use link
+	   instead of rename so that no-one will be confused by the temporary
+	   disappearance. */
+	if (rename_file(buf, fn) == EOF)
 		return -1;
-	}
-	
-	if (fclose(old) == EOF) {
-		mkerror("unknown error occured while closing %.*s", 
-			MAXERR, fn);
-		return -1;
-	}
-	
-	if (rename(fn, bak) == EOF) {
-		mkerror("error renaming %.*s to %.*s", 
-			MAXERR/2, fn, MAXERR/2, bak);
-		return -1;
-	}
-	
-	if (rename(buf, fn) == EOF) {
-		mkerror("error renaming %.*s to %.*s", 
-			MAXERR/2, buf, MAXERR/2, fn);
-		return -1;
-	}
-	
+	if (ret == 0)
+		(void) remove(bak);
 	return ret;
 	
 error:
-	free(orig);
-	free(line);
 	if (old != NULL) (void) fclose(old);
 	if (new != NULL) (void) fclose(new);
 	(void) remove(buf);
@@ -391,11 +313,251 @@ error:
 }
 
 
+struct cfg_unknown_variable *cfg_find_unknown(struct cfg_variable *vars,
+const char *name) {
+	struct cfg_unknown_variable *u, **ptr_to_head;
+	
+	assert(unknowns_allowed(vars));
+	ptr_to_head = vars->cfg_value;
+	for (u = *ptr_to_head; u != NULL; u = u->cfg_next)
+		if (strcmp(name, u->cfg_name) == 0)
+			return u;
+	return NULL;
+}
+
+
+void cfg_reset_some_flags(struct cfg_variable *vars, unsigned which) {
+	struct cfg_variable *v;
+	struct cfg_unknown_variable *u, **ptr_to_head;
+	
+	for (v = vars; v->cfg_name != NULL; ++v)
+		v->cfg_flags &= ~which;
+	if (unknowns_allowed(vars)) {
+		ptr_to_head = vars->cfg_value;
+		for (u = *ptr_to_head; u != NULL; u = u->cfg_next)
+			u->cfg_flags &= ~which;
+	}
+}
+
 
 /*******************************************************************
  * Local functions only below this.
  */
 
+
+static int unknowns_allowed(struct cfg_variable *vars) {
+	if (vars->cfg_name == NULL || vars->cfg_name[0] == '\0')
+		return vars->cfg_value != NULL;
+	return 0;
+}
+
+static int process_file(FILE *in, FILE *out, int (*do_nonvar)(FILE *, char *),
+int (*do_var)(FILE *, char *, char *, struct cfg_variable *), 
+struct cfg_variable *vars) {
+	char *line, *varname, *value;
+	int ret;
+
+	lineno = 0;
+	ret = 0;
+	while ((line = getaline(in)) != NULL) {
+		switch (parse_line(line, &varname, &value)) {
+		case -1:
+			ret = -1;
+			break;
+		case 0:
+			if (do_nonvar(out, line) == -1)
+				ret = -1;
+			break;
+		case 1:
+			if (do_var(out, varname, value, vars) == -1)
+				ret = -1;
+			break;
+		}
+		free(line);
+	}
+	return ret;
+}
+
+
+static int do_nonvar_ignore(FILE *out, char *line) {
+	return 0;
+}
+
+static int do_nonvar_write(FILE *out, char *line) {
+	fprintf(out, "%s\n", line);
+	return 0;
+}
+
+static int do_var_set(FILE *out, char *varname, char *value,
+struct cfg_variable *vars) {
+	struct cfg_variable *v;
+	struct cfg_unknown_variable *u;
+
+	v = find_known(vars, varname);
+	if (v != NULL)
+		return set_value(v, value);
+	if (!unknowns_allowed(vars)) {
+		mkerror("unknown variable `%.*s'", MAXERR, varname);
+		return -1;
+	}
+	u = cfg_find_unknown(vars, varname);
+	if (u != NULL)
+		return set_unknown(u, value);
+	return add_unknown(vars->cfg_value, varname, value);
+}
+
+static int set_value(struct cfg_variable *v, char *value) {
+	struct type *t;
+	
+	t = lookup_type(v->cfg_type);
+	assert(t != NULL);
+	return t->set_value(v->cfg_value, value);
+}
+
+static int set_unknown(struct cfg_unknown_variable *u, char *value) {
+	/* XXX can t be made static? */
+	struct type *t;
+	
+	free(u->cfg_value);
+	t = lookup_type(CFG_STRING);
+	assert(t != NULL);
+	return t->set_value(&u->cfg_value, value);
+}
+
+static int add_unknown(struct cfg_unknown_variable **ptr_to_head,
+char *varname, char *value) {
+	struct cfg_unknown_variable *u;
+	
+	u = malloc(sizeof(*u));
+	varname = strdup(varname);
+	if (u == NULL || varname == NULL) {
+		mkerror("malloc failed, out of memory?");
+		goto error;
+	}
+	u->cfg_name = varname;
+	u->cfg_value = NULL;
+	u->cfg_flags = 0;
+	if (set_unknown(u, value) == -1)
+		goto error;
+
+	u->cfg_next = *ptr_to_head;
+	*ptr_to_head = u;
+	return 0;
+
+error:
+	free(u);
+	free(varname);
+	return -1;
+}
+
+static int do_var_write(FILE *out, char *varname, char *value,
+struct cfg_variable *vars) {
+	struct cfg_variable *v;
+	struct cfg_unknown_variable *u;
+	
+	v = find_known(vars, varname);
+	if (v != NULL) {
+		v->cfg_flags |= cfg_saved;
+		if ((v->cfg_flags & cfg_removed) == cfg_removed)
+			return 0;
+		return write_variable(out, v);
+	}
+	if (!unknowns_allowed(vars)) {
+		mkerror("unknown variable `%.*s' removed", MAXERR, varname);
+		return -1;
+	}
+	u = cfg_find_unknown(vars, varname);
+	if (u != NULL) {
+		u->cfg_flags |= cfg_saved;
+		if ((u->cfg_flags & cfg_removed) == cfg_removed)
+			return 0;
+		return write_unknown(out, varname, u->cfg_value);
+	}
+	return write_unknown(out, varname, value);
+}
+
+
+static struct cfg_variable *find_known(struct cfg_variable *vars, char *name) {
+	struct cfg_variable *v;
+	
+	for (v = vars; v->cfg_name != NULL; ++v) {
+		if (strcmp(v->cfg_name, name) == 0)
+			return v;
+	}
+	return NULL;
+}
+
+
+static int process_without_flag(struct cfg_variable *vars, unsigned which,
+void *arg, int (*do_known)(void *, struct cfg_variable *),
+int (*do_unknown)(void *, struct cfg_unknown_variable *)) {
+	struct cfg_variable *v;
+	struct cfg_unknown_variable *u, **ptr_to_head;
+	
+	for (v = vars; v->cfg_name != NULL; ++v)
+		if (v->cfg_name[0] != '\0' && (v->cfg_flags & which) == 0)
+			if (do_known(arg, v) == -1)
+				return -1;
+	if (unknowns_allowed(vars)) {
+		ptr_to_head = vars->cfg_value;
+		for (u = *ptr_to_head; u != NULL; u = u->cfg_next) {
+			if ((u->cfg_flags & which) == 0) {
+				if (do_unknown(arg, u) == -1)
+					return -1;
+			}
+		}
+	}
+	return 0;
+}
+
+static int do_known_write(void *arg, struct cfg_variable *v) {
+	if ((v->cfg_flags & cfg_removed) == cfg_removed)
+		return 0;
+	return write_variable(arg, v);
+}
+
+static int do_unknown_write(void *arg, struct cfg_unknown_variable *u) {
+	if ((u->cfg_flags & cfg_removed) == cfg_removed)
+		return 0;
+	return write_unknown(arg, u->cfg_name, u->cfg_value);
+}
+
+
+static int open_file(FILE **fp, const char *fn, const char *mode) {
+	*fp = fopen(fn, mode);
+	if (*fp == NULL) {
+		mkerror("couldn't open file `%.*s': %.*s", MAXERR/2, fn,
+			MAXERR/2, strerror(errno));
+		return -1;
+	}
+	return 0;
+}
+
+static int close_file(FILE *f, const char *fn) {
+	int ret;
+	
+	ret = 0;
+	if (ferror(f)) {
+		mkerror("error occured when processing file `%.*s'",
+			MAXERR, fn);
+		ret = -1;
+	}
+	if (fclose(f) == EOF) {
+		mkerror("error occured when closing file `%.*s'",
+			MAXERR, fn);
+		ret = -1;
+	}
+	return ret;
+}
+
+static int rename_file(const char *oldname, const char *newname) {
+	if (rename(oldname, newname) == EOF) {
+		mkerror("error renaming `%.*s' to `%.*s'", 
+			MAXERR/2, oldname, MAXERR/2, newname);
+		return -1;
+	}
+	return 0;
+}
 
 
 /*
@@ -439,19 +601,6 @@ static int parse_line(char *line, char **varname, char **value) {
 	*p = '\0';
 
 	return 1;
-}
-
-
-
-/*
- * Find the descriptor for a variable based on its name.  Return NULL if
- * not found.
- */
-static struct cfg_variable *lookup_name(struct cfg_variable *vars,
-const char *s) {
-	while (vars->cfg_name != NULL && strcmp(vars->cfg_name, s) != 0)
-		++vars;
-	return vars->cfg_name == NULL ? NULL : vars;
 }
 
 
@@ -503,7 +652,6 @@ static struct type *lookup_type(enum cfg_type t) {
 			return types + i;
 	return NULL;
 }
-
 
 
 /*
@@ -613,8 +761,7 @@ static int write_variable(FILE *f, struct cfg_variable *v) {
 	struct type *t;
 
 	t = lookup_type(v->cfg_type);
-	if (t == NULL)
-		return -1;
+	assert(t != NULL);
 	fprintf(f, "%s = ", v->cfg_name);
 	if (t->write(f, v->cfg_value) == -1)
 		return -1;
@@ -623,18 +770,17 @@ static int write_variable(FILE *f, struct cfg_variable *v) {
 }
 
 
-static FILE *open_file(const char *name, const char *mode) {
-	FILE *f;
-	
-	f = fopen(name, mode);
-	if (f == NULL) {
-		mkerror("error opening %.*s for %.*s: %.*s",
-			MAXERR/3, name,
-			MAXERR/3, (*mode == 'r') ? "reading" : "writing",
-			MAXERR/3, strerror(errno));
-		return NULL;
-	}
-	return f;
+static int write_unknown(FILE *f, char *name, char *value) {
+	/* XXX can t be made static? */
+	struct type *t;
+
+	t = lookup_type(CFG_STRING);
+	assert(t != NULL);
+	fprintf(f, "%s = ", name);
+	if (t->write(f, &value) == -1)
+		return -1;
+	fprintf(f, "\n");
+	return 0;
 }
 
 
@@ -643,8 +789,8 @@ static FILE *open_file(const char *name, const char *mode) {
  * functions are very similar, so they're not commented on separately.
  */
 
-static int set_long(void *var, char **value) {
-	return str_to_long(*value, var);
+static int set_long(void *var, char *value) {
+	return str_to_long(value, var);
 }
 
 static int write_long(FILE *f, void *var) {
@@ -652,8 +798,8 @@ static int write_long(FILE *f, void *var) {
 	return ferror(f) ? -1 : 0;
 }
 
-static int set_ulong(void *var, char **value) {
-	return str_to_ulong(*value, var);
+static int set_ulong(void *var, char *value) {
+	return str_to_ulong(value, var);
 }
 
 static int write_ulong(FILE *f, void *var) {
@@ -661,8 +807,8 @@ static int write_ulong(FILE *f, void *var) {
 	return ferror(f) ? -1 : 0;
 }
 
-static int set_double(void *var, char **value) {
-	return str_to_double(*value, var);
+static int set_double(void *var, char *value) {
+	return str_to_double(value, var);
 }
 
 static int write_double(FILE *f, void *var) {
@@ -670,27 +816,22 @@ static int write_double(FILE *f, void *var) {
 	return ferror(f) ? -1 : 0;
 }
 
-static int set_string(void *var, char **value) {
+static int set_string(void *var, char *value) {
 	char *p, *q, *mem;
 	size_t max;
 
 	assert(value != NULL);
 	assert(*value != NULL);
 
-	for (p = *value; isspace(*p); ++p)
+	for (p = value; isspace(*p); ++p)
 		break;
 
 	if (*p != '"') {
-#if 0
-		mem = *value;
-		*value = NULL;
-#else
-		mem = strdup(*value);
+		mem = strdup(value);
 		if (mem == NULL) {
 			mkerror("out of memory");
 			return -1;
 		}
-#endif
 	} else {
 		strrtrim(p);
 		q = strend(p);
@@ -740,16 +881,16 @@ static int write_string(FILE *f, void *var) {
 	return ferror(f) ? -1 : 0;
 }
 
-static int set_boolean(void *var, char **value) {
+static int set_boolean(void *var, char *value) {
 	int i;
 
 	for (i = 0; i < num_boolnames; ++i) {
-		if (strcasecmp(*value, boolnames[i]) == 0) {
+		if (strcasecmp(value, boolnames[i]) == 0) {
 			*(int *) var = (i % 2);
 			return 0;
 		}
 	}
-	mkerror("invalid Boolean value: `%.*s'", MAXERR, *value);
+	mkerror("invalid Boolean value: `%.*s'", MAXERR, value);
 	return -1;
 }
 
@@ -762,9 +903,9 @@ static int write_boolean(FILE *f, void *var) {
 static int no_nothing(const char *sym, int nargs, double *args, double *val) {
 	return -1;
 }
-static int set_long_expr(void *var, char **value) {
+static int set_long_expr(void *var, char *value) {
 	double result;
-	if (expr_eval(*value, &result, no_nothing) == -1) {
+	if (expr_eval(value, &result, no_nothing) == -1) {
 		mkerror("invalid expression");
 		return -1;
 	}
@@ -775,9 +916,9 @@ static int set_long_expr(void *var, char **value) {
 	*(long *) var = (long) result;
 	return 0;
 }
-static int set_ulong_expr(void *var, char **value) {
+static int set_ulong_expr(void *var, char *value) {
 	double result;
-	if (expr_eval(*value, &result, no_nothing) == -1) {
+	if (expr_eval(value, &result, no_nothing) == -1) {
 		mkerror("invalid expression");
 		return -1;
 	}
@@ -788,10 +929,10 @@ static int set_ulong_expr(void *var, char **value) {
 	*(unsigned long *) var = (unsigned long) result;
 	return 0;
 }
-static int set_double_expr(void *var, char **value) {
+static int set_double_expr(void *var, char *value) {
 	int ret;
 
-	ret = expr_eval(*value, var, no_nothing);
+	ret = expr_eval(value, var, no_nothing);
 	if (ret == -1)
 		mkerror("invalid expression");
 	return ret;
@@ -836,7 +977,7 @@ char **rest) {
 	
 	t = lookup_type(v->cfg_type);
 	assert(t == NULL);
-	ret = t->set_value(v->cfg_value, &s);
+	ret = t->set_value(v->cfg_value, s);
 	if (ret != -1)
 		v->cfg_flags |= cfg_set_from_array;
 	free(s);

@@ -2,7 +2,7 @@
  * File:	cfgtool_lock.c
  * Purpose:	Lock file handling for cfgtool.
  * Author:	Lars Wirzenius
- * Version:	"@(#)publib-cfgtool:$Id: cfgtool_lock.c,v 1.1.1.1 1996/11/05 21:13:54 liw Exp $"
+ * Version:	"@(#)publib-cfgtool:$Id$"
  */
 
 #include <assert.h>

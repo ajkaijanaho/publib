@@ -2,7 +2,7 @@
  * expr_run.c -- run a compiled expression
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-expr:$Id: expr_run.c,v 1.1.1.1 1993/11/20 15:57:29 liw Exp $"
+ * "@(#)publib-expr:$Id$"
  */
 
 #include <assert.h>

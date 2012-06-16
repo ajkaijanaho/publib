@@ -2,7 +2,7 @@
  * strrev.c -- reverse a string in place
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-strutil:$Id: strrev.c,v 1.3 1996/08/12 01:04:24 liw Exp $"
+ * "@(#)publib-strutil:$Id: strrev.c,v 1.2 1995/11/26 10:13:14 liw Exp $"
  */
 
 #include <assert.h>

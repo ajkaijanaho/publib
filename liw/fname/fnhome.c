@@ -2,7 +2,7 @@
  * fnhome.c -- return home directory of user
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-fname:$Id: fnhome.c,v 1.4 1994/07/16 15:28:39 liw Exp $"
+ * "@(#)publib-fname:$Id: fnhome.c,v 1.3 1994/07/16 12:07:18 liw Exp $"
  */
 
 #include <assert.h>

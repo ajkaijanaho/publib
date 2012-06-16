@@ -8,7 +8,10 @@ static double double_expr = 0.0;
 static double double_var = 0.0;
 static int rewrite = 0;
 
+static struct cfg_unknown_variable *unknown_list;
+
 static struct cfg_variable variables[] = {
+	{ "", 0, &unknown_list },
 	{ "newsgroup", CFG_STRING, &newsgroup_name, 0, 'n' },
 	{ "expire-time", CFG_ULONG_EXPR, &expire_time, 0, 'e' },
 	{ "double-expr", CFG_DOUBLE_EXPR, &double_expr, 0, 'd' },

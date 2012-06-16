@@ -21,11 +21,13 @@ int priq_is_empty(Priq *);
 void priq_dump(Priq *);
 
 #ifdef __publib__
-	#include <publib/alloc.h>
-	struct priq {
-		struct dynarr da;
-		int (*compare)(const void *, const void *);
-	};
+
+#include <publib/alloc.h>
+struct priq {
+	struct dynarr da;
+	int (*compare)(const void *, const void *);
+};
+
 #endif
 
 #endif

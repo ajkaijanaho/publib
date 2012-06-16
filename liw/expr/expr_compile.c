@@ -2,7 +2,7 @@
  * expr_compile.c -- compile expression given in string form
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-expr:$Id: expr_compile.c,v 1.1.1.1 1993/11/20 15:57:29 liw Exp $"
+ * "@(#)publib-expr:$Id$"
  */
 
 #include <assert.h>

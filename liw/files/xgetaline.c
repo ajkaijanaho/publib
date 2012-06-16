@@ -2,7 +2,7 @@
  * xgetaline.c -- error checking front-end for getaline
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-files:$Id: xgetaline.c,v 1.3 1995/08/11 15:53:18 liw Exp $"
+ * "@(#)publib-files:$Id: xgetaline.c,v 1.2 1994/07/12 20:59:55 liw Exp $"
  */
 
 #include <stdio.h>

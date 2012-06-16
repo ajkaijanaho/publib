@@ -24,7 +24,6 @@ void *xmalloc(size_t);
 void *xrealloc(void *, size_t);
 void xfree(void *);
 
-char *strdup(const char *);
 char *xstrdup(const char *);
 
 void *memdup(const void *, size_t);

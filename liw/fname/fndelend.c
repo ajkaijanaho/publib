@@ -2,7 +2,7 @@
  * fndelend.c -- delete last filename in a pathname
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-fname:$Id: fndelend.c,v 1.2 1994/06/20 20:49:19 liw Exp $"
+ * "@(#)publib-fname:$Id: fndelend.c,v 1.1.1.1 1993/11/20 17:02:15 liw Exp $"
  */
 
 #include <assert.h>

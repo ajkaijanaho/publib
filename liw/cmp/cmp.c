@@ -2,7 +2,7 @@
  * cmp.c -- comparison function for qsort, bsearch, and others
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-cmp:$Id: cmp.c,v 1.1.1.1 1993/11/20 17:01:45 liw Exp $"
+ * "@(#)publib-cmp:$Id$"
  */
 
 #include <assert.h>

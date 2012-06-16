@@ -2,7 +2,7 @@
  * stack_destroy.c -- free resources allocated for stack
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-stack:$Id: stack_destroy.c,v 1.1.1.1 1993/11/20 17:02:51 liw Exp $"
+ * "@(#)publib-stack:$Id$"
  */
 
 #include <assert.h>

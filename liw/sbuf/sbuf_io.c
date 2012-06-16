@@ -258,21 +258,27 @@ static int create_save_temp_file(const char *original, char *buf, int *fd) {
 
 /*
  * Function:	copy_modes
- * Purpose:	Copy the permissions from one file to another.
+ * Purpose:	Copy the permissions from one file to another, or invent
+ *		them if the file is new (use umask).
  * Arguments:	src	original file
  *		tgt	target file
  * Return:	-1 for error, 0 for OK.
  */
 static int copy_modes(const char *src, const char *tgt) {
 	struct stat st;
+	mode_t mode;
 	
 	if (stat(src, &st) == -1) {
-		if (errno == ENOENT)
-			return 0;
-		__publib_error("Can't stat file (can't complete save)");
-		return -1;
-	}
-	if (chmod(tgt, st.st_mode) == -1) {
+		if (errno != ENOENT) {
+			__publib_error("Can't stat file (can't complete save)");
+			return -1;
+		}
+		mode = umask(0);
+		(void) umask(mode);
+		mode = 0666 & ~mode;
+	} else
+		mode = st.st_mode;
+	if (chmod(tgt, mode) == -1) {
 		__publib_error("Can't chmod file (can't complete save)");
 		return -1;
 	}

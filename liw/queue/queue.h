@@ -9,7 +9,7 @@
  * Note:	This Publib module reserves all names beginning with
  *		``queue'' or ``Queue''.
  * Author:	Lars Wirzenius
- * Version:	"@(#)publib:$Id: queue.h,v 1.1.1.1 1996/01/18 15:44:03 liw Exp $"
+ * Version:	"@(#)publib:$Id$"
  */
 
 

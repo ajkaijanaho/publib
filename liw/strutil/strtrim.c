@@ -2,7 +2,7 @@
  * strtrim.c -- remove leading and trailing blanks from string
  *
  * Part of publib.  See man page for more information.
- * "@(#)publib-strutil:$Id: strtrim.c,v 1.1.1.1 1994/02/03 17:25:29 liw Exp $"
+ * "@(#)publib-strutil:$Id$"
  */
 
 #include <assert.h>

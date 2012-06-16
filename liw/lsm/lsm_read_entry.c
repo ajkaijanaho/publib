@@ -3,7 +3,7 @@
  *
  * Lars Wirzenius
  * Part of Publib, see publib(3).
- * "@(#)publib-lsm:$Id: lsm_read_entry.c,v 1.4 1996/04/08 22:28:35 liw Exp $"
+ * "@(#)publib-lsm:$Id: lsm_read_entry.c,v 1.3 1996/02/04 22:03:10 liw Exp $"
  */
  
 #include <errno.h>

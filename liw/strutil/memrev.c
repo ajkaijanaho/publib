@@ -2,7 +2,7 @@
  * memrev.c -- reverse an array in place
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-strutil:$Id: memrev.c,v 1.1.1.1 1994/02/03 17:25:31 liw Exp $"
+ * "@(#)publib-strutil:$Id$"
  */
 
 #include <assert.h>

@@ -2,7 +2,7 @@
  * strinit.c -- initialize a string to a given length with a given character
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-strutil:$Id: strinit.c,v 1.1 1994/06/20 20:30:17 liw Exp $"
+ * "@(#)publib-strutil:$Id$"
  */
 
 #include <assert.h>

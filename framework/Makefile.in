@@ -69,7 +69,13 @@ headers:
 		rm .need-update; \
 		(echo "#ifndef __$(incnamebase)_h"; \
 		echo "#define __$(incnamebase)_h"; \
+		echo "#ifdef __cplusplus"; \
+		echo 'extern "C" {'; \
+		echo "#endif"; \
 		find $(incnamebase) -name '*.h' -print|sed 's/^/#include </;s/$$/>/'; \
+		echo "#ifdef __cplusplus"; \
+		echo "}"; \
+		echo "#endif"; \
 		echo "#endif") > $(headerbase); \
 	fi
 

@@ -2,7 +2,7 @@ Source: publib
 Maintainer: Lars Wirzenius <liw@iki.fi>
 Section: devel
 Priority: optional
-Standards-Version: 2.0.0.0
+Standards-Version: 2.4.0.0
 
 Package: publib-dev
 Architecture: any
