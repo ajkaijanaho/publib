@@ -16,7 +16,7 @@ static char *find_nonsep(const char *s, const char *sep);
 static char *find_sep(const char *s, const char *sep);
 
 int strsplit(char *s, char **words, int maxw, const char *sep) {
-	char *start, *end;
+	char *start, *end, *endstr;
 	int count;
 
 	assert(s != NULL);
@@ -26,18 +26,18 @@ int strsplit(char *s, char **words, int maxw, const char *sep) {
 
 	count = 0;
 	end = s;
-	while ((start = find_nonsep(end, sep)) != NULL) {
-		end = find_sep(start, sep);
-		if (count == maxw-1 && find_nonsep(end, sep) != NULL) {
-			words[count] = start;
-			
-		}
-		if (count < maxw) {
-			*end++ = '\0';
-			words[count] = start;
-		}
-		++count;
-	}
+	endstr = strchr(s, '\0');
+	
+        while (end < endstr) {
+                start = find_nonsep(end, sep);
+                if (start == NULL)
+                        break;
+                end = find_sep(start, sep);
+                *end++ = '\0';
+                if (count < maxw)
+                        words[count] = start;
+                ++count;
+        }
 
 	return count;
 }

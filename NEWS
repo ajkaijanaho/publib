@@ -1,0 +1,11 @@
+NEWS about the publib project
+=============================
+
+
+Version 0.39 (UNRELEASED)
+-------------------------
+
+    * liw/cfgtool has been removed. It was obsolete since about a decade.
+    
+    * liw/strutils/strsplit has been fixed, thanks to bug report from
+      Ron Fox.

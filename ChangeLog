@@ -1,3 +1,9 @@
+2006-03-12  Lars Wirzenius  <liw@iki.fi>
+
+        * publib is now being maintained under bzr, and this change log
+        is replaced by commit messages to bzr, plus a NEWS file that gets
+        updated at release time.
+
 2004-08-07  Lars Wirzenius  <liw@iki.fi>
 
         * framework/link-alternative-names: Fixed to work with Posix sh,
