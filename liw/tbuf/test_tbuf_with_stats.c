@@ -20,7 +20,7 @@ statistics:
 
  *
  * Part of Publib, see man page for more information.
- * "@(#)publib-tbuf:$Id: test_tbuf_with_stats.c,v 1.3 1998/11/14 21:17:37 liw Exp $"
+ * "@(#)publib-tbuf:$Id: test_tbuf_with_stats.c,v 1.6 2003/11/15 18:24:11 liw Exp $"
  */
 
 #include <stdio.h>
@@ -42,6 +42,7 @@ static Tbuf *x_tbuf_create(const char *str, size_t len) {
 	return tbuf;
 }
 
+#if 0
 static Tbuf *x_tbuf_copy(Tbuf *tbuf, size_t offset, size_t len) {
 	Tbuf *tbuf2;
 	
@@ -50,6 +51,7 @@ static Tbuf *x_tbuf_copy(Tbuf *tbuf, size_t offset, size_t len) {
 		panic("tbuf_copy returned NULL");
 	return tbuf2;
 }
+#endif
 
 static Tbuf *x_tbuf_cat(Tbuf *tbuf1, Tbuf *tbuf2) {
 	Tbuf *tbuf;
@@ -60,6 +62,7 @@ static Tbuf *x_tbuf_cat(Tbuf *tbuf1, Tbuf *tbuf2) {
 	return tbuf;
 }
 
+#if 0
 static char *x_make_text(size_t wanted) {
 	static char *buf = NULL;
 	static size_t len = 0;
@@ -73,6 +76,7 @@ static char *x_make_text(size_t wanted) {
 	}
 	return buf;
 }
+#endif
 
 static void print_stats(Tbuf *tbuf) {
 	struct tbuf_stat stat;

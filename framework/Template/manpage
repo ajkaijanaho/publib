@@ -1,5 +1,5 @@
 .\" part of publib
-.\" "@(#)publib-framework:$Id: manpage,v 1.2 1994/02/03 17:38:51 liw Exp $"
+.\" "@(#)publib-framework:$Id: manpage,v 1.1.1.1 1995/08/06 21:51:46 liw Exp $"
 .\"
 .TH xxx 3 "C Programmer's Manual" Publib "C Programmer's Manual"
 .SH NAME

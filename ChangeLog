@@ -1,0 +1,81 @@
+2004-08-07  Lars Wirzenius  <liw@iki.fi>
+
+        * framework/link-alternative-names: Fixed to work with Posix sh,
+        not just Bash.
+
+        * Making release version 0.38.
+
+2004-08-05  Lars Wirzenius  <liw@iki.fi>
+
+	* Removed liw/cfg and liw/lsm, since no-body uses them and they were
+	broken and I didn't feel like fixing them. (Anyone wanting to take over
+	publib development should probably say so now.)
+	
+	* Removed "pub" from the tbuf.3 manual page, since it was the only one
+	that had the suffix.
+	
+	* Making release version 0.37.
+
+2004-07-11  Lars Wirzenius  <liw@iki.fi>
+
+	* Making release version 0.36.
+
+2004-07-11  Lars Wirzenius  <liw@iki.fi>
+
+	* liw/strutil/struncstr.c: Bugfix for octal escape sequences:
+	three digit sequences now work. Thanks to Peter T. Beuer for
+	the bug report and fix.
+
+2004-02-21  Lars Wirzenius  <liw@iki.fi>
+
+	* liw/expr: Removed, since it was broken, and too simple to
+	really be useful, and I didn't want to spend the time to fix it.
+
+2003-11-15  Lars Wirzenius  <liw@iki.fi>
+
+	* Making release version 0.35.
+
+2003-11-15  Lars Wirzenius  <liw@iki.fi>
+
+	* liw/base64/base64.c: Rewrote the encoding and decoding
+	functions, since the old code was crap. The bug was reported
+	by Timothee Besset, though I didn't use his code to fix it. The
+	old code did not work with MIME conforming base64 implementations.
+	
+	* liw/lsm/lsm_read_entry.c: Fixed compiler warning by initializing
+	a variable. Wasn't a bug, but shutting up the compiler was
+	worth it.
+	
+	* liw/main/main_filter.c, liw/sbuf/test-sbuf.c, liw/tbuf/tbuf.c:
+	Added missing includes for <string.h>
+	
+	* liw/tbuf/test_tbuf_with_stats.c: Commented out unused static
+	functions to shut up a compiler warning.
+
+2002-05-23  Lars Wirzenius  <liw@iki.fi>
+
+	* framework/Generic.mk, framework/link-alternative-names,
+	liw/publibdocs/Makefile: Manual pages are installed compressed,
+	and links to alternative names are created
+	
+	* framework/Makefile.in: Installation directories are now created.
+	
+	* Creating release 0.34.
+
+2002-05-23  Lars Wirzenius  <liw@iki.fi>
+
+	* debian/*: Removed from upstream. I no longer maintain the
+	Debian package.
+
+    	* Changes: Deleted.
+
+	* liw/cfgtool/cfgtool_repo.c: Added a missing #include <string.h>.
+	
+	* liw/nntp/nntp.c: Added a missing initialization of a variable.
+	
+	* liw/tbuf/tbuf.c: Commented out an unused static function.
+
+    	* liw/sbuf/sbuf_srch.c: Added missing #include for <sys/types.h>
+	(<regex.h> needs it). Thanks to Dmitry Astapov <adept@umc.com.ua>.
+
+    	* Releasing version 0.33.

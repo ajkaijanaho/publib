@@ -1,6 +1,6 @@
 README for Publib module strutil
 Lars Wirzenius
-"@(#)publib-strutil:$Id$"
+"@(#)publib-strutil:$Id: README,v 1.2 1994/08/28 18:10:33 liw Exp $"
 
 These routines implement a number of more or less useful string
 and memory block operatins.

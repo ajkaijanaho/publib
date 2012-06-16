@@ -2,7 +2,7 @@
  * publib/alloc.h - memory allocation routines for Publib
  *
  * Lars Wirzenius.  Part of Publib (see publib(3)).
- * "@(#)publib-alloc:$Id: alloc.h,v 1.5 1995/11/26 09:56:45 liw Exp $"
+ * "@(#)publib-alloc:$Id: alloc.h,v 1.6 1998/10/25 20:48:37 liw Exp $"
  */
 
 #ifndef __publib_alloc_h

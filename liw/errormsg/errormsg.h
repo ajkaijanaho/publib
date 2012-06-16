@@ -2,7 +2,7 @@
  * errormsg.h -- declarations for error message printing
  *
  * Part of publib
- * "@(#)publib-errormsg:$Id: errormsg.h,v 1.1.1.1 1993/11/20 15:56:36 liw Exp $"
+ * "@(#)publib-errormsg:$Id: errormsg.h,v 1.1.1.1 1995/08/06 21:57:17 liw Exp $"
  */
 
 #ifndef __publib_errormsg_h

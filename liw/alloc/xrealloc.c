@@ -2,7 +2,7 @@
  * xrealloc.c -- error checking realloc
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-alloc:$Id: xrealloc.c,v 1.2 1994/02/06 09:42:34 liw Exp $"
+ * "@(#)publib-alloc:$Id: xrealloc.c,v 1.3 1994/07/16 12:06:38 liw Exp $"
  */
 
 #include <assert.h>

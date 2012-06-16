@@ -2,7 +2,7 @@
  * ba_clear.c -- remove number from set
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-bitarr:$Id: ba_clear.c,v 1.2 1994/07/16 12:04:15 liw Exp $"
+ * "@(#)publib-bitarr:$Id: ba_clear.c,v 1.3 1995/05/12 14:43:58 wirzeniu Exp $"
  */
 
 #include <assert.h>

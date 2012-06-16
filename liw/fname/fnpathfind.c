@@ -2,7 +2,7 @@
  * fnpathfind.c -- find file in a list of directories
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-fname:$Id: fnpathfind.c,v 1.3 1994/07/16 12:07:19 liw Exp $"
+ * "@(#)publib-fname:$Id: fnpathfind.c,v 1.4 1994/07/16 15:28:42 liw Exp $"
  */
 
 #include <assert.h>

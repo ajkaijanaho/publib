@@ -2,7 +2,7 @@
  * strmaxcpy.c -- copy at most a given number of characters of string
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-strutil:$Id: strmaxcpy.c,v 1.2 1994/02/05 17:08:44 liw Exp $"
+ * "@(#)publib-strutil:$Id: strmaxcpy.c,v 1.3 1994/07/31 23:30:44 liw Exp $"
  */
 
 #include <assert.h>

@@ -2,7 +2,7 @@
  * iset_is_empty.c -- test whether an iset is empty
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-iset:$Id$"
+ * "@(#)publib-iset:$Id: iset_is_empty.c,v 1.1.1.1 1993/11/20 17:02:31 liw Exp $"
  */
 
 #include <assert.h>

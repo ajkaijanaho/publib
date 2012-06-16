@@ -2,7 +2,7 @@
  * log.c -- log files
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-log:$Id: log.c,v 1.11 1997/05/09 13:43:49 liw Exp $"
+ * "@(#)publib-log:$Id: log.c,v 1.12 1997/05/09 13:49:16 liw Exp $"
  */
 
 #include <assert.h>

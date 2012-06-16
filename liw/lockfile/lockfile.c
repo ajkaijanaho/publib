@@ -2,7 +2,7 @@
  * File:	lockfile.c
  * Purpose:	Create a lock file.
  * Author:	Lars Wirzenius
- * Version:	$Id: lockfile.c,v 1.1.1.1 1996/11/05 21:06:56 liw Exp $
+ * Version:	$Id: lockfile.c,v 1.2 1997/04/26 23:52:21 liw Exp $
  */
 
 

@@ -2,7 +2,7 @@
  * cmp.h -- comparison functions for qsort, bsearch, et al.
  *
  * Part of publib.
- * "@(#)publib-cmp:$Id$"
+ * "@(#)publib-cmp:$Id: cmp.h,v 1.1.1.1 1993/11/20 17:01:45 liw Exp $"
  */
 
 #ifndef __publib_cmp_h

@@ -1,6 +1,6 @@
 README for Publib module base64
 Lars Wirzenius
-"@(#)publib-base64:$Id$"
+"@(#)publib-base64:$Id: README,v 1.1 1996/11/05 21:18:33 liw Exp $"
 
 These routines implement conversions between binary data and
 MIME's base 64 encoding.

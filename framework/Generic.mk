@@ -26,7 +26,7 @@
 # It needs to have at least all the targets in this makefile, and will
 # have to include $(srcdir)/Rules.mk.
 #
-# "@(#)publib-framework:$Id: Generic.mk,v 1.2 1995/08/11 16:28:44 liw Exp $"
+# "@(#)publib-framework:$Id: Generic.mk,v 1.4 2002/05/23 13:17:39 liw Exp $"
 
 include $(objdir)/Rules.mk
 
@@ -43,8 +43,12 @@ clean realclean distclean:
 pre-install post-install:
 	@true
 install:
-	@for i in $(srcdir)/*.3; do \
+	$(INSTALL) -d "$(man3dir)"
+	for i in $(srcdir)/*.3; do \
 		if test -f $$i; then \
-		$(INSTALL_MAN) $$i $(man3dir)/`basename $$i .3`.$(man3ext); \
+		t="$(man3dir)/`basename $$i .3`.$(man3ext)"; \
+		$(INSTALL_MAN) $$i "$$t"; \
+		gzip -9f "$$t"; \
+		sh $(fwdir)/link-alternative-names $$t $(man3dir) $(man3ext); \
 		fi; \
 	done

@@ -2,7 +2,7 @@
  * File:	var.c
  * Purpose:	Implementation of library routines handling Debian's cfgtool.
  * Author:	Lars Wirzenius
- * Version:	"@(#)cfgtool:$Id: cfgtool_var.c,v 1.1.1.1 1996/11/05 21:13:54 liw Exp $"
+ * Version:	"@(#)cfgtool:$Id: cfgtool_var.c,v 1.2 1996/11/23 06:20:44 liw Exp $"
  */
 
 #include <stdlib.h>

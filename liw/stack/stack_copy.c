@@ -2,7 +2,7 @@
  * stack_copy.c -- make a copy of a stack and pushed data
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-stack:$Id: stack_copy.c,v 1.2 1994/07/16 12:10:04 liw Exp $"
+ * "@(#)publib-stack:$Id: stack_copy.c,v 1.3 1994/07/16 15:29:05 liw Exp $"
  */
 
 #include <assert.h>

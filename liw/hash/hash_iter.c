@@ -2,7 +2,7 @@
  * hash_iter.c -- iterate through all datums in a hash table
  *
  * Part of Publib, see man page for more information.
- * "@(#)publib-hash:$Id$"
+ * "@(#)publib-hash:$Id: hash_iter.c,v 1.1.1.1 1994/07/20 21:02:54 liw Exp $"
  */
 
 #include <assert.h>

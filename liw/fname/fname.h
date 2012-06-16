@@ -2,7 +2,7 @@
  * fname.h -- filename manipulation
  *
  * Part of publib.
- * "@(#)publib-fname:$Id$"
+ * "@(#)publib-fname:$Id: fname.h,v 1.1.1.1 1993/11/20 17:02:15 liw Exp $"
  */
 
 #ifndef __publib_fname_h

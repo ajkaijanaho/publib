@@ -2,7 +2,7 @@
  * strzap.c -- remove pat from beginning of str, if it is there
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-strutil:$Id: strzap.c,v 1.1 1994/06/20 20:30:51 liw Exp $"
+ * "@(#)publib-strutil:$Id: strzap.c,v 1.2 1994/07/22 12:22:54 liw Exp $"
  */
 
 #include <assert.h>

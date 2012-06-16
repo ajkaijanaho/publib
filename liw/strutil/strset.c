@@ -2,7 +2,7 @@
  * strset.c -- set all characters in a string to a given character
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-strutil:$Id$"
+ * "@(#)publib-strutil:$Id: strset.c,v 1.1 1994/06/20 20:30:36 liw Exp $"
  */
 
 #include <assert.h>

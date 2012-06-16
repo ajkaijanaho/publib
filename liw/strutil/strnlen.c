@@ -2,7 +2,7 @@
  * strnlen.c -- give length of string, which needn't be zero terminated
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-strutil:$Id$"
+ * "@(#)publib-strutil:$Id: strnlen.c,v 1.1 1994/12/27 13:34:26 wirzeniu Exp $"
  */
 
 #include <assert.h>

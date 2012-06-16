@@ -2,7 +2,7 @@
  * errormsg.c -- print error message and optionally die
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-errormsg:$Id: errormsg.c,v 1.1.1.1 1995/08/06 21:57:17 liw Exp $"
+ * "@(#)publib-errormsg:$Id: errormsg.c,v 1.2 1999/03/24 22:29:13 liw Exp $"
  */
 
 #include <assert.h>

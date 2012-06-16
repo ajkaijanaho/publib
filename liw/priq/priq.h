@@ -2,7 +2,7 @@
  * File:	priq.h
  * Purpose:	Declarations for priority queues.
  * Author:	Lars Wirzenius
- * Version:	"@(#)publib:$Id: priq.h,v 1.1.1.1 1996/01/18 17:55:38 liw Exp $"
+ * Version:	"@(#)publib:$Id: priq.h,v 1.2 1997/01/01 19:38:46 liw Exp $"
  */
 
 #ifndef __publib_priq_h_included

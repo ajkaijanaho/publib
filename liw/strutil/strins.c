@@ -2,7 +2,7 @@
  * strins.c -- insert a string at the beginning of another string
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-strutil:$Id: strins.c,v 1.1.1.1 1994/02/03 17:25:30 liw Exp $"
+ * "@(#)publib-strutil:$Id: strins.c,v 1.2 1994/02/05 17:08:44 liw Exp $"
  */
 
 #include <assert.h>

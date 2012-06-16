@@ -2,7 +2,7 @@
  * File:	priq.c
  * Purpose:	Implementation of priority queues.
  * Author:	Lars Wirzenius
- * Version:	"@(#)publib:$Id$"
+ * Version:	"@(#)publib:$Id: priq.c,v 1.1.1.1 1996/01/18 17:55:38 liw Exp $"
  */
 
 #include <assert.h>

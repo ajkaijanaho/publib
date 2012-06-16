@@ -2,7 +2,7 @@
  * strnins.c -- insert prefix of a string at the beginning of another string
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-strutil:$Id: strins.c,v 1.2 1994/02/05 17:08:44 liw Exp $"
+ * "@(#)publib-strutil:$Id: strnins.c,v 1.1 1994/07/25 23:15:39 liw Exp $"
  */
 
 #include <assert.h>

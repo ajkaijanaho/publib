@@ -2,7 +2,7 @@
  * test_tbuf.c -- test program for tbuf
  *
  * Part of Publib, see man page for more information.
- * "@(#)publib-tbuf:$Id: test_tbuf.c,v 1.1.1.1 1998/03/27 15:38:46 liw Exp $"
+ * "@(#)publib-tbuf:$Id: test_tbuf.c,v 1.2 1998/06/24 10:04:20 liw Exp $"
  */
 
 #include <stdio.h>

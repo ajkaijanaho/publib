@@ -2,7 +2,7 @@
  * iset_remove.c -- remove a number from an iset
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-iset:$Id: iset_remove.c,v 1.2 1994/07/16 12:09:30 liw Exp $"
+ * "@(#)publib-iset:$Id: iset_remove.c,v 1.3 1994/07/16 15:28:53 liw Exp $"
  */
 
 #include <assert.h>

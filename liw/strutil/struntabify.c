@@ -2,7 +2,7 @@
  * struntabify.c -- convert tabs to spaces
  *
  * Part of publib.  See man page for more information.
- * "@(#)publib-strutil:$Id$"
+ * "@(#)publib-strutil:$Id: struntabify.c,v 1.1 1994/06/20 20:30:45 liw Exp $"
  */
 
 #include <assert.h>

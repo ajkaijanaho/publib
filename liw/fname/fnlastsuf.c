@@ -2,7 +2,7 @@
  * fnlastsuf.c -- find last suffix in basename of filename
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-fname:$Id: fnlastsuf.c,v 1.1.1.1 1993/11/20 17:02:15 liw Exp $"
+ * "@(#)publib-fname:$Id: fnlastsuf.c,v 1.2 1994/06/20 20:49:24 liw Exp $"
  */
 
 #include <assert.h>

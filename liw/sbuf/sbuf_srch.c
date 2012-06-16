@@ -2,11 +2,12 @@
  * sbuf_srch.c -- implement searching routines for text editor buffer
  *
  * Part of Publib.  See manpage for more information.
- * "@(#)publib-sbuf:$Id: sbuf_srch.c,v 1.3 1996/03/16 22:19:05 liw Exp $"
+ * "@(#)publib-sbuf:$Id: sbuf_srch.c,v 1.5 2002/05/23 12:01:58 liw Exp $"
  */
 
 #include <stdio.h>
 #include <ctype.h>
+#include <sys/types.h>
 #include <regex.h>
 #include "publib/sbuf.h"
 

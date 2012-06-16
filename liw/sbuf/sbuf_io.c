@@ -2,7 +2,7 @@
  * sbuf_io.c -- reading and writing buffers and marks
  *
  * Part of Publib.  See manpage for more information.
- * "@(#)publib-sbuf:$Id: sbuf_io.c,v 1.6 1996/11/24 13:41:54 liw Exp $"
+ * "@(#)publib-sbuf:$Id: sbuf_io.c,v 1.7 1997/04/30 22:41:15 liw Exp $"
  */
 
 #include <stdio.h>

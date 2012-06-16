@@ -3,7 +3,7 @@
  *
  * Lars Wirzenius
  * Part of Publib, see README and publib(3) for more info.
- * "@(#)colawatcher:$Id: nntp.c,v 1.1.1.1 1995/07/23 12:41:47 wirzeniu Exp $"
+ * "@(#)colawatcher:$Id: nntp.c,v 1.3 2002/05/23 12:01:58 liw Exp $"
  */
 
 
@@ -364,6 +364,7 @@ static int read_line(int fd, char *buf) {
 	char *start;
 
 	start = buf;
+	ret = 0;
 	while (buf-start<512 && (ret = nread(fd, buf, 1)) == 0 && *buf != '\n')
 		++buf;
 	if (ret != 0)

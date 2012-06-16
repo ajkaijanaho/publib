@@ -2,7 +2,7 @@
  * sbuf.h -- simple text editor buffer routines
  *
  * Part of Publib.  See manpage for more information.
- * "@(#)publib-sbuf:$Id: sbuf.h,v 1.20 1996/12/18 15:52:26 liw Exp $"
+ * "@(#)publib-sbuf:$Id: sbuf.h,v 1.21 1996/12/27 22:48:34 liw Exp $"
  */
 
 

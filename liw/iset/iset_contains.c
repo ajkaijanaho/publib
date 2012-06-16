@@ -2,7 +2,7 @@
  * iset_contains.c -- check whether an iset contains a number
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-iset:$Id$"
+ * "@(#)publib-iset:$Id: iset_contains.c,v 1.1.1.1 1993/11/20 17:02:31 liw Exp $"
  */
 
 #include <assert.h>

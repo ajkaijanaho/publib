@@ -2,7 +2,7 @@
  * stroverlap.c -- check whether two strings overlap
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-strutil:$Id$"
+ * "@(#)publib-strutil:$Id: stroverlap.c,v 1.1 1994/06/20 20:30:28 liw Exp $"
  */
 
 #include <assert.h>

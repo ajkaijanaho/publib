@@ -2,7 +2,7 @@
  * fnqualify.c -- qualify a filename
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-fname:$Id: fnqualify.c,v 1.4 1994/07/16 15:28:43 liw Exp $"
+ * "@(#)publib-fname:$Id: fnqualify.c,v 1.5 1996/08/12 01:03:57 liw Exp $"
  */
 
 #include <assert.h>

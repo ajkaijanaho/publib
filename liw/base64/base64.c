@@ -2,13 +2,13 @@
  * File:	base64.c
  * Purpose:	Implementation of MIME's Base64 encoding and decoding.
  * Author:	Lars Wirzenius
- * Version:	$Id: base64.c,v 1.1 1996/10/14 03:14:58 liw Exp $
+ * Version:	$Id: base64.c,v 1.2 2003/11/15 18:24:10 liw Exp $
  */
 
 #include <limits.h>
 #include "publib/base64.h"
 
-static const char sixtet_to_base64[] = 
+static const unsigned char sixtet_to_base64[] = 
 	"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 
@@ -27,34 +27,44 @@ size_t base64_length(size_t n) {
  * Note:	Output buffer must be at least base64_length(n) chars.
  */
 size_t base64_encode(char *to, const char *from, size_t n) {
-	int i, j;
-	unsigned long w;
-	size_t nn;
+    	unsigned w;
+	char *to_start;
+	unsigned char *fromp;
+	
+    	to_start = to;
 
-	w = 0;
-	i = 0;
-	nn = 0;
-	while (n > 0) {
-		w |= *from << i*8;
-		++from;
-		--n;
-		++i;
-		if (n == 0 || i == 3) {
-			for (j = 0; j*6 < i*8; ++j) {
-				*to++ = sixtet_to_base64[w & 0x3f];
-				++nn;
-				w >>= 6;
-			}
-			if (n == 0)
-				for (j = i; j < 3; ++j) {
-					*to++ = '=';
-					++nn;
-				}
-			w = 0;
-			i = 0;
-		}
+    	fromp = (unsigned char *) from;
+    	for (; n >= 3; n -= 3, fromp += 3) {
+	    w = (fromp[0] << 16) | (fromp[1] << 8) | fromp[2];
+	    *to++ = sixtet_to_base64[(w >> 18) & 0x3f];
+	    *to++ = sixtet_to_base64[(w >> 12) & 0x3f];
+	    *to++ = sixtet_to_base64[(w >> 6) & 0x3f];
+	    *to++ = sixtet_to_base64[w & 0x3f];
 	}
-	return nn;
+
+    	switch (n) {
+	case 0:
+	    /* Nothing to do */
+	    break;
+    	
+	case 1:
+	    w = fromp[0];
+	    *to++ = sixtet_to_base64[(w >> 2) & 0x3f];
+	    *to++ = sixtet_to_base64[(w << 4) & 0x3f];
+	    *to++ = '=';
+	    *to++ = '=';
+	    break;
+
+	case 2:
+	    w = (fromp[0] << 8) | fromp[1];
+	    *to++ = sixtet_to_base64[(w >> 10) & 0x3f];
+	    *to++ = sixtet_to_base64[(w >> 4) & 0x3f];
+	    *to++ = sixtet_to_base64[(w << 2) & 0x3f];
+	    *to++ = '=';
+	    break;
+	}
+	
+	return to - to_start;
 }
 
 
@@ -65,38 +75,38 @@ size_t base64_encode(char *to, const char *from, size_t n) {
  *		The output buffer does not get a '\0' appended.
  */
 size_t base64_decode(char *to, const char *from, size_t len) {
-	unsigned long w;
-	int i, j;
-	static size_t n;
-	static char base64_to_sixtet[UCHAR_MAX+1] = {0};
+    	static int base64_to_sixtet[UCHAR_MAX + 1];
 	static int tab_init = 0;
+	int i;
+	unsigned bitbuf;
+	int nbits;
+	unsigned char *fromp;
+	char *to_start;
 
-	if (!tab_init) {
-		for (i = 0; (j = sixtet_to_base64[i]) != '\0'; ++i)
-			base64_to_sixtet[j] = i;
-		tab_init = 1;
+    	if (!tab_init) {
+	    tab_init = 1;
+	    for (i = 0; i <= UCHAR_MAX + 1; ++i)
+	    	base64_to_sixtet[i] = -1;
+	    for (i = 0; sixtet_to_base64[i] != '\0'; ++i)
+	    	base64_to_sixtet[sixtet_to_base64[i]] = i;
 	}
 
-	w = 0;
-	i = 0;
-	n = 0;
-	while (*from != '\0' && *from != '=' && len-- > 0) {
-		if (*from == ' ' || *from == '\n' || *from == '\n') {
-			++from;
-			continue;
+    	to_start = to;
+
+    	bitbuf = 0;
+	nbits = 0;
+	fromp = (unsigned char *) from;
+    	for (i = 0; i < len && fromp[i] != '='; ++i) {
+	    if (base64_to_sixtet[fromp[i]] != -1) {
+		bitbuf = (bitbuf << 6) | base64_to_sixtet[fromp[i]];
+		nbits += 6;
+		if (nbits >= 8) {
+		    *to++ = (bitbuf >> (nbits - 8)) & 0xff;
+		    bitbuf >>= 8;
+		    nbits -= 8;
 		}
-		w |= base64_to_sixtet[* (unsigned char *) from] << i*6;
-		++i;
-		++from;
-		if (*from == '\0' || *from == '=' || i == 4) {
-			for (j = 0; j*8 < i*6; ++j) {
-				*to++ = w & 0xff;
-				++n;
-				w >>= 8;
-			}
-			i = 0;
-			w = 0;
-		}
+	    }
 	}
-	return n;
+	
+	return to - to_start;
 }

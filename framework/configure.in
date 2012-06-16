@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script
 dnl This file is part of publib
-dnl "@(#)publib-framework:$Id: configure.in,v 1.6 1996/02/17 20:46:17 liw Exp $"
+dnl "@(#)publib-framework:$Id: configure.in,v 1.7 1996/02/17 21:01:57 liw Exp $"
 AC_INIT(Rules.mk.in)
 changequote(,)dnl
 srcdir="`cd $srcdir; pwd`"

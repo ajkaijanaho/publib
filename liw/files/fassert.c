@@ -2,7 +2,7 @@
  * fassert.c -- check for errors on stream
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-files:$Id: fassert.c,v 1.1.1.1 1993/11/20 17:02:01 liw Exp $"
+ * "@(#)publib-files:$Id: fassert.c,v 1.2 1995/08/11 15:53:16 liw Exp $"
  */
 
 #include <stdio.h>

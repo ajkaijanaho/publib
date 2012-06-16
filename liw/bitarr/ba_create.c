@@ -2,7 +2,7 @@
  * ba_create.c -- create an empty set
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-bitarr:$Id: ba_create.c,v 1.4 1995/03/10 10:59:30 wirzeniu Exp $"
+ * "@(#)publib-bitarr:$Id: ba_create.c,v 1.5 1995/05/12 14:44:00 wirzeniu Exp $"
  */
 
 #include <stdlib.h>

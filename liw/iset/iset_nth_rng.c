@@ -2,7 +2,7 @@
  * iset_nth_rng.c -- return the ends of the nth consecutive range of values
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-iset:$Id$"
+ * "@(#)publib-iset:$Id: iset_nth_rng.c,v 1.1.1.1 1993/11/20 17:02:32 liw Exp $"
  */
 
 #include <assert.h>

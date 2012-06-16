@@ -2,7 +2,7 @@
  * strcstr.c -- convert binary data into C string literal notation
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-strutil:$Id: strcstr.c,v 1.1.1.1 1994/02/03 17:25:30 liw Exp $"
+ * "@(#)publib-strutil:$Id: strcstr.c,v 1.2 1994/02/05 17:08:43 liw Exp $"
  */
 
 #include <assert.h>

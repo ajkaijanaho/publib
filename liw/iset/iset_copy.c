@@ -2,7 +2,7 @@
  * iset_copy.c -- create a copy of an iset
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-iset:$Id: iset_copy.c,v 1.2 1994/07/16 12:09:29 liw Exp $"
+ * "@(#)publib-iset:$Id: iset_copy.c,v 1.3 1994/07/16 15:28:52 liw Exp $"
  */
 
 #include <assert.h>

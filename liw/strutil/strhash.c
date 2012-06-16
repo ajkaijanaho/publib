@@ -2,7 +2,7 @@
  * strhash.c -- compute a hash value for a string
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-strutil:$Id$"
+ * "@(#)publib-strutil:$Id: strhash.c,v 1.1 1994/06/20 20:30:15 liw Exp $"
  */
 
 #include <assert.h>

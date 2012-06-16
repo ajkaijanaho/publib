@@ -3,7 +3,7 @@
  *
  * Lars Wirzenius.
  * Part of Publib.  See publib(3).
- * "@(#)publib-main:$Id: main.h,v 1.1 1995/12/05 21:33:55 liw Exp $"
+ * "@(#)publib-main:$Id: main.h,v 1.2 1996/01/07 22:02:58 liw Exp $"
  */
 
 #ifndef __publib_main_h_included

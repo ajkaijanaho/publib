@@ -2,7 +2,7 @@
  * test_fnqualify.c -- test fnqualify
  *
  * Part of publib.
- * "@(#)publib-fname:$Id$"
+ * "@(#)publib-fname:$Id: test_fnqualify.c,v 1.1.1.1 1993/11/20 17:02:15 liw Exp $"
  */
 
 #include <stdio.h>

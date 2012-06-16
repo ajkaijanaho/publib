@@ -2,7 +2,7 @@
  * sbuf_aux.c -- auxiliary routines for text editors
  *
  * Part of Publib.  See manpage for more information.
- * "@(#)publib-sbuf:$Id: sbuf_aux.c,v 1.13 1996/11/27 14:09:00 liw Exp $"
+ * "@(#)publib-sbuf:$Id: sbuf_aux.c,v 1.14 1996/12/18 15:52:26 liw Exp $"
  */
 
 

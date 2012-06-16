@@ -2,7 +2,7 @@
  * xmemdup.c -- error checking memdup
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-alloc:$Id: xmemdup.c,v 1.1.1.1 1993/11/20 17:01:29 liw Exp $"
+ * "@(#)publib-alloc:$Id: xmemdup.c,v 1.2 1994/12/27 12:39:13 wirzeniu Exp $"
  */
 
 #include <assert.h>

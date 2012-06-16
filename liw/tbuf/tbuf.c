@@ -2,7 +2,7 @@
  * tbuf.c -- implement text editor buffers using trees
  *
  * Part of Publib, see man page for more information.
- * "@(#)publib-tbuf:$Id: tbuf.c,v 1.4 1998/06/25 13:38:58 liw Exp $"
+ * "@(#)publib-tbuf:$Id: tbuf.c,v 1.12 2003/11/15 18:24:11 liw Exp $"
  *
  * 
  * A brief description of how this works.
@@ -56,6 +56,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <assert.h>
+#include <string.h>
 
 #include "tbuf.h"
 
@@ -193,6 +194,7 @@ static void dump_node(FILE *f, int level, Node *node) {
 	}
 }
 
+#if 0
 static void dump_tbuf(FILE *f, Tbuf *tbuf) {
 	fprintf(f, "tbuf at %p\n", (void *) tbuf);
 	fprintf(f, "..height=%lu\n", (unsigned long) tbuf->height);
@@ -204,6 +206,7 @@ static void dump_tbuf(FILE *f, Tbuf *tbuf) {
 		dump_node(f, 1, tbuf->x.root);
 	fprintf(f, "end of tbuf dump at %p\n", (void *) tbuf);
 }
+#endif
 
 #endif
 

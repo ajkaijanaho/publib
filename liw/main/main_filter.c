@@ -3,11 +3,12 @@
  *
  * Lars Wirzenius.
  * Part of Publib.  See publib(3).
- * "@(#)publib-main:$Id: main_filter.c,v 1.1 1995/12/05 21:33:55 liw Exp $"
+ * "@(#)publib-main:$Id: main_filter.c,v 1.3 2003/11/15 18:24:10 liw Exp $"
  */
 
 #include <assert.h>
 #include <stdio.h>
+#include <string.h>
 #include "publib/errormsg.h"
 #include "publib/main.h"
 

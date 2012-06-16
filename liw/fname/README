@@ -1,6 +1,6 @@
 README for Publib module fname
 Lars Wirzenius
-"@(#)publib-fname:$Id$"
+"@(#)publib-fname:$Id: README,v 1.1 1994/08/28 17:19:55 liw Exp $"
 
 These routines operate on UNIX/POSIX style filenames
 (/dir/foo.bar/file.a.b.c).

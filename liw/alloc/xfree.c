@@ -2,7 +2,7 @@
  * xfree.c -- frontend for free (mostly for symmetricity with x*alloc)
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-alloc:$Id$"
+ * "@(#)publib-alloc:$Id: xfree.c,v 1.1.1.1 1993/11/20 17:01:28 liw Exp $"
  */
 
 #include <stdlib.h>

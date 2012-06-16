@@ -2,7 +2,7 @@
  * tbuf.h -- editor buffer implemented with a tree
  *
  * Part of Publib, See manual pages publib(3) and tbuf(3) for more information.
- * "@(#)publib-tbuf:$Id: tbuf.h,v 1.2 1998/06/24 10:04:05 liw Exp $"
+ * "@(#)publib-tbuf:$Id: tbuf.h,v 1.4 1998/12/23 18:03:21 liw Exp $"
  */
 
 #ifndef __publib_tbuf_h_included

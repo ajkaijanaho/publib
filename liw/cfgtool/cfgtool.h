@@ -2,7 +2,7 @@
  * File:	cfgtool.h
  * Purpose:	Declarations for library routines handling Debian's cfgtool.
  * Author:	Lars Wirzenius
- * Version:	"@(#)publib-cfgtool:$Id: cfgtool.h,v 1.2 1996/11/23 06:20:22 liw Exp $"
+ * Version:	"@(#)publib-cfgtool:$Id: cfgtool.h,v 1.3 1997/01/01 19:38:42 liw Exp $"
  */
 
 #ifndef __publib_cfgtool_h_included

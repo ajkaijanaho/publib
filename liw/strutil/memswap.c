@@ -2,7 +2,7 @@
  * memswap.c -- swap contents of two memory blocks
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-strutil:$Id: memswap.c,v 1.1.1.1 1994/02/03 17:25:31 liw Exp $"
+ * "@(#)publib-strutil:$Id: memswap.c,v 1.2 1994/02/05 17:08:43 liw Exp $"
  */
 
 #include <assert.h>

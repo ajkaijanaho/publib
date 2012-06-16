@@ -2,7 +2,7 @@
  * memoverlap.c -- check whether two memory areas overlap
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-strutil:$Id: memoverlap.c,v 1.2 1994/02/06 10:31:11 liw Exp $"
+ * "@(#)publib-strutil:$Id: memoverlap.c,v 1.3 1994/06/20 20:29:59 liw Exp $"
  */
 
 #include <assert.h>

@@ -3,7 +3,7 @@
  *
  * Lars Wirzenius.
  * Part of Publib.  See publib(3).
- * "@(#)publib-main:$Id$"
+ * "@(#)publib-main:$Id: test-main-filter.c,v 1.1 1995/12/05 21:33:55 liw Exp $"
  */
  
 #include <stdio.h>

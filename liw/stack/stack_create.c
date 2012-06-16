@@ -2,7 +2,7 @@
  * stack_create.c -- create a new (and empty) stack
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-stack:$Id: stack_create.c,v 1.2 1994/07/16 12:10:06 liw Exp $"
+ * "@(#)publib-stack:$Id: stack_create.c,v 1.3 1994/07/16 15:29:06 liw Exp $"
  */
 
 #include <stdlib.h>

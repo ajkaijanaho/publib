@@ -9,6 +9,7 @@
  * one mark, is the other updated correctly?
  */
 
+#include <string.h>
 #include <publib.h>
 
 static Sbuf *buf;

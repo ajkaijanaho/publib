@@ -2,7 +2,7 @@
  * log.h -- log files
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-log:$Id: log.h,v 1.3 1994/08/28 18:08:21 liw Exp $"
+ * "@(#)publib-log:$Id: log.h,v 1.4 1997/05/09 13:43:49 liw Exp $"
  */
 
 #ifndef __publib_log_h_included

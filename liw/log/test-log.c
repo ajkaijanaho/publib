@@ -2,7 +2,7 @@
  * logtest.c -- test the log file routines
  * 
  * Part of publib.  See man page for more information
- * "@(#)publib-log:$Id: test-log.c,v 1.2 1997/05/09 13:43:49 liw Exp $"
+ * "@(#)publib-log:$Id: test-log.c,v 1.3 1997/05/09 13:49:16 liw Exp $"
  */
 
 #include "publib/log.h"

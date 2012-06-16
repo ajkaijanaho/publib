@@ -2,7 +2,7 @@
  * struncstr.c -- convert C string literal notation into binary data
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-strutil:$Id: struncstr.c,v 1.2 1994/02/05 17:08:46 liw Exp $"
+ * "@(#)publib-strutil:$Id: struncstr.c,v 1.4 2004/07/11 10:19:19 liw Exp $"
  */
 
 #include <assert.h>
@@ -51,7 +51,7 @@ void struncstr(void *block, const char *str, size_t max) {
 		} else if (isdigit(str[1])) {	/* octal escape sequence? */
 			++str;
 			c = i = 0;
-			while (++i < 3 && isdigit(*str))
+			while (i++ < 3 && isdigit(*str))
 				c = (c << 3) | hextoint(*str++);
 			append(c);
 		} else if ((p = strchr(print, str[1])) != NULL) {

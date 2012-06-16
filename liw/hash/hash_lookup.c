@@ -2,7 +2,7 @@
  * hash_lookup.c -- find a datum in a hash table
  *
  * Part of Publib, see man page for more information.
- * "@(#)publib-hash:$Id: hash_lookup.c,v 1.1.1.1 1994/07/20 21:02:54 liw Exp $"
+ * "@(#)publib-hash:$Id: hash_lookup.c,v 1.2 1995/09/23 09:11:55 liw Exp $"
  */
 
 #include <assert.h>

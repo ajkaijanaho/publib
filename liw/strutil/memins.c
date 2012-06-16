@@ -2,7 +2,7 @@
  * memins.c -- insert bytes at beginning of memory block
  *
  * Part of publib.  See man page for more information
- * "@(#)publib-strutil:$Id$"
+ * "@(#)publib-strutil:$Id: memins.c,v 1.1 1994/02/05 17:09:24 liw Exp $"
  */
 
 #include <assert.h>
