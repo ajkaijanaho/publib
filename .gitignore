@@ -3,3 +3,6 @@ autom4te.cache
 aclocal.m4
 configure
 install-sh
+*.[od]
+config.log
+config.status
