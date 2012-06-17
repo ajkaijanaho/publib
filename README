@@ -1,9 +1,60 @@
-This is the top level README for Publib.
+                             P U B L I B
 
-Publib consists of a framework for building libraries, and my
-set of modules. You can add and remove modules, the framework is
-not tied to my modules. In fact, I hope you do -- the framework
-intends to make it _easy_ to create new C libraries.
+Publib is a heterogenous library for the C programming language,
+originally intended as an extension of the standard library but now
+mostly of legacy interest.  The library was written by Lars Wirzenius.
+As of October 2006, it is maintained by Antti-Juhani Kaijanaho.
+Publib is currently in maintenance mode: there are no plans to
+introduce new functionality at this time.
 
-For more information, read framework/Blurb and framework/README.
-For my modules, see liw/*.
+Developers using the library and redistributors of the library are
+encouraged to subscribe to the publib mailing list; send mail to
+publib-subscribe@lists.kaijanaho.info to subscibe.  The list is
+archived publically at
+http://lists.kaijanaho.info/archives/publib/threads.html .  This list
+will receive release announcements, and it is the preferred forum for
+bug reports.
+
+Development sources are hosted in Git.  A public repository will be
+announced later.
+
+Happy hacking,
+
+
+
+          Antti-Juhani Kaijanaho (antti-juhani@kaijanaho.fi)
+          Sienitie 2 B 27
+          40640 JYVÄSKYLÄ
+          FINLAND
+
+-----8<-----8<-----8<-----8<-----8<-----8<-----8<-----8<-----8<-----8<-----
+
+                           Ancient History
+               (by Lars Wirzenius long, long time ago)
+
+The Publib effort started from an article posted to gnu.misc.discuss,
+comp.sources.d, and comp.software-eng at the end of February, 1992, by
+Steve Nuchia.  He then created the mailing list which has been used
+for communication, library@sccsi.com.  Several people were active in
+the discussion at the beginning.  Lars Wirzenius built a few
+prototypes for the framework, based on the discussions on the list.
+Paul Sander and Greg Woods especially gave valuable comments on them.
+
+Patrik Andersin noted the problem with running configure twice with different
+module directories and the headers not being copied correctly.
+
+The first version released outside of the list was 0.2, posted on
+February 19 to alt.sources by Lars Wirzenius.
+
+The list has been rather dead since the end of 1993.
+
+The second version was 0.3, posted to alt.sources and put on
+the ftp sites on July 16, 1994.
+
+The third version was 0.4, not posted to alt.sources, only put on
+the ftp sites on October 10, 1994.
+
+The fourth version was 0.5, not posted to alt.sources or comp.sources.unix,
+only put on the ftp sites in May, 1995.
+
+-----8<-----8<-----8<-----8<-----8<-----8<-----8<-----8<-----8<-----8<-----
