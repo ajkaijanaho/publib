@@ -1,5 +1,6 @@
 /* Part of publib.
 
+   Copyright (c) 2012 Antti-Juhani Kaijanaho.
    Copyright (c) 1994-2006 Lars Wirzenius.  All rights reserved.
 
    Redistribution and use in source and binary forms, with or without
@@ -30,7 +31,6 @@
  * sbuf.c -- simple text editor buffer routines
  *
  * Part of Publib.  See manpage for more information.
- * "@(#)publib-sbuf:$Id: sbuf.c,v 1.16 1998/10/25 20:33:29 liw Exp $"
  */
 
 
@@ -290,7 +290,6 @@ int (sbuf_charat)(Sbuf *buf, long pos) {
 	sbuf_validate(buf);
 	assert(pos >= 0);
 	assert(pos <= buf->len);
-	assert(!sbuf_has_flags(buf, SBUF_LOCKED_FLAG));
 
 	if (pos == buf->len)
 		return EOF;
