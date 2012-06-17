@@ -10,13 +10,21 @@ introduce new functionality at this time.
 Developers using the library and redistributors of the library are
 encouraged to subscribe to the publib mailing list; send mail to
 publib-subscribe@lists.kaijanaho.info to subscibe.  The list is
-archived publically at
+archived publically (updated once day) at
 http://lists.kaijanaho.info/archives/publib/threads.html .  This list
 will receive release announcements, and it is the preferred forum for
 bug reports.
 
-Development sources are hosted in Git.  A public repository will be
-announced later.
+Development sources are hosted in Git.  There's a source browser at
+  http://code.google.com/p/publib/source/browse/
+and a local clone can be obtained via
+  git clone https://code.google.com/p/publib/ 
+
+Bugs may be reported to the mailing list, or (preferably) to the
+issue tracker at http://code.google.com/p/publib/issues/list.
+
+New releases (since 1.40) are distributed from
+  http://code.google.com/p/publib/downloads/list
 
 Happy hacking,
 
