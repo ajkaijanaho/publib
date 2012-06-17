@@ -7,3 +7,5 @@ install-sh
 config.log
 config.status
 a.out
+libpub.a
+core
