@@ -1,5 +1,6 @@
 /* Part of publib.
 
+   Copyright (c) 2012 Antti-Juhani Kaijanaho.
    Copyright (c) 1994-2006 Lars Wirzenius.  All rights reserved.
 
    Redistribution and use in source and binary forms, with or without
@@ -31,13 +32,13 @@
  *
  * Lars Wirzenius
  * Part of Publib.
- * "@(#)colawatcher:$Id: nntp.h,v 1.5 1996/04/08 22:27:54 liw Exp $"
  */
 
 #ifndef __publib_nntp_h_included
 #define __publib_nntp_h_included
 
 #include <publib/alloc.h>
+#include <stdio.h>
 #include <time.h>
 
 struct nntp_article {
