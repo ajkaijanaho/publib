@@ -242,8 +242,11 @@ Makefile : Makefile.in config.status
 config.status : configure
 	./configure
 
-configure : configure.ac
+configure : configure.ac aclocal.m4
 	autoconf
+
+aclocal.m4 :
+	aclocal
 
 .SUFFIXES:
 .SUFFIXES: .c .o
