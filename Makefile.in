@@ -182,6 +182,18 @@ objs =  alloc/memdup.o          \
 	strutil/strzap.o        \
 	tbuf/tbuf.o
 
+tests = iset/test_add.c             \
+	main/test-main-filter.c     \
+	log/test-log.c              \
+	tbuf/test_tbuf_with_stats.c \
+	tbuf/test_tbuf.c            \
+	queue/test-queue.c          \
+	sbuf/test-colmark.c         \
+	sbuf/test-sbuf-undo.c       \
+	sbuf/test-sbuf.c            \
+	priq/test-priq.c            \
+	fname/test_fnqualify.c
+
 all :	libpub.a
 
 clean mostlyclean :
@@ -232,6 +244,14 @@ uninstall :
 libpub.a : $(objs)
 	$(AR) cr $@ $^
 	$(RANLIB) $@
+
+check : libpub.a
+	@set -e; for f in $(tests) ; do\
+	  $(echoexec) $(CC) -Iincludes $(CPPFLAGS) $(CFLAGS) $$f libpub.a ;\
+	  echo './a.out </dev/null >/dev/null' ;\
+	  ./a.out </dev/null >/dev/null ;\
+	  if test -r test.log; then rm test.log ; fi ;\
+	done
 
 .c.o:
 	$(CC) -Iincludes -D__publib__ $(CPPFLAGS) $(CFLAGS) $(MDMF) -c $< -o $@
