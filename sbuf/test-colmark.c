@@ -1,5 +1,6 @@
 /* Part of publib.
 
+   Copyright (c) 2012 Antti-Juhani Kaijanaho.
    Copyright (c) 1994-2006 Lars Wirzenius.  All rights reserved.
 
    Redistribution and use in source and binary forms, with or without
@@ -69,7 +70,6 @@ int main(void) {
 
 	{
 	char foo[1000];
-	long len;
 	int ret;
 
 	setup();
@@ -78,7 +78,7 @@ int main(void) {
 	                           /* 0123456 789abcd */
 	sbuf_remark(mark1, 1, 11);
 	sbuf_mark_set_columnar(mark1, 1);
-	len = sbuf_mark_length(mark1);
+	(void)sbuf_mark_length(mark1);
 	sbuf_strat(foo, mark1);
 	sbuf_remark(mark2, 14, 0);
 	sbuf_mark_set_columnar(mark2, 1);

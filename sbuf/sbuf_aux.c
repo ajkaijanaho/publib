@@ -1,5 +1,6 @@
 /* Part of publib.
 
+   Copyright (c) 2012 Antti-Juhani Kaijanaho.
    Copyright (c) 1994-2006 Lars Wirzenius.  All rights reserved.
 
    Redistribution and use in source and binary forms, with or without
@@ -498,7 +499,7 @@ static long find_pair(const unsigned char *str, long len, long pos) {
 			dir[c] = 0;
 		}
 
-		assert(strlen(pairstr) % 2 == 0);
+		assert(strlen((char*)pairstr) % 2 == 0);
 		for (c = 0; pairstr[c] != '\0'; c += 2) {
 			pair[pairstr[c]] = pairstr[c+1];
 			pair[pairstr[c+1]] =pairstr[c];

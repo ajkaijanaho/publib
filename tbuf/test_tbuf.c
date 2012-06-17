@@ -1,5 +1,6 @@
 /* Part of publib.
 
+   Copyright (c) 2012 Antti-Juhani Kaijanaho.
    Copyright (c) 1994-2006 Lars Wirzenius.  All rights reserved.
 
    Redistribution and use in source and binary forms, with or without
@@ -30,7 +31,6 @@
  * test_tbuf.c -- test program for tbuf
  *
  * Part of Publib, see man page for more information.
- * "@(#)publib-tbuf:$Id: test_tbuf.c,v 1.2 1998/06/24 10:04:20 liw Exp $"
  */
 
 #include <stdio.h>
@@ -81,13 +81,13 @@ int main(void) {
         tbuf = x_tbuf_create(str, len);
 	memset(buf, 0, sizeof(buf));
 	tbuf_chars(buf, tbuf, 0, len);
-	printf("buf =<%s> (len=%u)\n", buf, len);
+	printf("buf =<%s> (len=%zu)\n", buf, len);
 
 	tbuf2 = x_tbuf_copy(tbuf, 0, len);
 	tbuf_destroy(tbuf);
 	memset(buf, 0, sizeof(buf));
 	tbuf_chars(buf, tbuf2, 0, len);
-	printf("buf2=<%s> (len=%u)\n", buf, len);
+	printf("buf2=<%s> (len=%zu)\n", buf, len);
 
 	tbuf_destroy(tbuf2);
     }
@@ -99,7 +99,7 @@ int main(void) {
 		tbuf3 = x_tbuf_cat(tbuf, tbuf2);
 		memset(buf, 0, sizeof(buf));
 		tbuf_chars(buf, tbuf3, 0, len + len2);
-		printf("buf=<%s> (len=%u len2=%u)\n", buf, len, len2);
+		printf("buf=<%s> (len=%zu len2=%zu)\n", buf, len, len2);
 		tbuf_destroy(tbuf2);
 		tbuf_destroy(tbuf3);
 	}

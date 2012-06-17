@@ -1,5 +1,6 @@
 /* Part of publib.
 
+   Copyright (c) 2012 Antti-Juhani Kaijanaho
    Copyright (c) 1994-2006 Lars Wirzenius.  All rights reserved.
 
    Redistribution and use in source and binary forms, with or without
@@ -30,7 +31,6 @@
  * tbuf.c -- implement text editor buffers using trees
  *
  * Part of Publib, see man page for more information.
- * "@(#)publib-tbuf:$Id: tbuf.c,v 1.12 2003/11/15 18:24:11 liw Exp $"
  *
  * 
  * A brief description of how this works.
@@ -178,7 +178,7 @@ static Node *free_nodes = NULL;
  * normally enabled.
  */
 
-#if 0
+#if 1
 #define dump_chunk(f, level, chunk) ((void) 0)
 #define dump_node(f, level, node) ((void) 0)
 #define dump_tbuf(f, tbuf) ((void) 0)
@@ -222,7 +222,6 @@ static void dump_node(FILE *f, int level, Node *node) {
 	}
 }
 
-#if 0
 static void dump_tbuf(FILE *f, Tbuf *tbuf) {
 	fprintf(f, "tbuf at %p\n", (void *) tbuf);
 	fprintf(f, "..height=%lu\n", (unsigned long) tbuf->height);
@@ -234,7 +233,6 @@ static void dump_tbuf(FILE *f, Tbuf *tbuf) {
 		dump_node(f, 1, tbuf->x.root);
 	fprintf(f, "end of tbuf dump at %p\n", (void *) tbuf);
 }
-#endif
 
 #endif
 
@@ -777,7 +775,6 @@ static Chunk *leftmost_chunk(Node *root) {
 	return root->x.chunk[0];
 }
 
-#endif
 
 static Node *replace_rightmost_chunk(Node *root, Chunk *chunk) {
 	Node *new, *new_kid;
@@ -811,6 +808,7 @@ static Node *replace_rightmost_chunk(Node *root, Chunk *chunk) {
 	assert(new->kids > 0);
 	return new;
 }
+#endif
 
 static Tbuf *copy_tbuf(Tbuf *tbuf) {
 	Tbuf *new;
