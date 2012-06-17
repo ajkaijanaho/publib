@@ -1,0 +1,252 @@
+#  Copyright (c) 2012 Antti-Juhani Kaijanaho
+#
+#  Redistribution and use in source and binary forms, with or without
+#  modification, are permitted provided that the following conditions
+#  are met:
+#
+#  1. Redistributions of source code must retain the above copyright
+#     notice, this list of conditions and the following disclaimer.
+#
+#  2. Redistributions in binary form must reproduce the above
+#     copyright notice, this list of conditions and the following
+#     disclaimer in the documentation and/or other materials provided
+#     with the distribution.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS
+#  OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+#  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+#  ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+#  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+#  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+#  GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+#  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+#  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+#  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+SHELL = /bin/sh
+
+srcdir          = @srcdir@
+
+CC              = @CC@
+CPPFLAGS        = @CPPFLAGS@
+CFLAGS          = @CFLAGS@
+MDMF            = @MDMF@
+LDFLAGS         = @LDFLAGS@
+INSTALL         = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_DATA    = @INSTALL_DATA@
+INSTALL_DIR     = ${INSTALL} -d
+AR		= ar
+RANLIB		= @RANLIB@ 
+echoexec        = sh $(srcdir)/echoexec.sh
+link_alternative_names = sh $(srcdir)/link-alternative-names
+
+prefix          = @prefix@
+exec_prefix     = @exec_prefix@
+datarootdir     = @datarootdir@
+
+includedir      = @includedir@
+libdir          = @libdir@
+mandir          = @mandir@
+man3dir         = ${mandir}/man3
+man3ext	        = .3
+
+objs =  alloc/memdup.o          \
+	alloc/xmalloc.o         \
+	alloc/xrealloc.o        \
+	alloc/xfree.o           \
+	alloc/xstrdup.o         \
+	alloc/xmemdup.o         \
+	alloc/dynarr.o          \
+	base64/base64.o         \
+	bitarr/ba_and_ba.o      \
+	bitarr/ba_clear.o       \
+	bitarr/ba_clear_all.o   \
+	bitarr/ba_copy.o        \
+	bitarr/ba_create.o      \
+	bitarr/ba_destroy.o     \
+	bitarr/ba_not.o         \
+	bitarr/ba_or_ba.o       \
+	bitarr/ba_or_not_ba.o   \
+	bitarr/ba_query.o       \
+	bitarr/ba_resize.o      \
+	bitarr/ba_set.o         \
+	bitarr/ba_xor_ba.o      \
+	cmp/cmp.o               \
+	errormsg/errormsg.o     \
+	files/xgetaline.o       \
+	files/xfseek.o          \
+	files/xfopen.o          \
+	files/xfclose.o         \
+	files/getaline.o        \
+	files/fassert.o         \
+	files/file_io.o         \
+	fname/fnbase.o          \
+	fname/fndelbeg.o        \
+	fname/fndelend.o        \
+	fname/fndelsuf.o        \
+	fname/fndir.o           \
+	fname/fnhome.o          \
+	fname/fnjoin.o          \
+	fname/fnlastsuf.o       \
+	fname/fnpathfind.o      \
+	fname/fnqualify.o       \
+	fname/fnsetsuf.o        \
+	hash/hash_create.o      \
+	hash/hash_destroy.o     \
+	hash/hash_install.o     \
+	hash/hash_lookup.o      \
+	hash/hash_uninstall.o   \
+	hash/hash_iter.o        \
+	iset/iset_add.o         \
+	iset/iset_add_rng.o     \
+	iset/iset_clear.o       \
+	iset/iset_contains.o    \
+	iset/iset_copy.o        \
+	iset/iset_create.o      \
+	iset/iset_destroy.o     \
+	iset/iset_diff.o        \
+	iset/iset_is_empty.o    \
+	iset/iset_isect.o       \
+	iset/iset_nth_rng.o     \
+	iset/iset_range.o       \
+	iset/iset_remove.o      \
+	iset/iset_rm_rng.o      \
+	iset/iset_union.o       \
+	lockfile/lockfile.o     \
+	log/log.o               \
+	main/main_filter.o      \
+	nntp/nntp.o             \
+	nntp/nntpart.o          \
+	priq/priq.o             \
+	queue/queue.o           \
+	sbuf/sbuf.o             \
+	sbuf/sbuf_aux.o         \
+	sbuf/sbuf_srch.o        \
+	sbuf/sbuf_io.o          \
+	stack/stack_copy.o      \
+	stack/stack_create.o    \
+	stack/stack_destroy.o   \
+	stack/stack_emptyp.o    \
+	stack/stack_pop.o       \
+	stack/stack_push.o      \
+	strutil/memarrfill.o    \
+	strutil/memdel.o        \
+	strutil/memfill.o       \
+	strutil/memins.o        \
+	strutil/memisort.o      \
+	strutil/memmem.o        \
+	strutil/memoverlap.o    \
+	strutil/memrchr.o       \
+	strutil/memrev.o        \
+	strutil/memrmem.o       \
+	strutil/memshuffle.o    \
+	strutil/memswap.o       \
+	strutil/stracat.o       \
+	strutil/stranaxfrm.o    \
+	strutil/strchange.o     \
+	strutil/strcins.o       \
+	strutil/strcstr.o       \
+	strutil/strdel.o        \
+	strutil/strdiff.o       \
+	strutil/strend.o        \
+	strutil/strendzap.o     \
+	strutil/strgsub.o       \
+	strutil/strhash.o       \
+	strutil/strinit.o       \
+	strutil/strins.o        \
+	strutil/strltrim.o      \
+	strutil/strmaxcpy.o     \
+	strutil/strmove.o       \
+	strutil/strmtrim.o      \
+	strutil/strndup.o       \
+	strutil/strnins.o       \
+	strutil/strnlen.o       \
+	strutil/stroverlap.o    \
+	strutil/strrev.o        \
+	strutil/strright.o      \
+	strutil/strrot13.o      \
+	strutil/strrstr.o       \
+	strutil/strrtrim.o      \
+	strutil/strset.o        \
+	strutil/strshuffle.o    \
+	strutil/strsplit.o      \
+	strutil/strsub.o        \
+	strutil/strtabify.o     \
+	strutil/strtrexpand.o   \
+	strutil/strtrim.o       \
+	strutil/struncstr.o     \
+	strutil/struntabify.o   \
+	strutil/strvars.o       \
+	strutil/strzap.o        \
+	tbuf/tbuf.o
+
+all :	libpub.a
+
+clean mostlyclean :
+	$(RM) libpub.a */*.o */*.d
+
+distclean maintainer-clean : clean
+	$(RM) config.log config.status
+
+install : libpub.a
+	$(PRE_INSTALL)
+	$(NORMAL_INSTALL)
+	$(INSTALL_DIR) $(DESTDIR)$(includedir)/publib
+	$(INSTALL_DIR) $(DESTDIR)$(libdir)
+	$(INSTALL_DIR) $(DESTDIR)$(man3dir)	
+	$(INSTALL_PROGRAM) libpub.a $(DESTDIR)$(libdir)
+	$(INSTALL_DATA) includes/publib.h $(DESTDIR)$(includedir)
+	@for f in includes/publib/*.h ; do \
+	  $(echoexec) $(INSTALL_DATA) $$f $(DESTDIR)$(includedir)/publib/ ;\
+	done
+	@for f in man/*.3 ; do\
+	  if test -f $$f; then \
+	    t="$(DESTDIR)$(man3dir)/`basename $$f .3`$(man3ext)"; \
+	    $(echoexec) $(INSTALL_DATA) $$f "$$t" ;\
+	    $(echoexec) gzip -9f "$$t" ;\
+	    $(link_alternative_names) $$t $(DESTDIR)$(man3dir) $(man3ext) ;\
+	  fi ;\
+	done
+	$(POST_INSTALL)
+
+install-strip: install
+#	No point in stripping a static library ...
+
+uninstall :
+	$(PRE_UNINSTALL)
+	$(NORMAL_UNINSTALL)
+	$(RM) $(DESTDIR)$(libdir)/libpub.a
+	$(RM) $(DESTDIR)$(includedir)/publib.h
+	@for f in includes/publib/*.h ; do \
+	  $(echoexec) $(RM) $(DESTDIR)$(includedir)/publib/`basename $$f` ;\
+	done
+	@for f in man/*.3 ; do\
+	  t="$(DESTDIR)$(man3dir)/`basename $$f .3`$(man3ext)"; \
+	  $(link_alternative_names) -r $$t $(DESTDIR)$(man3dir) $(man3ext) ;\
+	  $(echoexec) $(RM) "$$t".gz ;\
+	done
+	$(POST_UNINSTALL)
+
+libpub.a : $(objs)
+	$(AR) cr $@ $^
+	$(RANLIB) $@
+
+.c.o:
+	$(CC) -Iincludes -D__publib__ $(CPPFLAGS) $(CFLAGS) $(MDMF) -c $< -o $@
+
+Makefile : Makefile.in config.status
+	./config.status
+
+config.status : configure
+	./configure
+
+configure : configure.ac
+	autoconf
+
+.SUFFIXES:
+.SUFFIXES: .c .o
+
+-include */*.d
+
