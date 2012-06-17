@@ -6,3 +6,4 @@ install-sh
 *.[od]
 config.log
 config.status
+a.out
