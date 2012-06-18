@@ -1,9 +1,21 @@
 NEWS about the publib project
 =============================
 
+Version 0.40
+------------
 
-Version 0.39 (UNRELEASED)
--------------------------
+    * Lars Wirzenius has passed maintenance of publib to
+      Antti-Juhani Kaijanaho.
+
+    * Publib no longer includes the framework; instead, a conventional
+      configure--make build system is provided.  Publib now consists
+      of the library modules formerly known as liw-modules.
+
+    * Minor bugfixes have been made to the library modules.
+
+
+Version 0.39
+------------
 
     * liw/cfgtool has been removed. It was obsolete since about a decade.
     

@@ -7,6 +7,31 @@ As of October 2006, it is maintained by Antti-Juhani Kaijanaho.
 Publib is currently in maintenance mode: there are no plans to
 introduce new functionality at this time.
 
+Please check whether your operating system vendor provides a
+prepackaged version of Publib.  Normally you should use that version
+instead of installing from source, unless you have special needs.
+
+For installing from source, the following should be enough to install
+on a typical Linux or Unix system:
+
+   ./configure
+   make
+   make install
+
+The first two commands do not need any special privileges.  The third
+requires write access to several directories in /usr/local/.  The
+INSTALL file gives information about options you can give to configure
+for customizing such an installation.
+
+The following applies only to installations from source: Please retain
+the configured source of the version you installed.  That will allow
+you to uninstall the package using "make uninstall"; it is a good idea
+to do that before installing a new version.
+
+For library documentation, see the publib.3 and other manual pages
+distributed with the library (in the man/ subdirectoryof the source
+distribution).
+
 Developers using the library and redistributors of the library are
 encouraged to subscribe to the publib mailing list; send mail to
 publib-subscribe@lists.kaijanaho.info to subscibe.  The list is
@@ -25,6 +50,7 @@ issue tracker at http://code.google.com/p/publib/issues/list.
 
 New releases (since 1.40) are distributed from
   http://code.google.com/p/publib/downloads/list
+and are announced on the mailing list.
 
 Happy hacking,
 
@@ -66,3 +92,34 @@ The fourth version was 0.5, not posted to alt.sources or comp.sources.unix,
 only put on the ftp sites in May, 1995.
 
 -----8<-----8<-----8<-----8<-----8<-----8<-----8<-----8<-----8<-----8<-----
+
+
+This file as well as the rest of Publib is distributed under the
+simplified (two-clause) BSD license:
+
+Copyright © 2012 Antti-Juhani Kaijanaho.
+Copyright © 1994-2006 Lars Wirzenius.  All rights reserved.
+  
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+  
+1. Redistributions of source code must retain the above copyright
+   notice, this list of conditions and the following disclaimer.
+  
+2. Redistributions in binary form must reproduce the above
+   copyright notice, this list of conditions and the following
+   disclaimer in the documentation and/or other materials provided
+   with the distribution.
+  
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS
+OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.

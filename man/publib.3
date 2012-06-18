@@ -1,5 +1,6 @@
 .\"   Part of publib.
 .\"  
+.\"   Copyright (c) 2012 Antti-Juhani Kaijanaho.
 .\"   Copyright (c) 1994-2006 Lars Wirzenius.  All rights reserved.
 .\"  
 .\"   Redistribution and use in source and binary forms, with or without
@@ -26,8 +27,6 @@
 .\"   NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 .\"   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 .\"  
-.\" This is part of publib (big surprise :)
-.\" "@(#)publib-framework:$Id: publib.3,v 1.1.1.1 1995/08/06 21:56:07 liw Exp $"
 .\"
 .TH PUBLIB 3
 .SH NAME
@@ -36,21 +35,16 @@ publib \- introduction to publib
 #include <publib.h>
 .br
 .SH "DESCRIPTION"
-\fIpublib\fR is both a library of C functions that are useful in many
-of programs, and a framework for building such a library from
-components (called modules) provided by separate people.
+\fIpublib\fR is a library of C functions that are useful in many
+of programs.
 It is an extension to the
 Standard C library (as defined by the ISO/ANSI C standard 9899-1990).  To
 use the functions in publib, #include <publib.h>
 and link with
 the libpub.a library (adding -lpub at the end of the link command
-should work, if the library has been installed properly).  See the
-source code and/or man page for each module for copyright restrictions
-(which may be different for different modules).
+should work, if the library has been installed properly).
 .PP
-The publib framework is distributed separately from the library
-modules.  The framework contains no library functions at all.
-Some of the currently available modules are:
+The library provides functions for
 .sp 1
 .in +5
 .nf
@@ -65,6 +59,8 @@ expression evaluation
 .in -5
 .sp 1
 .fi
-More to be expected in future releases.
 .SH AUTHOR
-Lars Wirzenius (lars.wirzenius@helsinki.fi)
+Publib was originally written by
+Lars Wirzenius.
+It is now maintained by
+Antti-Juhani Kaijanaho (antti-juhani@kaijanaho.fi).
