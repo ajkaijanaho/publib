@@ -1,5 +1,6 @@
 .\"   Part of publib.
 .\"  
+.\"   Copyright (c) 2012 Antti-Juhani Kaijanaho.
 .\"   Copyright (c) 1994-2006 Lars Wirzenius.  All rights reserved.
 .\"  
 .\"   Redistribution and use in source and binary forms, with or without
@@ -26,16 +27,12 @@
 .\"   NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 .\"   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 .\"  
-.\" part of publib
-.\" "@(#)publib-hash:$Id: hash.3,v 1.1 1994/08/28 17:59:35 liw Exp $"
 .\"
 .TH HASH 3 "C Programmer's Manual" "Publib" "C Programmer's Manual"
 .SH NAME
 hash_create, hash_destroy, hash_install, hash_lookup, hash_uninstall,
 hash_iter \- generic hash tables
 .SH SYNOPSIS
-#include <publib.h>
-.sp 1
 .nf
 #include <publib.h>
 .sp 1
@@ -74,21 +71,31 @@ It is up to the user to handle collisions.
 The argument is a pointer to a datum that identifies the element.
 .PP
 \fIhash_iter\fR goes through every element in the hash table
-and calls the \fIdoit\fR function.
-If \fIdoit\fR returns -1 or 0, \fIhash_iter\fR will stop the
-traversal and return the same value.
+and calls the \fIdoit\fR function for each.
+The first argument it provides to \fIdoit\fR is the element in question,
+the second is whatever was given to \fIhash_iter\fR as \fIparam\fR.
+If \fIdoit\fR returns -1 or 0 for any element in the hash table,
+\fIhash_iter\fR immediately returns without going through the remaining
+elements in the hash table.
+Any other return value from \fIdoit\fR is ignored.
 .SH RETURNS
 \fIhash_create\fR returns a pointer to the new hash table, or NULL if
 it fails.
+.PP
 \fIhash_install\fR returns a pointer to an element in the table
 (either the installed one, or one that was already installed, if one
 tries to install the same datum twice).
+.PP
 \fIhash_uninstall\fR returns 0 if it found the element in the array,
 or -1 if it didn't.
+.PP
 \fIhash_lookup\fR return a pointer to the element it finds, or NULL if
 it doesn't find anything beautiful.
-\fIhash_iter\fR returns -1 or 0, if \fIdoit\fR returns either of those
-values, or 1 if it gets through all elements in the table.
+.PP
+\fIhash_iter\fR returns -1, 0, or 1.  If \fIhash_iter\fR receives a
+return value of -1 or 0 for some element from \fIdoit\fR,
+\fIhash_iter\fR immediately returns -1 or 0, respectively.
+In all other cases \fIhash_iter\fR returns 1.
 .SH "SEE ALSO"
 publib(3), qsort(3), bsearch(3)
 .SH AUTHOR
