@@ -9,3 +9,4 @@ config.status
 a.out
 libpub.a
 core
+publib-*.tar.gz

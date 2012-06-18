@@ -24,35 +24,41 @@
 #  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 #  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-AC_PREREQ([2.68])
-AC_INIT([publib],[0.40],[publib@lists.kaijanaho.info])
-AC_CONFIG_SRCDIR([man/publib.3])
+SHELL = /bin/sh
 
+echoexec = sh echoexec.sh
 
-AC_PROG_CC
-AX_CFLAGS_WARN_ALL
+all :
+	exit 1
 
-# Test for -MD
-AC_MSG_CHECKING([checking whether $CC -MD -MF works])
-AC_LANG(C)
-rm -f main/conftest.d
-AC_LANG_CONFTEST([AC_LANG_SOURCE([@%:@include "publib.h"])])
-mv conftest.c main/conftest.c
-$CC -Iincludes $CPPFLAGS $CFLAGS \
-  -MD -MF main/conftest.d -c main/conftest.c -o main/conftest.o
-if test -r main/conftest.d ; then
-   MDMF='-MD -MF @S|@*.d'
-   AC_MSG_RESULT(yes)
-else
-   MDMF=""
-   AC_MSG_RESULT(no)
-fi
-rm -f main/conftest.d main/conftest.c main/conftest.o
-AC_SUBST(MDMF)
-
-AC_PROG_INSTALL
-AC_PROG_RANLIB
-AC_PROG_MKDIR_P
-AC_CHECK_PROG(MAKE,gmake,gmake,make)
-AC_CONFIG_FILES([Makefile])
-AC_OUTPUT
+# see Makefile.in distcheck
+run_distcheck :
+	tar zxf $(tgz)
+	mv $(base) $(base).orig
+	@echo "# TEST INSTALL"
+	tar zxf $(tgz)
+	cd $(base) && ./configure
+	$(MAKE) -C $(base) DESTDIR=../dest install
+	test -f dest/usr/local/lib/libpub.a
+	test ! -x dest/usr/local/lib/libpub.a
+	test -f dest/usr/local/include/publib.h
+	test ! -x dest/usr/local/include/publib.h
+	@set -e ; for f in $(includes) ; do \
+	  bn=`basename $$f` ;\
+	  $(echoexec) test -f dest/usr/local/include/publib/$$bn ;\
+	  $(echoexec) test ! -x dest/usr/local/include/publib/$$bn ;\
+	done
+	@set -e ; for f in $(manpages) ; do \
+	  bn=`basename $$f` ;\
+	  $(echoexec) test -f dest/usr/local/share/man/man3/$$bn.gz ;\
+	  $(echoexec) test ! -x dest/usr/local/share/man/man3/$$bn.gz ;\
+	done
+	rm -rf $(base) dest
+	@echo "# TEST DIST"
+	tar zxf $(tgz)
+	cd $(base) && ./configure
+	$(MAKE) -C $(base) DESTDIR=../dest/ dist
+	test -f dest/$(tgz)
+	cd dest && tar zxf $(tgz)
+	touch dest/$(base)/foobar
+	diff -Naur $(base).orig dest/$(base)

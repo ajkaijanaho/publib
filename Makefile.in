@@ -26,6 +26,9 @@
 
 SHELL = /bin/sh
 
+PACKAGE_TARNAME = @PACKAGE_TARNAME@
+PACKAGE_VERSION = @PACKAGE_VERSION@
+
 srcdir          = @srcdir@
 
 CC              = @CC@
@@ -37,8 +40,12 @@ INSTALL         = @INSTALL@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_DATA    = @INSTALL_DATA@
 INSTALL_DIR     = ${INSTALL} -d
-AR		= ar
+MKDIR_P         = @MKDIR_P@
 RANLIB		= @RANLIB@ 
+
+AR		= ar
+LN		= ln
+
 echoexec        = sh $(srcdir)/echoexec.sh
 link_alternative_names = sh $(srcdir)/link-alternative-names
 
@@ -182,6 +189,96 @@ objs =  alloc/memdup.o          \
 	strutil/strzap.o        \
 	tbuf/tbuf.o
 
+srcs = $(objs:.o=.c)
+
+# excepting publib.h (special case!)
+includes =                          \
+	includes/publib/alloc.h     \
+	includes/publib/base64.h    \
+	includes/publib/bitarr.h    \
+	includes/publib/cmp.h       \
+	includes/publib/errormsg.h  \
+	includes/publib/files.h     \
+	includes/publib/fname.h     \
+	includes/publib/hash.h      \
+	includes/publib/iset.h      \
+	includes/publib/lockfile.h  \
+	includes/publib/log.h       \
+	includes/publib/main.h      \
+	includes/publib/nntp.h      \
+	includes/publib/priq.h      \
+	includes/publib/queue.h     \
+	includes/publib/sbuf.h      \
+	includes/publib/stack.h     \
+	includes/publib/strutil.h   \
+	includes/publib/tbuf.h
+
+manpages =                          \
+	man/bitarr.3                \
+	man/cmp.3                   \
+	man/dynarr.3                \
+	man/errormsg.3              \
+	man/files.3                 \
+	man/fname.3                 \
+	man/fnpathfind.3            \
+	man/fnqualify.3             \
+	man/hash.3                  \
+	man/iset.3                  \
+	man/log.3                   \
+	man/memarrfill.3            \
+	man/memdel.3                \
+	man/memfill.3               \
+	man/memins.3                \
+	man/memisort.3              \
+	man/memmem.3                \
+	man/memoverlap.3            \
+	man/memrchr.3               \
+	man/memrev.3                \
+	man/memrmem.3               \
+	man/memshuffle.3            \
+	man/memswap.3               \
+	man/publib.3                \
+	man/__set_liberror.3        \
+	man/stack.3                 \
+	man/stracat.3               \
+	man/stranaxfrm.3            \
+	man/strchange.3             \
+	man/strcins.3               \
+	man/strcstr.3               \
+	man/strdel.3                \
+	man/strdiff.3               \
+	man/strend.3                \
+	man/strendzap.3             \
+	man/strgsub.3               \
+	man/strhash.3               \
+	man/strinit.3               \
+	man/strins.3                \
+	man/strltrim.3              \
+	man/strmaxcpy.3             \
+	man/strmove.3               \
+	man/strmtrim.3              \
+	man/strndup.3               \
+	man/strnins.3               \
+	man/stroverlap.3            \
+	man/strrev.3                \
+	man/strright.3              \
+	man/strrot13.3              \
+	man/strrstr.3               \
+	man/strrtrim.3              \
+	man/strset.3                \
+	man/strshuffle.3            \
+	man/strsplit.3              \
+	man/strsub.3                \
+	man/strtabify.3             \
+	man/strtrexpand.3           \
+	man/strtrim.3               \
+	man/struncstr.3             \
+	man/struntabify.3           \
+	man/strvars.3               \
+	man/strzap.3                \
+	man/tbuf.3                  \
+	man/xmalloc.3
+
 tests = iset/test_add.c             \
 	main/test-main-filter.c     \
 	log/test-log.c              \
@@ -193,6 +290,11 @@ tests = iset/test_add.c             \
 	sbuf/test-sbuf.c            \
 	priq/test-priq.c            \
 	fname/test_fnqualify.c
+
+distfiles = $(srcs) $(includes) $(manpages) $(tests) \
+	aclocal.m4 ChangeLog.old configure configure.ac distcheck.mk \
+	echoexec.sh INSTALL includes/publib.h \
+	install-sh link-alternative-names Makefile.in NEWS README TODO
 
 all :	libpub.a
 
@@ -208,12 +310,12 @@ install : libpub.a
 	$(INSTALL_DIR) $(DESTDIR)$(includedir)/publib
 	$(INSTALL_DIR) $(DESTDIR)$(libdir)
 	$(INSTALL_DIR) $(DESTDIR)$(man3dir)	
-	$(INSTALL_PROGRAM) libpub.a $(DESTDIR)$(libdir)
+	$(INSTALL_DATA) libpub.a $(DESTDIR)$(libdir)
 	$(INSTALL_DATA) includes/publib.h $(DESTDIR)$(includedir)
-	@for f in includes/publib/*.h ; do \
+	@for f in $(includes) ; do \
 	  $(echoexec) $(INSTALL_DATA) $$f $(DESTDIR)$(includedir)/publib/ ;\
 	done
-	@for f in man/*.3 ; do\
+	@for f in $(manpages) ; do\
 	  if test -f $$f; then \
 	    t="$(DESTDIR)$(man3dir)/`basename $$f .3`$(man3ext)"; \
 	    $(echoexec) $(INSTALL_DATA) $$f "$$t" ;\
@@ -230,11 +332,11 @@ uninstall :
 	$(PRE_UNINSTALL)
 	$(NORMAL_UNINSTALL)
 	$(RM) $(DESTDIR)$(libdir)/libpub.a
-	$(RM) $(DESTDIR)$(includedir)/publib.h
-	@for f in includes/publib/*.h ; do \
+	$(RM) $(DESTDIR)$(includedir)publib.h
+	@for f in $(includes) ; do \
 	  $(echoexec) $(RM) $(DESTDIR)$(includedir)/publib/`basename $$f` ;\
 	done
-	@for f in man/*.3 ; do\
+	@for f in $(manpages) ; do\
 	  t="$(DESTDIR)$(man3dir)/`basename $$f .3`$(man3ext)"; \
 	  $(link_alternative_names) -r $$t $(DESTDIR)$(man3dir) $(man3ext) ;\
 	  $(echoexec) $(RM) "$$t".gz ;\
@@ -250,9 +352,53 @@ check : libpub.a
 	  $(echoexec) $(CC) -Iincludes $(CPPFLAGS) $(CFLAGS) $$f libpub.a ;\
 	  echo './a.out </dev/null >/dev/null' ;\
 	  ./a.out </dev/null >/dev/null ;\
+	  $(echoexec) $(RM) a.out ;\
 	  if test -r test.log; then rm test.log ; fi ;\
 	done
 
+dist_base = $(PACKAGE_TARNAME)-$(PACKAGE_VERSION)
+dist_tar = $(dist_base).tar
+dist_tgz = $(dist_tar).gz
+
+dist : $(dist_tgz)
+
+distsign : $(dist_tgz).asc
+
+$(dist_tgz) : $(distfiles)
+	@if test -e $(DESTDIR)$(dist_base) ; then \
+	  echo "$(DESTDIR)$(dist_base) exists; cannot continue" ; \
+	  exit 1 ;\
+	fi
+	$(MKDIR_P) $(DESTDIR)$(dist_base)
+	@set -e ; for f in $(distfiles) ; do \
+	  dir=$(DESTDIR)$(dist_base)/`dirname $$f` ; \
+	  if ! test -d $$dir ; then \
+	    $(echoexec) $(MKDIR_P) $$dir ;\
+	  fi ;\
+	  $(echoexec) $(LN) $$f $(DESTDIR)$(dist_base)/$$f ;\
+	done
+	cd $(DESTDIR). && tar cf $(dist_tar) $(dist_base)
+	gzip -9f $(DESTDIR)$(dist_tar)
+	$(RM) -r $(DESTDIR)$(dist_base)
+
+$(dist_tgz).asc : $(dist_tgz)
+	gpg --output $@ --clearsign --detach-sig $<
+
+distcheck_stage = distcheck_stage
+distcheck : $(dist_tgz)
+	@if test -e $(DESTDIR)$(distcheck_stage) ; then \
+	  echo "$(DESTDIR)$(distcheck_stage) exists; cannot continue" ; \
+	  exit 1 ;\
+	fi
+	$(MKDIR_P) $(DESTDIR)$(distcheck_stage)
+	cp $(dist_tgz) $(DESTDIR)$(distcheck_stage)
+	cp distcheck.mk $(DESTDIR)$(distcheck_stage)/Makefile
+	cp echoexec.sh $(DESTDIR)$(distcheck_stage)
+	$(MAKE) -C $(DESTDIR)$(distcheck_stage) \
+	  base=$(dist_base) tgz=$(dist_tgz) \
+	  includes="$(includes)" manpages="$(manpages)" \
+	  run_distcheck
+	$(RM) -r $(DESTDIR)$(distcheck_stage)
 .c.o:
 	$(CC) -Iincludes -D__publib__ $(CPPFLAGS) $(CFLAGS) $(MDMF) -c $< -o $@
 
