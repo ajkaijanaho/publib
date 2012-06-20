@@ -382,7 +382,7 @@ $(dist_tgz) : $(distfiles)
 	$(RM) -r $(DESTDIR)$(dist_base)
 
 $(dist_tgz).asc : $(dist_tgz)
-	gpg --output $@ --clearsign --detach-sig $<
+	gpg --output $@ --detach-sign -a $<
 
 distcheck_stage = distcheck_stage
 distcheck : $(dist_tgz)
