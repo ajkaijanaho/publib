@@ -45,6 +45,7 @@ RANLIB		= @RANLIB@
 
 AR		= ar
 LN		= ln
+RM		= rm -f
 
 echoexec        = sh $(srcdir)/echoexec.sh
 link_alternative_names = sh $(srcdir)/link-alternative-names
@@ -417,5 +418,4 @@ aclocal.m4 :
 .SUFFIXES:
 .SUFFIXES: .c .o
 
--include */*.d
 
